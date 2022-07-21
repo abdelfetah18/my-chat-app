@@ -33,24 +33,7 @@ export default function Chat({ chats,user }) {
 
   useEffect(() => {
       var access_token = localStorage.getItem('access_token');
-      var ws = new WebSocket(process.env.NODE_ENV ? 'ws://my-chat-dapp.herokuapp.com/' : 'ws://'+location.host.replace('3000','4000')+'/?type=chat&access_token='+access_token);
-
-      ws.emit = (eventName,payload) => {
-        var data = JSON.stringify({ eventName,payload });
-        ws.send(data);
-      }
-
-      ws.onopen = (ev) => {
-
-      }
-
-      ws.onmessage = (evt) => {
-        var { eventName,payload } = JSON.parse(evt.data);
-        console.log({ eventName,payload })
-        ws.dispatchEvent(new CustomEvent(eventName,{ detail:payload }))
-      }
-
-      setUser(state => { return { ...state,access_token,ws } });
+      setUser(state => { return { ...state,access_token } });
   },[]);
 
   function updateChats(){
