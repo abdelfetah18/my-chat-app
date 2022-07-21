@@ -194,7 +194,7 @@ app.prepare().then(() => {
         console.log(`> Ready on http://localhost:${port}`);
     });
 
-    var ws = new ws_server.Server({ /*server:my_server,*/port:4000 },() => console.log('websocket alive!'));
+    var ws = process.env.NODE_ENV ? new ws_server.Server({ server:my_server },() => console.log('websocket alive!')) : new ws_server.Server({ /*server:my_server,*/port:4000 },() => console.log('websocket alive!'));
     var ONLINE_USERS = new Map();
     var ONLINE_ROOMS = new Map();
 
