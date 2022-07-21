@@ -47,7 +47,6 @@ app.prepare().then(() => {
     });
 
     server.use('/api/v1/sign_in', ( req, res, nextR ) => {
-        console.log('login!');
         if(req.method == "POST"){
             nextR();
         }else{

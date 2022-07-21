@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { privateKEY,publicKEY } from '../../../secret';
 
 export default function handler(req, res) {
+    console.log('what ?');
     var { username:_username,password } = req.body;
     getData('*[_type=="users" && username==$username]',{ username:_username }).then((user) => {
         if(user.length > 0){
