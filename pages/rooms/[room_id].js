@@ -148,7 +148,7 @@ export default function Room({ rooms,user,room,room_requests }) {
                           }  
 
                           return(
-                            <div className='w-full hover:shadow-xl cursor-pointer my-2 flex flex-row bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+                            <div key={i} className='w-full hover:shadow-xl cursor-pointer my-2 flex flex-row bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
                               <div className='lg:w-1/6 md:w-full'>
                                   <img className='object-cover w-14 h-14 rounded-full' src={r.user.profile_image != null ? r.user.profile_image : '/profile.jpeg'} />
                               </div>
