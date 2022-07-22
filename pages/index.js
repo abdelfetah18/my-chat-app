@@ -8,21 +8,23 @@ import { getData } from "../database/client";
 export async function getServerSideProps({ req }) {
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
-    var people_may_know = await getData('*[_type=="users" && _id!=$user_id && (_id in *[_type=="chats" && state=="accept" && user._ref==$user_id].inviter._ref || _id in *[_type=="chats" && state=="accept" && inviter._ref==$user_id].user._ref)]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio,"friends":*[_type=="users" && @._id != $user_id && !(@._id in *[_type=="users" && _id!=$user_id && (_id in *[_type=="chats" && user._ref==$user_id].inviter._ref || _id in *[_type=="chats" && inviter._ref==$user_id].user._ref)]._id) && (_id in *[_type=="chats" && state=="accept" && user._ref==^.^._id].inviter._ref || _id in *[_type=="chats" && state=="accept" && inviter._ref==^.^._id].user._ref) ]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio,}}',{ user_id:user_info.user_id });
+    var people_may_know = await getData('*[_type=="users" && _id!=$user_id && (_id in *[_type=="chats" && state=="accept" && user._ref==$user_id].inviter._ref || _id in *[_type=="chats" && state=="accept" && inviter._ref==$user_id].user._ref)]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio,"friends":*[_type=="users" && @._id != $user_id && !(@._id in *[_type=="users" && _id!=$user_id && (_id in *[_type=="chats" && user._ref==$user_id].inviter._ref || _id in *[_type=="chats" && inviter._ref==$user_id].user._ref)]._id) && (_id in *[_type=="chats" && state=="accept" && user._ref==^.^._id].inviter._ref || _id in *[_type=="chats" && state=="accept" && inviter._ref==^.^._id].user._ref) ]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio}}',{ user_id:user_info.user_id });
     var friends_requests = await getData('*[_type=="chats" && state=="invite" && user._ref == $user_id]{ _id,"inviter":*[_type=="users" && _id==^.inviter._ref]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }[0]}',{ user_id:user_info.user_id });
     var rooms_you_may_like = await getData('*[_type=="chats" && state=="accept" && (user._ref==$user_id || inviter._ref==$user_id)]{"_id":*[_type=="users" && @._id!=$user_id && (@._id == ^.inviter._ref || @._id == ^.user._ref)][0]._id,"username":*[_type=="users" && @._id!=$user_id && (@._id == ^.inviter._ref || @._id == ^.user._ref)][0].username,"bio":*[_type=="users" && @._id!=$user_id && (@._id == ^.inviter._ref || @._id == ^.user._ref)][0].bio,"profile_image":*[_type=="users" && @._id!=$user_id && (@._id == ^.inviter._ref || @._id == ^.user._ref)][0].profile_image.asset->url,"cover_image":*[_type=="users" && @._id!=$user_id && (@._id == ^.inviter._ref || @._id == ^.user._ref)][0].cover_image.asset->url,"rooms":*[_type=="room_members" && member._ref!=$user_id && !(room._ref in *[_type=="room_members" && @.state!="reject" && @.member._ref==$user_id].room._ref) && (member._ref==^.inviter._ref || member._ref==^.user._ref)]{"_id":*[_type=="rooms" && @._id==^.room._ref][0]._id,"name":*[_type=="rooms" && @._id==^.room._ref][0].name,"bio":*[_type=="rooms" && @._id==^.room._ref][0].bio,"profile_image":*[_type=="rooms" && @._id==^.room._ref][0].profile_image.asset->url,"cover_image":*[_type=="rooms" && @._id==^.room._ref][0].cover_image.asset->url}}',{ user_id:user_info.user_id });
+    var random_people_you_may_know = await getData('*[_type=="users" && !(_id in *[_type=="chats" && user._ref == $user_id && inviter._ref == $user_id].user._ref) && !(_id in *[_type=="chats" && user._ref == $user_id && inviter._ref == $user_id].inviter._ref)][1..5]{_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio}',{ user_id:user_info.user_id });
 
     return {
         props: {
             user,
             people_may_know,
             friends_requests,
-            rooms_you_may_like
+            rooms_you_may_like,
+            random_people_you_may_know
         }
     }
 }
 
-export default function Home({ user,people_may_know,friends_requests,rooms_you_may_like }){
+export default function Home({ user,people_may_know,friends_requests,rooms_you_may_like,random_people_you_may_know }){
     var [User,setUser] = useState(user);
     var profile_image = useRef();
     var cover_image = useRef();
@@ -251,7 +253,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                         <div className="w-11/12 flex flex-col">
                             <div className="font-mono text-lg font-semibold">People you may know:</div>
                             <div className="w-full flex flex-col">
-                                <div className="flex flex-row w-full p-2">
+                                <div className="flex flex-row w-full p-2 flex-wrap">
                                     {
                                         people_may_know.map((p,i) => {
                                             return p.friends.map((u,j) => {
@@ -260,7 +262,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                 }    
                                                 
                                                 return (
-                                                    <div key={i.toString()+j.toString()} className="flex flex-col w-40 shadow-lg items-center rounded mx-2">
+                                                    <div key={i.toString()+j.toString()} className="flex flex-col w-40 shadow-lg items-center rounded mx-2 my-2">
                                                         <div className="w-40 h-40">
                                                             <img className="object-cover w-full h-full rounded" src={u.profile_image != null ? u.profile_image : "/profile.jpeg"} />
                                                         </div>
@@ -272,6 +274,26 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                             })
                                         })
             
+                                    }
+                                    {
+                                        people_may_know.length == 0 ? (
+                                            random_people_you_may_know.map((u,i) => {
+                                                function invite(){
+                                                    axios.post('/api/v1/invite?type=friend',{ user_id:u._id },{ headers:{ authorization:User.access_token }}).then((response) => console.log('response:',response.data));
+                                                }    
+                                                
+                                                return (
+                                                    <div key={i} className="flex flex-col w-40 shadow-lg items-center rounded mx-2 my-2">
+                                                        <div className="w-40 h-40">
+                                                            <img className="object-cover w-full h-full rounded" src={u.profile_image != null ? u.profile_image : "/profile.jpeg"} />
+                                                        </div>
+                                                        <div className="font-mono font-semibold text-xl my-1">{u.username}</div>
+                                                        <div onClick={invite} className="w-11/12 my-2 font-mono font-bold text-base bg-blue-200 rounded text-center text-blue-500 cursor-pointer">add friend</div>
+                                                    </div>
+                                                        
+                                                );
+                                            })
+                                        ) : ''
                                     }
                                 </div>
                             </div>
