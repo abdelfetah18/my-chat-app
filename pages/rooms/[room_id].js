@@ -185,7 +185,7 @@ export default function Room({ rooms,user,room,room_requests }) {
                   </div>
                 </div>
                 <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4'>
-                  <div ref={messages_box} className='flex flex-col w-full h-[28em] max-h-[28em] overflow-auto'>
+                  <div ref={messages_box} className='flex flex-col w-full h-[28em] max-h-[28em] overflow-auto px-2'>
                     {
                       messages.map((msg,i) => {
                         if(msg.user._ref === user.user_id){
