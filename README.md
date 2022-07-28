@@ -1,34 +1,110 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a chat app using `NextJS`,`TailWindCSS` and `Sanity.io`.
 
 ## Getting Started
 
-First, run the development server:
+First, build the files:
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm run build
 ```
-
+and then run the server:
+```bash
+npm run start
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Features
+1. Profile (every user has a username , bio, profile picture and cover picture).
+2. Friends (every user can invite friends, accept or reject them).
+3. Direct Message (every user can DM his friend).
+4. Rooms (every user has the ability to create room and customize it and invite his frineds to join).
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Technology used in this app
+For the database i am using [`sanity.io`](https://sanity.io) , ( `Sanity` is the unified content platform that lets your team work together in real-time to build engaging digital experiences across channels. )
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+```
+- users:
+    - user_id
+    - username
+    - birthdate
+    - profile_image
+    - cover_image
+    - bio
+    - password
+    - updated_at
+    - created_at
+```
+```
+- rooms:
+    - room_id
+    - room_name
+    - room_profile_image
+    - room_cover_image
+    - room_bio
+    - room_admin_id
+    - room _creator_id
+    - updated_at
+    - created_at
+```
+```
+- chats:
+    - chat_id
+    - inviter_id
+    - user_id
+    - state
+    - created_at
+```
+```
+- messages:
+    - message_id
+    - chat_id
+    - user_id
+    - message
+    - type
+    - created_at
+```
+```
+- room_messages:
+    - message_id
+    - room_id
+    - user_id
+    - message
+    - type
+    - created_at
+```
+```
+- room_members:
+    - record_id
+    - member_id
+    - role
+    - state 
+    - updated_at
+    - created_at
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For Authentication and Authorization i am using `JWT (JSON Web Token)`.i am using it in middlewares.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+Also i am using `Rest API` in a way that let me to build a mobile app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For RealTime chat , I am using `WebSocket`.it System Design is based on Events. like when WebSocketServer Recieve a data will emit a event, and there is a Listner which will consume the data.the same stratigy for the Client.
+
+---
+
+## Images from the app
+![1](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/1.png)
+![2](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/2.png)
+![3](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/3.png)
+![4](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/4.png)
+![5](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/5.png)
+![6](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/6.png)
+![7](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/7.png)
+
+
+Thanks for reading and see you in my next project.

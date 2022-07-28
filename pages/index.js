@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getData } from "../database/client";
 
+
 export async function getServerSideProps({ req }) {
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
@@ -52,7 +53,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                 p_may_know.push(p);
             });
         });
-        
+
         random_people_you_may_know.forEach(c => {
             var found = false;
             p_may_know.forEach(p => {
@@ -94,7 +95,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                     p_may_know.push(p);
                 });
             });
-            
+
             data.random_people_you_may_know.forEach(c => {
                 var found = false;
                 p_may_know.forEach(p => {
@@ -185,7 +186,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
             },{
                 duration:0.3
             })
-        });  
+        });
         profile_info_box.start({
             opacity:0,
             transitionEnd: {
@@ -234,8 +235,8 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                 display:'flex'
             },{
                 duration:0.3,
-            }) 
-        }); 
+            })
+        });
     }
 
     function OpenProfileImage(){
@@ -250,8 +251,8 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                 display:'flex'
             },{
                 duration:0.3,
-            }) 
-        }); 
+            })
+        });
     }
 
     function OpenCoverImage(){
@@ -266,8 +267,8 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                 display:'flex'
             },{
                 duration:0.3,
-            }) 
-        }); 
+            })
+        });
     }
 
     return(
@@ -312,12 +313,12 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                         FriendRequests.map((chat,j) => {
                                             function accept(){
                                                 axios.post('/api/v1/accept?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
-                                            }   
+                                            }
 
                                             function reject(){
                                                 axios.post('/api/v1/reject?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
-                                            }   
-                                            
+                                            }
+
                                             return (
                                                 <div key={j} className="flex flex-col w-40 shadow-lg items-center rounded mx-2">
                                                     <div className="w-40 h-40">
@@ -327,7 +328,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                     <div onClick={accept} className="w-11/12 mt-2 mb-1 font-mono font-bold text-base bg-blue-500 rounded text-center text-white cursor-pointer">accept</div>
                                                     <div onClick={reject} className="w-11/12 mb-2 font-mono font-bold text-base border-2 border-blue-500 rounded text-center text-blue-500 cursor-pointer">reject</div>
                                                 </div>
-                                                    
+
                                             );
                                         })
                                     }
@@ -343,8 +344,8 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                         PeopleMayKnow.map((u,i) => {
                                             function invite(){
                                                 axios.post('/api/v1/invite?type=friend',{ user_id:u._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
-                                            }    
-                                            
+                                            }
+
                                             return (
                                                 <div key={i} className="flex flex-col w-40 shadow-lg items-center rounded mx-2 my-2">
                                                     <div className="w-40 h-40">
@@ -353,10 +354,10 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                     <div className="font-mono font-semibold text-xl my-1">{u.username}</div>
                                                     <div onClick={invite} className="w-11/12 my-2 font-mono font-bold text-base bg-blue-200 rounded text-center text-blue-500 cursor-pointer">add friend</div>
                                                 </div>
-                                                    
+
                                             );
                                         })
-            
+
                                     }
                                 </div>
                             </div>
@@ -383,10 +384,10 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                         <div className="font-mono font-semibold text-xl my-1">{r.name}</div>
                                                         <div onClick={join} className="w-11/12 my-2 font-mono font-bold text-base bg-blue-200 rounded text-center text-blue-500 cursor-pointer">Join</div>
                                                     </div>
-                                                        
+
                                                 );
                                         })
-            
+
                                     }
                                 </div>
                             </div>

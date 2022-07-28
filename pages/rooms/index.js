@@ -4,11 +4,12 @@ import Navigation from '../../components/Navigation';
 import { getData } from '../../database/client';
 import axios from 'axios';
 
+
 export async function getServerSideProps({ req,params }) {
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
     var rooms = await getData('*[_type=="room_members" && state=="accept" && member._ref==$user_id]{"room":*[_type=="rooms" && @._id == ^.room._ref][0]{_id,name,bio,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url},"message":*[_type=="room_messages" && @.room._ref==^.room._ref] | order(@._createdAt desc)[0],} | order(^.message._createdAt asc)',{ user_id:user_info.user_id });
-  
+
     return {
         props: {
             rooms,user
@@ -47,7 +48,7 @@ export default function Room({ rooms,user }) {
       }
     });
   }
-  
+
       return (
         <div className='flex flex-row background h-screen w-screen'>
           <Navigation page={'/rooms'} />
@@ -63,7 +64,7 @@ export default function Room({ rooms,user }) {
                   <input className='w-11/12 font-mono text-xl bg-transparent px-4' placeholder='Search' />
                   <FaSearch className='w-1/12 text-[#c8cee5]' />
                 </div>
-    
+
                 {
                   my_rooms.map((c,i) => {
                     function calcTime(timestamp,diveder){
@@ -96,7 +97,7 @@ export default function Room({ rooms,user }) {
                     )
                   })
                 }
-    
+
               </div>
               <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center'>
                 <div className='w-11/12 py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>

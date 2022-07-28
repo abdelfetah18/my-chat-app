@@ -17,9 +17,7 @@ var upload_cover_image = multer({ dest:'./uploads/cover_images' });
 
 app.prepare().then(() => {
     const server = express();
-    
     server.use(cookieParser());
-
     server.use('/api/v1/', (req, res, nextR) => {
         var protected_paths = ['/create','/delete','/edit','/invite','/join','/leave'];
         if(protected_paths.includes(req.path)){
@@ -139,7 +137,7 @@ app.prepare().then(() => {
         } catch(err){
             console.log('err:',err)
         }
-        
+
     });
 
     server.post('/api/v1/upload_cover_image',upload_cover_image.single('cover_image'),async ( req, res) => {
@@ -155,7 +153,7 @@ app.prepare().then(() => {
         } catch(err){
             console.log('err:',err)
         }
-        
+
     });
 
     server.use('/', ( req, res, nextR) => {
@@ -184,7 +182,7 @@ app.prepare().then(() => {
     server.post('*/*', (req, res) => {
         return handle(req, res);
     });
-    
+
     server.get('*/*', (req, res) => {
         return handle(req, res);
     });
@@ -234,7 +232,7 @@ app.prepare().then(() => {
         socket.broadcast = (eventName,payload) => {
             socket.send(JSON.stringify({ eventName,payload }));
         }
-        
+
         socket.on('close',(code,reason) => {
             var type = socket._url.searchParams.get('type');
             switch(type){
@@ -254,8 +252,8 @@ app.prepare().then(() => {
                 default:
                     break;
             }
-            
-            
+
+
             console.log('user disconnected!');
         })
 
@@ -320,5 +318,5 @@ app.prepare().then(() => {
             });
         });
     });
-    
+
 }).catch((err) => console.log('error:',err));
