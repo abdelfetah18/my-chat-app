@@ -53,7 +53,7 @@ export default function SignUp(){
                     <div className="flex flex-col w-11/12 py-2 px-4 items-center">
                         <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-semibold rounded opacity-0 bg-[#ff4343]"></motion.div>
                         <input className="my-1 font-mono px-4 py-2 rounded w-full" onChange={(evt) => setUsername(evt.target.value) } value={username} placeholder="username" />
-                        <input className="my-1 font-mono px-4 py-2 rounded w-full" onChange={(evt) => setPassword(evt.target.value) } value={password} placeholder="password" />
+                        <input className="my-1 font-mono px-4 py-2 rounded w-full" type={"password"} onChange={(evt) => setPassword(evt.target.value) } value={password} placeholder="password" />
                         <div className="flex flex-row w-fit my-2 justify-between">
                             <DatePicker className="w-fit px-4 py-2" selected={birthdate} onChange={(date) => setBirthdate(date)} />
                         </div>

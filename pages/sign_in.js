@@ -54,7 +54,7 @@ export default function SignIn(){
                     <div className="flex flex-col w-11/12 py-2 px-4">
                         <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-semibold rounded opacity-0 bg-[#ff4343]"></motion.div>
                         <input className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setUsername(evt.target.value)} value={username} placeholder="username" />
-                        <input onKeyUp={(e) => { if(e.altKey == 'Enter'){ sign_in() }}} type={"password"} className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setPassword(evt.target.value)} value={password} placeholder="password" />
+                        <input onKeyUp={(e) => { if(e.code == 'Enter'){ sign_in() }}} type={"password"} className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setPassword(evt.target.value)} value={password} placeholder="password" />
                     </div>
                     <div className="flex flex-col w-11/12 py-2 px-4 items-center">
                         <div className="font-mono font-bold text-base bg-blue-600 rounded px-4 py-2 text-white cursor-pointer" onClick={sign_in}>Sign in</div>

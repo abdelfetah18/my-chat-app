@@ -10,10 +10,11 @@ var jwt = require('jsonwebtoken');
 var fs = require('fs');
 var privateKEY  = fs.readFileSync(__dirname+'/secret/private.key', 'utf8');
 var publicKEY  = fs.readFileSync(__dirname+'/secret/public.key', 'utf8');
-var { addData,getData,updateData,uploadCover,uploadProfile } = require('./database/client');
+var { addData,getData,updateData,uploadCover,uploadProfile,uploadImage } = require('./database/client');
 var multer = require('multer');
 var upload_profile_image = multer({ dest:'./uploads/profile_images' });
 var upload_cover_image = multer({ dest:'./uploads/cover_images' });
+var upload_image = multer({ dest:'./uploads/upload_images' });
 
 app.prepare().then(() => {
     const server = express();
@@ -116,7 +117,21 @@ app.prepare().then(() => {
                     });
                 }else{
                     req.decoded_jwt = data;
-                    nextR();
+                    getData('*[_type=="room_members" && member._ref==$user_id]',{ user_id:data.user_id }).then((result) => {
+                        if(result.length > 0){
+                            nextR();
+                        }else{
+                            res.status(200).json({
+                                status:'error',
+                                message:"You are not a member!"
+                            });
+                        }
+                    }).catch((err) => {
+                        res.status(200).json({
+                            status:'error',
+                            error:err
+                        });
+                    })
                 }
             });
         }else{
@@ -153,7 +168,21 @@ app.prepare().then(() => {
         } catch(err){
             console.log('err:',err)
         }
+    });
 
+    server.post('/api/v1/upload_image',upload_image.single('upload_image'),async ( req, res) => {
+        var { user_id } = req.body;
+        try {
+            var asset = await uploadImage(__dirname+'/'+req.file.path,user_id);
+            res.setHeader('Access-Control-Allow-Origin','*');
+            res.status(200).json({
+                status:'success',
+                message:'uploaded successfuly!',
+                ...asset
+            })
+        } catch(err){
+            console.log('err:',err);
+        }
     });
 
     server.use('/', ( req, res, nextR) => {
@@ -264,6 +293,7 @@ app.prepare().then(() => {
         });
 
         socket.on('msg',(payload) => {
+            console.log(payload)
             var { chat_id,message,type } = payload;
             getData("*[_type=='chats' && state=='accept' && _id == $chat_id && (inviter._ref == $user_id || user._ref == $user_id)]",{ chat_id,user_id:socket.user_info.user_id }).then((result) => {
                 console.log('result:',result);

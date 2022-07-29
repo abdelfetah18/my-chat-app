@@ -68,7 +68,17 @@ async function uploadCover(filePath,doc_id){
   return { ...doc_info,cover_image:imageAsset }
 }
 
+async function uploadImage(filePath){
+  console.log('file_path:',filePath)
+  try {
+      var imageAsset = await client.assets.upload('image', createReadStream(filePath),{ filename: basename(filePath) });
+  } catch(err) {
+      console.log('db_error:',err)
+  }
+  
+  return { image:imageAsset }
+}
 
 module.exports = {
-  updateData,getData,addData,uploadProfile,uploadCover
+  updateData,getData,addData,uploadProfile,uploadCover,uploadImage
 };
