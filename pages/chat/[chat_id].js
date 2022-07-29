@@ -8,7 +8,7 @@ export async function getServerSideProps({ req,params }) {
     var { chat_id } = params;
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
-    var chats = await getData('*[_type=="chats" && state=="accept" && (user._ref == $user_id || inviter._ref == $user_id)]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"message":*[_type=="messages" && @.chat._ref == ^._id] | order(@._createdAt desc)[0] } | order(message._createdAt asc)',{ user_id:user_info.user_id });
+    var chats = await getData('*[_type=="chats" && state=="accept" && (user._ref == $user_id || inviter._ref == $user_id)]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"message":*[_type=="messages" && @.chat._ref == ^._id] | order(@._createdAt desc)[0] } | order(@.message._createdAt asc)',{ user_id:user_info.user_id });
     var chat = await getData('*[_type=="chats" && state=="accept" && _id == $chat_id]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"messages":*[_type=="messages" && @.chat._ref == $chat_id] | order(@._createdAt asc)}[0]',{ chat_id });
 
     return {
@@ -167,7 +167,7 @@ export default function Chat({ chats,user,chat }) {
                   </div>
                 </div>
                 <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4'>
-                  <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2'+(images.length > 0 ? "h-[20em] max-h-[20em]" : "h-[28em] max-h-[28em]")}>
+                  <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2 '+(images.length > 0 ? "h-[20em] max-h-[20em]" : "h-[28em] max-h-[28em]")}>
                     {
                       messages.map((msg,i) => {
                         if(msg.user._ref === user.user_id){
