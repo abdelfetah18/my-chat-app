@@ -35,3 +35,6 @@ yarn-error.log*
 
 # database-server
 /database-server
+
+#uploads
+/uploads
