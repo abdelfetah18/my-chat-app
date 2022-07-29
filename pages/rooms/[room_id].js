@@ -144,7 +144,7 @@ export default function Room({ rooms,user,room,room_requests }) {
                                 <div className='flex flex-row w-full'>
                                     <div className='flex flex-col w-11/12 px-2'>
                                         <div className='font-mono text-base font-bold text-[#020762]'>{c.room.name}</div>
-                                        <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{ c.message != null ? (c.message.user._ref === User.user_id ? 'you: '+c.message.message : c.message.message) : '' }</div>
+                                        <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{ c.message != null ? (c.message.user._ref === user.user_id ? 'you: '+(c.message.type === "text" ? c.message.message : 'send a '+c.message.type) : (c.message.type === "text" ? c.message.message : 'send a '+c.message.type)) : '' }</div>
                                     </div>
                                     <div className='flex items-center justify-center w-1/12'>
                                         <div className='font-mono bg-[#fd476f] rounded-full h-4 w-4 text-center text-xs text-white'>5</div>
