@@ -20,9 +20,9 @@ app.prepare().then(() => {
     const server = express();
     server.use(cookieParser());
     server.use('/api/v1/', (req, res, nextR) => {
-        var protected_paths = ['/create','/delete','/edit','/invite','/join','/leave'];
+        var protected_paths = ['/create','/delete','/edit','/invite','/join','/leave','/chat_search'];
         if(protected_paths.includes(req.path)){
-            var token = req.headers.authorization;
+            var token = req.headers.authorization || req.cookies.access_token;
             if(token != undefined){
                 jwt.verify(token,privateKEY,{ algorithms:'RS256' },(err,data) => {
                     if(err){
