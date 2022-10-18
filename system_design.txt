@@ -1,0 +1,110 @@
+chat api:
+	- login
+	- register
+	- join
+	- leave
+	- delete
+	- edit
+	- create
+	- invite
+
+middleware:
+	- verify JWT on these endpoints:
+		- join
+		- leave
+		- delete
+		- edit
+		- create
+		- invite
+
+authentication:
+	- JSON Web Token with RSA256 algoyithm.
+
+authorization:
+	every room give you JWT token with scopes that allowed in chat_id.
+
+database:
+	tables: users,rooms,chats,messages,room_messages,room_members
+	structure:
+		- users:
+			- user_id
+			- username
+			- birthdate
+			- profile_image
+			- cover_image
+			- bio
+			- password
+			- updated_at
+			- created_at
+
+		- rooms:
+			- room_id
+			- room_name
+			- room_profile_image
+			- room_cover_image
+			- room_bio
+			- room_admin_id
+			- room _creator_id
+			- updated_at
+			- created_at
+
+		- chats:
+			- chat_id
+			- inviter_id
+			- user_id
+			- state
+			- created_at
+
+		- messages:
+			- message_id
+			- chat_id
+			- user_id
+			- message
+			- type
+			- created_at
+
+		- room_messages:
+			- message_id
+			- room_id
+			- user_id
+			- message
+			- type
+			- created_at
+
+		- room_members:
+			- record_id
+			- member_id
+			- role
+			- state 
+			- updated_at
+			- created_at
+
+websocket:
+	when user connect, the server will verify his token and assign him a client_id,the server will be based on events module.
+	events:
+		msg: { chat_id,user_id,message,type }
+			- verify chat_id exist and the user is part of it.
+			- add message to database.
+		typing:
+			- user is typing
+		room-msg: { room_id,user_id,message,type }
+			- verify room_id exist and the user is member in the room.
+			- add message to database.
+
+user interface:
+	- desktop(web/app):
+		- home:
+			- recent chat messages:
+				- search bar
+				- chat list
+			- chat box:
+				- header:
+					- chat_profile_image
+					- chat name
+					- button 
+				- messages_list
+
+		- user_profile:
+
+		- settings:
+			

@@ -3,12 +3,13 @@ import { FaHome,FaCommentAlt,FaCog,FaBell,FaSearch,FaPaperPlane,FaPaperclip,FaSm
 import Navigation from '../../components/Navigation';
 import { getData } from '../../database/client';
 import axios from 'axios';
+import ChatBox from '../../components/ChatBox';
 
 export async function getServerSideProps({ req,params }) {
     var { chat_id } = params;
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
-    var chats = await getData('*[_type=="chats" && state=="accept" && (user._ref == $user_id || inviter._ref == $user_id)]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"message":*[_type=="messages" && @.chat._ref == ^._id] | order(@._createdAt desc)[0] } | order(@.message._createdAt asc)',{ user_id:user_info.user_id });
+    var chats = await getData('*[_type=="chats" && count(*[_type=="messages" && @.chat._ref == ^._id]) > 0 && state=="accept" && (user._ref == $user_id || inviter._ref == $user_id)]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"message":*[_type=="messages" && @.chat._ref == ^._id] | order(@._createdAt desc)[0] } | order(@.message._createdAt desc)',{ user_id:user_info.user_id });
     var chat = await getData('*[_type=="chats" && state=="accept" && _id == $chat_id]{_id,"inviter":*[_type=="users" && @._id == ^.inviter._ref][0]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"user":*[_type=="users" && @._id == ^.user._ref][0]{ _id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio },"messages":*[_type=="messages" && @.chat._ref == $chat_id] | order(@._createdAt asc)}[0]',{ chat_id });
 
     return {
@@ -21,20 +22,11 @@ export async function getServerSideProps({ req,params }) {
 export default function Chat({ chats,user,chat }) {
   var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var [User,setUser] = useState(user);
-  var [message,setMessage] = useState('');
   var [messages,setMessages] = useState(chat.messages);
   var [my_chats,setMyChats] = useState(chats);
   var [images,setImages] = useState([]);
   var messages_box = useRef();
   var upload_image = useRef();
-
-  useEffect(() => {
-    messages_box.current.scrollTo({
-      top: messages_box.current.scrollHeight,
-      behavior: 'smooth'
-    })
-    updateChats();
-  },[messages]);
 
   useEffect(() => {
       var access_token = localStorage.getItem('access_token');
@@ -63,59 +55,18 @@ export default function Chat({ chats,user,chat }) {
 
       setUser(state => { return { ...state,access_token,ws } });
   },[]);
-
-  function updateChats(){
-    axios.get('/api/v1/user/chats',{
-      headers:{
-        authorization:User.access_token
-      }
-    }).then((response) => {
-      if(response.data.status == 'success'){
-        setMyChats(response.data.data);
-      }
-    });
-  }
-
-  function sendMsg(e){
-    for(var i=0;i<images.length;i++){
-      var image_payload = { chat_id:chat._id,message:images[i].url,type:'image' };
-      setMessages(cur => [...cur,{ chat:{ _ref:chat._id },user:{ _ref:User.user_id },message:images[i].url,type:'image',created_at:(new Date()).toGMTString()}]);
-      User.ws.emit('msg',image_payload);
-    }
-    setImages([]);
-    if(message.length > 0){
-      var payload = { chat_id:chat._id,message,type:'text' };
-      User.ws.emit('msg',payload);
-      setMessages(cur => [...cur,{ chat:{ _ref:chat._id },user:{ _ref:User.user_id },message,type:'text',created_at:(new Date()).toGMTString()}]);
-      setMessage('');
-    }
-    
-  }
-
-  function uploadImage(evt){
-    var form = new FormData();
-    form.append('upload_image',evt.target.files[0]);
-    form.append('user_id',User.user_id);
-    axios.post('/api/v1/upload_image',form,{
-        onUploadProgress: (progressEvent) => console.log((progressEvent.loaded/progressEvent.total)*100,'%')
-    }).then((response) => {
-      if(response.data.status === "success"){
-        setImages(state => [...state,response.data.image]);
-      }
-    })
-  }
   
     if(chat != null){
       return (
         <div className='flex flex-row background h-screen w-screen'>
           <Navigation page={'/chat'} />
-          <div className='lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4'>
+          <div className='lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4 h-full'>
             <div className='w-full flex flex-row justify-end items-center px-4 py-2'>
               <div className='font-mono text-[#9199a8] mx-1 text-sm'>state:Sale</div>
               <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
             </div>
             <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Chat</div>
-            <div className='flex flex-row w-full'>
+            <div className='flex flex-row w-full h-full overflow-hidden'>
               <div className='md:w-1/6 lg:flex md:flex hidden flex-col lg:w-2/6 items-center'>
                 <div className='md:hidden my-2 lg:flex flex-row w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
                   <input className='w-11/12 font-mono text-xl bg-transparent px-4' placeholder='Search' />
@@ -145,7 +96,8 @@ export default function Chat({ chats,user,chat }) {
                               <div className='font-mono text-base font-bold text-[#020762]'>{(user.username != c.user.username) ? (c.user.username) : (c.inviter.username)}</div>
                               <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{ c.message != null ? (c.message.user._ref === user.user_id ? 'you: '+(c.message.type === "text" ? c.message.message : 'send a '+c.message.type) : (c.message.type === "text" ? c.message.message : 'send a '+c.message.type)) : '' }</div>
                             </div>
-                            <div className='flex items-center justify-center w-1/12'>
+                            {/* TODO: unread messages counter, not available because unread state is not implemented! */}
+                            <div className='hidden items-center justify-center w-1/12'>
                               <div className='font-mono bg-[#fd476f] rounded-full h-4 w-4 text-center text-xs text-white'>5</div>
                             </div>
                           </div>
@@ -156,89 +108,7 @@ export default function Chat({ chats,user,chat }) {
                 }
     
               </div>
-              <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center'>
-                <div className='w-11/12 py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>
-                  <div className='md:w-2/12 lg:w-1/12'>
-                    <img className='object-cover w-14 h-14 rounded-full' src={ (chat.inviter.username === User.username ? (chat.user.profile_image != null ? chat.user.profile_image : 'profile.jpeg') : (chat.user.profile_image != null ? chat.inviter.profile_image : 'profile.jpeg'))} />
-                  </div>
-                  <div className='flex flex-col w-11/12 px-2'>
-                    <div className='font-mono font-semibold text-lg text-[#000049]'>{ (chat.inviter.username === user.username ? chat.user.username : chat.inviter.username)}</div>
-                    <div className='font-mono text-sm text-[#acb2c8]'>{ (chat.inviter.username === user.username ? (chat.user.bio != null ? chat.user.bio : 'Hacker!') : (chat.inviter.bio != null ? chat.inviter.bio : 'Hacker!')) }</div>
-                  </div>
-                </div>
-                <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4'>
-                  <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2 '+(images.length > 0 ? "h-[20em] max-h-[20em]" : "h-[28em] max-h-[28em]")}>
-                    {
-                      messages.map((msg,i) => {
-                        if(msg.user._ref === user.user_id){
-                          if(msg.type === "text"){
-                            return (
-                              <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                                <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message}</div>
-                                <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                              </div>
-                            )
-                          }
-                          if(msg.type === "image"){
-                            return (
-                              <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                                <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message}/>
-                                <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                              </div>
-                            )
-                          }
-                        }else{
-                          if(msg.type === "text"){
-                            return (
-                              <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                                <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message}</div>
-                                <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                              </div>
-                            )
-                          }
-                          if(msg.type === "image"){
-                            return (
-                              <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                                <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message}/>
-                                <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                              </div>
-                            )
-                          }
-                        }
-                      })
-                    }
-                    
-    
-                    
-                  </div>
-                  {
-                    (images.length > 0) ? (
-                      <div className='flex flex-col w-full bg-[#7f82de] rounded-lg'>
-                        <div className='w-full flex items-end justify-end p-1 text-white'><FaTimes /></div>
-                        <div className='w-full flex flex-row overflow-auto rounded-lg p-2'>
-                          {
-                            images.map(( img, index) => {
-                              console.log('image:',img);
-                              return(
-                                <div key={index} className='flex flex-col shadow-lg rounded-lg w-28 mx-2'>
-                                  <img className="rounded-lg w-28" alt="image" src={img.url} />
-                                </div>
-                              )
-                            })
-                          }
-                        </div>
-                      </div>
-                    ) : ('')
-                  }
-                  <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center'>
-                    <input onChange={uploadImage} ref={upload_image} type={"file"} hidden={true} />
-                    <input onKeyUp={(evt) => { if(evt.code === 'Enter'){ sendMsg() }}} value={message} onChange={(e) => setMessage(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
-                    <FaSmile className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />
-                    <FaPaperclip onClick={() => upload_image.current.click() } className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />
-                    <FaPaperPlane onClick={sendMsg} className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />
-                  </div>
-                </div>
-              </div>
+              <ChatBox User={User} chat={chat} setMyChats={setMyChats} />
             </div>
           </div>
         </div>
