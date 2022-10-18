@@ -2,11 +2,10 @@ import { FaHome,FaCommentAlt,FaCog,FaBell,FaSearch,FaPaperPlane,FaPaperclip,FaSm
 import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 
-export default function ChatBox({ User,chat,setMyChats }){
+export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
   var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var [message,setMessage] = useState('');
   var [isValidChat,setValidChat] = useState(chat ? true : false);
-  var [messages,setMessages] = useState(chat ? chat.messages : []);
   var [images,setImages] = useState([]);
   var messages_box = useRef();
   var upload_image = useRef();

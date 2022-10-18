@@ -68,7 +68,7 @@ export default function Chat({ chats,user,chat }) {
             <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Chat</div>
             <div className='flex flex-row w-full h-full overflow-hidden'>
               <RecentChats User={User} my_chats={my_chats} setMyChats={setMyChats}/>
-              <ChatBox User={User} chat={chat} setMyChats={setMyChats} />
+              <ChatBox User={User} chat={chat} setMyChats={setMyChats} messages={messages} setMessages={setMessages} />
             </div>
           </div>
         </div>
