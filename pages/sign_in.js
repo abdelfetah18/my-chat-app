@@ -57,8 +57,8 @@ export default function SignIn(){
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
                 </div>
                 <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Sign In</div>
-                <div className='flex flex-col w-1/2 items-center justify-center'>
-                    <div className="flex flex-col w-11/12 py-2 px-4">
+                <div className='flex flex-col w-full sm:w-1/2 items-center justify-center'>
+                    <div className="flex flex-col w-full py-2 px-4">
                         <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-semibold rounded opacity-0 bg-[#ff4343]"></motion.div>
                         <input className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setUsername(evt.target.value)} value={username} placeholder="username" />
                         <input onKeyUp={(e) => { if(e.code == 'Enter'){ sign_in() }}} type={"password"} className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setPassword(evt.target.value)} value={password} placeholder="password" />

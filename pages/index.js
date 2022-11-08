@@ -272,16 +272,16 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
     }
 
     return(
-        <div className='flex flex-row background h-screen w-screen'>
+        <div className='flex flex-col sm:flex-row background h-screen w-screen'>
             <Navigation page={'/'} />
-            <div className='lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4'>
+            <div className=' overflow-auto lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col px-10 py-4'>
                 <div className='w-full flex flex-row justify-end items-center px-4 py-2'>
                     <div className='font-mono text-[#9199a8] mx-1 text-sm'>state:Sale</div>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
                 </div>
                 <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Home</div>
-                <div className='flex flex-row w-full'>
-                    <div className="w-1/2 flex flex-col items-center">
+                <div className='flex flex-col sm:flex-row w-full'>
+                    <div className="w-11/12 sm:w-1/2 flex flex-col items-center">
                         <div className="w-11/12 flex flex-col">
                             <div className="font-mono text-lg font-semibold">Profile:</div>
                             <div className="w-full flex flex-col items-center">
@@ -289,55 +289,59 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                 <div className="font-mono text-lg font-semibold my-2">{User.username}</div>
                             </div>
                             <div className="w-full flex flex-col items-center">
-                                <div onClick={OpenProfile} className="w-1/2 flex flex-row items-center justify-center">
+                                <div onClick={OpenProfile} className="w-11/12 sm:my-0 my-1 sm:w-1/2 flex flex-row items-center justify-center">
                                     <FaEdit className="w-1/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700" />
-                                    <div className="w-5/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700">Edit profile info</div>
+                                    <div className="w-5/6 font-mono text-sm sm:text-base text-gray-500 cursor-pointer hover:text-gray-700">Edit profile info</div>
                                 </div>
-                                <div onClick={OpenProfileImage} className="w-1/2 flex flex-row items-center justify-center">
-                                    <FaImage className="w-1/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700" />
-                                    <div className="w-5/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700">Change profile image</div>
+                                <div onClick={OpenProfileImage} className="w-11/12 sm:my-0 my-1 sm:w-1/2 flex flex-row items-center justify-center">
+                                    <FaImage className="w-1/6 font-mono text-sm sm:text-base text-gray-500 cursor-pointer hover:text-gray-700" />
+                                    <div className="w-5/6 font-mono text-sm sm:text-base text-gray-500 cursor-pointer hover:text-gray-700">Change profile image</div>
                                 </div>
-                                <div onClick={OpenCoverImage} className="w-1/2 flex flex-row items-center justify-center">
-                                    <FaImage className="w-1/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700" />
-                                    <div className="w-5/6 font-mono text-base text-gray-500 cursor-pointer hover:text-gray-700">Change cover image</div>
+                                <div onClick={OpenCoverImage} className="w-11/12 sm:my-0 my-1 sm:w-1/2 flex flex-row items-center justify-center">
+                                    <FaImage className="w-1/6 font-mono text-sm sm:text-base text-gray-500 cursor-pointer hover:text-gray-700" />
+                                    <div className="w-5/6 font-mono text-sm sm:text-base text-gray-500 cursor-pointer hover:text-gray-700">Change cover image</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="w-1/2 flex flex-col h-[85vh] overflow-auto">
-                        <div className="w-11/12 flex flex-col">
-                            <div className="font-mono text-lg font-semibold">Friends requests:</div>
-                            <div className="w-full flex flex-col">
-                                <div className="flex flex-row w-full p-2">
-                                    {
-                                        FriendRequests.map((chat,j) => {
-                                            function accept(){
-                                                axios.post('/api/v1/accept?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
+                    <div className="w-full sm:w-1/2 flex flex-col flex-grow overflow-auto">
+                        {
+                            (FriendRequests.length > 0) ? (
+                                <div className="w-11/12 flex flex-col my-2 sm:my-0">
+                                    <div className="font-mono text-base sm:text-lg font-semibold">Friends requests:</div>
+                                    <div className="w-full flex flex-col">
+                                        <div className="flex flex-row w-full p-2">
+                                            {
+                                                FriendRequests.map((chat,j) => {
+                                                    function accept(){
+                                                        axios.post('/api/v1/accept?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
+                                                    }
+
+                                                    function reject(){
+                                                        axios.post('/api/v1/reject?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
+                                                    }
+
+                                                    return (
+                                                        <div key={j} className="flex flex-col w-40 shadow-lg items-center rounded mx-2">
+                                                            <div className="w-40 h-40">
+                                                                <img className="w-full h-full object-cover rounded" src={chat.inviter.profile_image != null ? chat.inviter.profile_image : "/profile.jpeg"} />
+                                                            </div>
+                                                            <div className="font-mono font-semibold text-xl my-1">{chat.inviter.username}</div>
+                                                            <div onClick={accept} className="w-11/12 mt-2 mb-1 font-mono font-bold text-base bg-blue-500 rounded text-center text-white cursor-pointer">accept</div>
+                                                            <div onClick={reject} className="w-11/12 mb-2 font-mono font-bold text-base border-2 border-blue-500 rounded text-center text-blue-500 cursor-pointer">reject</div>
+                                                        </div>
+
+                                                    );
+                                                })
                                             }
-
-                                            function reject(){
-                                                axios.post('/api/v1/reject?type=friend',{ chat_id:chat._id },{ headers:{ authorization:User.access_token }}).then((response) => updateContent());
-                                            }
-
-                                            return (
-                                                <div key={j} className="flex flex-col w-40 shadow-lg items-center rounded mx-2">
-                                                    <div className="w-40 h-40">
-                                                        <img className="w-full h-full object-cover rounded" src={chat.inviter.profile_image != null ? chat.inviter.profile_image : "/profile.jpeg"} />
-                                                    </div>
-                                                    <div className="font-mono font-semibold text-xl my-1">{chat.inviter.username}</div>
-                                                    <div onClick={accept} className="w-11/12 mt-2 mb-1 font-mono font-bold text-base bg-blue-500 rounded text-center text-white cursor-pointer">accept</div>
-                                                    <div onClick={reject} className="w-11/12 mb-2 font-mono font-bold text-base border-2 border-blue-500 rounded text-center text-blue-500 cursor-pointer">reject</div>
-                                                </div>
-
-                                            );
-                                        })
-                                    }
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            ) : ""
+                        }
 
-                        <div className="w-11/12 flex flex-col">
-                            <div className="font-mono text-lg font-semibold">People you may know:</div>
+                        <div className="w-11/12 flex flex-col my-2 sm:my-0">
+                            <div className="font-mono text-base sm:text-lg font-semibold">People you may know:</div>
                             <div className="w-full flex flex-col">
                                 <div className="flex flex-row w-full p-2 flex-wrap">
                                     {
@@ -351,7 +355,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                     <div className="w-40 h-40">
                                                         <img className="object-cover w-full h-full rounded" src={u.profile_image != null ? u.profile_image : "/profile.jpeg"} />
                                                     </div>
-                                                    <div className="font-mono font-semibold text-xl my-1">{u.username}</div>
+                                                    <div className="font-mono font-semibold text-base sm:text-xl my-1">{u.username}</div>
                                                     <div onClick={invite} className="w-11/12 my-2 font-mono font-bold text-base bg-blue-200 rounded text-center text-blue-500 cursor-pointer">add friend</div>
                                                 </div>
 
@@ -362,10 +366,11 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                 </div>
                             </div>
                         </div>
-                        <div className="w-11/12 flex flex-col">
-                            <div className="font-mono text-lg font-semibold">Rooms you may like to join:</div>
+
+                        <div className="w-full sm:w-11/12 flex flex-col my-2 sm:my-0">
+                            <div className="font-mono text-sm sm:text-lg font-semibold">Rooms you may like to join:</div>
                             <div className="w-full flex flex-col">
-                                <div className="flex flex-row w-full p-2">
+                                <div className="flex flex-row w-full p-2 overflow-auto">
                                     {
                                         RoomsYouMayLike.map((r,i) => {
                                                 function join(){
@@ -381,7 +386,7 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                         <div className="w-40 h-40">
                                                             <img className="object-cover w-full h-full rounded" src={r.profile_image != null ? r.profile_image : "/profile.jpeg"} />
                                                         </div>
-                                                        <div className="font-mono font-semibold text-xl my-1">{r.name}</div>
+                                                        <div className="font-mono font-semibold text-base sm:text-xl my-1">{r.name}</div>
                                                         <div onClick={join} className="w-11/12 my-2 font-mono font-bold text-base bg-blue-200 rounded text-center text-blue-500 cursor-pointer">Join</div>
                                                     </div>
 
