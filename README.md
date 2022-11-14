@@ -18,9 +18,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 2. Friends (every user can invite friends, accept or reject them).
 3. Direct Message (every user can DM his friend).
 4. Rooms (every user has the ability to create room and customize it and invite his frineds to join).
+5. Emoji picker where you can express your feeling with emojis.
 
 ## Technology used in this app
 For the database i am using [`sanity.io`](https://sanity.io) , ( `Sanity` is the unified content platform that lets your team work together in real-time to build engaging digital experiences across channels. )
+
 
 
 ```
