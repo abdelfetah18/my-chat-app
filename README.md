@@ -1,5 +1,7 @@
 This is a chat app using `NextJS`,`TailWindCSS` and `Sanity.io`.
 
+preview: [https://my-chat-app.onrender.com/](https://my-chat-app.onrender.com/)
+
 ## Getting Started
 
 First, build the files:
