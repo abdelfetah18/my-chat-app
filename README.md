@@ -25,6 +25,9 @@ For the database i am using [`sanity.io`](https://sanity.io) , ( `Sanity` is the
 
 
 
+![database](https://raw.githubusercontent.com/abdelfetah18/my-chat-app/master/public/my-chat-app.png)
+
+
 ```
 - users:
     - user_id
