@@ -152,7 +152,25 @@ app.prepare().then(() => {
         } catch(err){
             console.log('err:',err)
         }
+    });
 
+    server.post('/api/v1/room/upload_profile_image',upload_profile_image.single('profile_image'),async ( req, res) => {
+        var { room_id } = req.body;
+        try {
+            var asset = await uploadProfile(__dirname+'/'+req.file.path, room_id);
+            res.setHeader('Access-Control-Allow-Origin','*');
+            res.status(200).json({
+                status:'success',
+                message:'uploaded successfuly!',
+                ...asset
+            });
+        } catch(err){
+            console.log('err:',err);
+            res.status(200).json({
+                status: "error",
+                message: "something went wrong!"
+            });
+        }
     });
 
     server.post('/api/v1/upload_cover_image',upload_cover_image.single('cover_image'),async ( req, res) => {
