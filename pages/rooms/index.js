@@ -41,7 +41,7 @@ export default function Room({ rooms,user }) {
         <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Room</div>
         <div className='flex flex-row w-full h-full overflow-hidden'>
           <RecentRooms User={User} my_rooms={my_rooms} room_requests={{ member_requests:[] }} setMyRooms={setMyRooms} />
-          <RoomChatBox User={User} messages={messages} setMessages={setMessages} setMyRooms={setMyRooms} />
+          <RoomChatBox User={User} room={{ name: User.username, bio: User.bio, profile_image: User.profile_image }} messages={messages} setMessages={setMessages} setMyRooms={setMyRooms} />
         </div>
       </div>
     </div>
