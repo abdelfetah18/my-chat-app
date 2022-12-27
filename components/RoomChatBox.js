@@ -125,7 +125,7 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
                     <div className='font-mono font-semibold text-lg text-[#000049]'>{room.name}</div>
                     <div className='font-mono text-sm text-[#acb2c8]'>{room.bio}</div>
                 </div>
-                <div className={(room.is_admin ? 'flex ' : '') + 'flex-col items-center justify-center'}>
+                <div className={(room.is_admin ? 'flex ' : 'hidden ') + 'flex-col items-center justify-center'}>
                     <FaEllipsisH onClick={openSettings} className='text-[#acb2c8] cursor-pointer hover:text-[#bcc2d8]' />
                 </div>
             </div>
