@@ -10,7 +10,7 @@ export default function handler(req, res) {
                 state:'request',
                 member: { _ref:user_info.user_id },
                 room: { _ref:room_id },
-                rule: "member"
+                role: "member"
             }).then((response) => {
                 res.status(200).json({
                     status:'success',

@@ -20,7 +20,6 @@ export default function SignIn(){
                 username,password
             }).then((response) => {
                 setIsLoading(false);
-                console.log("response:",response);
                 if(response.data.status === 'success'){
                     localStorage.setItem('access_token',response.data.token);
                     setCookie("access_token",response.data.token);
@@ -43,6 +42,7 @@ export default function SignIn(){
                 }
             }).catch((err) => {
                 setIsLoading(false);
+                // TODO: show error message to the user.
                 console.log('error:',err);
             });
         }

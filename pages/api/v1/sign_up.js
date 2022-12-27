@@ -30,7 +30,6 @@ export default function handler(req, res) {
             });
         }
     }).catch((err) => {
-        console.log(err)
         res.status(200).json({
             status:'error',
             message:'something went wrong!',

@@ -150,7 +150,11 @@ app.prepare().then(() => {
                 ...asset
             })
         } catch(err){
-            console.log('err:',err)
+            res.status(200).json({
+                status: "error",
+                error: err,
+                message: "something went wrong!"
+            });
         }
     });
 
@@ -165,9 +169,9 @@ app.prepare().then(() => {
                 ...asset
             });
         } catch(err){
-            console.log('err:',err);
             res.status(200).json({
                 status: "error",
+                error: err,
                 message: "something went wrong!"
             });
         }
@@ -184,7 +188,11 @@ app.prepare().then(() => {
                 ...asset
             })
         } catch(err){
-            console.log('err:',err)
+            res.status(200).json({
+                status: "error",
+                error: err,
+                message: "something went wrong!"
+            });
         }
     });
 
@@ -199,7 +207,11 @@ app.prepare().then(() => {
                 ...asset
             })
         } catch(err){
-            console.log('err:',err);
+            res.status(200).json({
+                status: "error",
+                error: err,
+                message: "something went wrong!"
+            });
         }
     });
 
@@ -245,11 +257,10 @@ app.prepare().then(() => {
         var token = decodeURI(url.searchParams.get('access_token'));
         jwt.verify(token,privateKEY,{ algorithms:'RS256' },(err,data) => {
             if(err){
-                console.log('a error:',err);
+                console.log('jwt verify error:',err);
                 socket.close();
             }else{
                 socket.user_info = data;
-                console.log('new user connected!');
                 var type = url.searchParams.get('type');
                 var room_id = url.searchParams.get('room_id');
                 switch(type){
@@ -260,7 +271,6 @@ app.prepare().then(() => {
                         }else{
                             ONLINE_ROOMS.set(room_id,[socket]);
                         }
-                        console.log('room_users:',ONLINE_ROOMS.get(room_id).length);
                         break;
                     case "chat":
                         ONLINE_USERS.set(data.user_id,socket);
@@ -295,22 +305,16 @@ app.prepare().then(() => {
                 default:
                     break;
             }
-
-
-            console.log('user disconnected!');
-        })
+        });
 
         socket.on('message',(data,isBinary) => {
             var { eventName,payload } = JSON.parse(data.toString());
-            console.log(eventName,'=>',payload);
             socket.emit(eventName,payload);
         });
 
         socket.on('msg',(payload) => {
-            console.log(payload)
             var { chat_id,message,type } = payload;
             getData("*[_type=='chats' && state=='accept' && _id == $chat_id && (inviter._ref == $user_id || user._ref == $user_id)]",{ chat_id,user_id:socket.user_info.user_id }).then((result) => {
-                console.log('result:',result);
                 if(result.length > 0){
                     addData({
                         _type:"messages",
@@ -319,18 +323,13 @@ app.prepare().then(() => {
                         message,
                         type
                     }).then((r) => {
-                        console.log('r:',r);
                         var u = ONLINE_USERS.get((result[0].user._ref != socket.user_info.user_id) ? result[0].user._ref : result[0].inviter._ref);
                         if(u != undefined){
                             u.broadcast('msg',r);
                         }
-                    }).catch((err) => {
-                        console.log("addData err:",err);
-                    });
+                    }).catch((err) => { });
                 }
-            }).catch((err) => {
-                console.log("getData err:",err);
-            });
+            }).catch((err) => { });
         });
 
         socket.on('room-msg',(payload) => {
@@ -348,18 +347,13 @@ app.prepare().then(() => {
                         if(room != undefined){
                             room.forEach(u => {
                                 if(u.user_info.user_id != socket.user_info.user_id){
-                                    console.log('send to:',u.user_info.username);
                                     u.broadcast('room-msg',r);
                                 }
                             });
                         }
-                    }).catch((err) => {
-                        console.log("addData err:",err);
-                    });
+                    }).catch((err) => { });
                 }
-            }).catch((err) => {
-                console.log("getData err:",err);
-            });
+            }).catch((err) => { });
         });
     });
 
@@ -372,4 +366,4 @@ app.prepare().then(() => {
         });
     })
 
-}).catch((err) => console.log('error:',err));
+}).catch((err) => console.log('app express error:',err));

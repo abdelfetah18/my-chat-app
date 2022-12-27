@@ -6,7 +6,6 @@ import { privateKEY,publicKEY } from '../../../secret';
 export default function handler(req, res) {
     var { username:_username,password } = req.body;
     getData('*[_type=="users" && username==$username]',{ username:_username }).then((user) => {
-        console.log('user:',user);
         if(user.length > 0){
             var { _id:user_id,username,password:encrypted_pwd } = user[0];
             bcrypt.compare(password,encrypted_pwd).then((is_equal) => {

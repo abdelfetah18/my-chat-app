@@ -8,13 +8,6 @@ const client = sanityClient({
   useCdn: false,
 });
 
-/*
-  client.delete({
-  query: `*[_type == "messages"]`
-}).then((res) => console.log('deleted all:',res))
-
-*/
-
 async function deleteQuery(query){
   try {
     var data = await client.delete({ query });
@@ -46,7 +39,6 @@ async function updateData(doc_id,new_doc){
 }
 
 async function uploadProfile(filePath,doc_id){
-  console.log('file_path:',filePath)
   try {
       var imageAsset = await client.assets.upload('image', createReadStream(filePath),{ filename: basename(filePath) });
   } catch(err) {

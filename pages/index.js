@@ -56,7 +56,6 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
 
     function update_user_info(){
         axios.post('/api/v1/edit', { user_id:User.user_id,username,bio },{ headers:{ authorization:User.access_token }}).then((response) => {
-            console.log('response:',response.data);
             closeProfile();
         });
     }
@@ -73,7 +72,6 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
             onUploadProgress: (progressEvent) => setUploadProgress((progressEvent.loaded/progressEvent.total)*100,'%')
         }).then((response) => {
             setUploadProgress(0);
-            console.log('response:',response.data);
             setUser(state => { return { ...state,profile_image:response.data.profile_image.url } })
         })
     }
@@ -90,7 +88,6 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
             onUploadProgress: (progressEvent) => setUploadProgress((progressEvent.loaded/progressEvent.total)*100,'%')
         }).then((response) => {
             setUploadProgress(0);
-            console.log('response:',response.data);
             setUser(state => { return { ...state,cover_image:response.data.cover_image.url } })
         })
     }

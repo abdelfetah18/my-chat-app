@@ -16,7 +16,6 @@ export default function SignUp(){
 
     function sign_up(evt){
         axios.post('/api/v1/sign_up',{ username,password,birthdate }).then((response) => {
-            console.log("response:",response);
             if(response.data.status === 'success'){
                 alertBox.current.innerText = response.data.message;
                 alertBoxAnimation.start({
@@ -36,6 +35,7 @@ export default function SignUp(){
                 })
             }
         }).catch((err) => {
+            // TODO: show an error message to the user.
             console.log("err:",err);
         })
     }

@@ -40,12 +40,10 @@ export default function Room({ rooms,user,room,room_requests }) {
 
       ws.onmessage = (evt) => {
         var { eventName,payload } = JSON.parse(evt.data);
-        console.log({ eventName,payload })
         ws.dispatchEvent(new CustomEvent(eventName,{ detail:payload }))
       }
 
       ws.addEventListener('room-msg',({ detail:payload }) => {
-        console.log(payload);
         if(payload.room._ref === room._id){
           setMessages(cur => [...cur,payload]);
         }

@@ -43,7 +43,6 @@ export default function Chat({ chats,user,chat }) {
 
       ws.onmessage = (evt) => {
         var { eventName,payload } = JSON.parse(evt.data);
-        console.log({ eventName,payload })
         ws.dispatchEvent(new CustomEvent(eventName,{ detail:payload }))
       }
 

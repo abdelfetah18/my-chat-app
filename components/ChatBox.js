@@ -59,6 +59,7 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
     form.append('upload_image',evt.target.files[0]);
     form.append('user_id',User.user_id);
     axios.post('/api/v1/upload_image',form,{
+        // TODO: implement a bar progress ui for sending images in the chat
         onUploadProgress: (progressEvent) => console.log((progressEvent.loaded/progressEvent.total)*100,'%')
     }).then((response) => {
       if(response.data.status === "success"){
@@ -90,7 +91,6 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
       });
     }
   }
-    console.log(chat);
 
   return(
     <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center h-full'>
@@ -155,7 +155,6 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
                 <div className='w-full flex flex-row overflow-auto rounded-lg p-2'>
                     {
                     images.map(( img, index) => {
-                        console.log('image:',img);
                         return(
                         <div key={index} className='flex flex-col shadow-lg rounded-lg w-28 mx-2'>
                             <img className="rounded-lg w-28" alt="image" src={img.url} />

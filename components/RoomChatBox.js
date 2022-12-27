@@ -21,7 +21,7 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
             opacity: 1,
             transition:{ duration: 0.5 },
 
-        }).then(() => console.log("room_settings opened!"));
+        }).then(() => { });
     }
 
     function closeSettings(){
@@ -30,7 +30,6 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
             transition: { duration: 0.5 },
         }).then(() => {
             room_settings_box.set({ display: "none" });
-            console.log("room_settings closed!")
         });
     }
 
@@ -63,6 +62,7 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
         form.append('upload_image',evt.target.files[0]);
         form.append('user_id',User.user_id);
         axios.post('/api/v1/upload_image',form,{
+            // TODO: implement a bar progress ui for sending images in the chat
             onUploadProgress: (progressEvent) => console.log((progressEvent.loaded/progressEvent.total)*100,'%')
         }).then((response) => {
             if(response.data.status === "success"){
@@ -96,7 +96,6 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
            // onUploadProgress: (progressEvent) => setUploadProgress((progressEvent.loaded/progressEvent.total)*100,'%')
         }).then((response) => {
             //setUploadProgress(0);
-            console.log('response:',response.data);
             setRoomProfileImage(response.data.profile_image.url);
         });
     }
@@ -180,7 +179,6 @@ export default function RoomChatBox({ User,room,setMyRooms,messages,setMessages 
                     <div className='w-full flex flex-row overflow-auto rounded-lg p-2'>
                         {
                         images.map(( img, index) => {
-                            console.log('image:',img);
                             return(
                             <div key={index} className='flex flex-col shadow-lg rounded-lg w-28 mx-2'>
                                 <img className="rounded-lg w-28" alt="image" src={img.url} />

@@ -73,7 +73,6 @@ export default function CreateRoom({ user }){
                     })
                 })
             }
-            console.log('response:',response)
         });
     }
 
@@ -99,7 +98,7 @@ export default function CreateRoom({ user }){
                                     <div className="font-mono text-base font-medium">room bio:</div>
                                     <input onChange={(e) => setRoomBio(e.target.value)} value={room_bio} className="font-mono text-base font-medium rounded p-2" placeholder="room bio" />
                                 </div>
-                                <motion.div animate={alertMsg} className="flex flex-col w-11/12 h-0 bg-green-500 rounded flex flex-col items-start justify-center">
+                                <motion.div animate={alertMsg} className="flex flex-col w-11/12 h-0 bg-green-500 rounded items-start justify-center">
                                     <motion.div animate={alertMsg} className="scale-y-0 ease-linear text-base font-mono font-medium text-white mx-4 h-full" >{alertMessage}</motion.div>
                                 </motion.div>
                                 <div onClick={create_room} className="flex flex-col w-11/12 my-2 items-center">

@@ -87,11 +87,15 @@ export default function RecentRooms({ User,my_rooms,room_requests,setMyRooms }){
                     {
                     room_requests.member_requests.map((r,i) => {
                         function accept(){
-                        axios.post('/api/v1/accept?type=room',{ request_id:r._id },{ headers:{ authorization:User.access_token }}).then((response) => console.log('response:',response.data));
+                            axios.post('/api/v1/accept?type=room',{ request_id:r._id },{ headers:{ authorization:User.access_token }}).then((response) => {
+                                // TODO: update page content
+                            });
                         }   
 
                         function reject(){
-                        axios.post('/api/v1/reject?type=room',{ request_id:r._id },{ headers:{ authorization:User.access_token }}).then((response) => console.log('response:',response.data));
+                            axios.post('/api/v1/reject?type=room',{ request_id:r._id },{ headers:{ authorization:User.access_token }}).then((response) => {
+                                // TODO: update page content
+                            });
                         }  
 
                         return(
