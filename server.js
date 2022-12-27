@@ -234,7 +234,10 @@ app.prepare().then(() => {
         return handle(req, res);
     });
 
-    var ws = process.env.NODE_ENV == "production" ? new ws_server.Server({ server }, () => console.log('websocket server is alive!')) : new ws_server.Server({ /*server*/port:4000 },() => console.log('websocket server alive on port:', 4000));
+    
+    // NOTE: i think we can use the main server for websocket too.
+    // new ws_server.Server({ server },() => console.log('websocket server alive!'));
+    var ws = new ws_server.Server({ port:4000 },() => console.log('websocket server alive on port:', 4000));
     var ONLINE_USERS = new Map();
     var ONLINE_ROOMS = new Map();
 
