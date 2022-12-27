@@ -117,7 +117,7 @@ app.prepare().then(() => {
                     });
                 }else{
                     req.decoded_jwt = data;
-                    getData('*[_type=="room_members" && member._ref==$user_id]',{ user_id:data.user_id }).then((result) => {
+                    getData('*[_type=="room_members" && member._ref == $user_id && state == "accept"]',{ user_id:data.user_id }).then((result) => {
                         if(result.length > 0){
                             nextR();
                         }else{
