@@ -236,10 +236,10 @@ app.prepare().then(() => {
 
     var my_server = server.listen(port, (err) => {
         if (err) throw err;
-        console.log(`> Ready on http://localhost:${port}`);
+        console.log(`> Ready on http://127.0.0.1:${port}`);
     });
 
-    var ws = process.env.NODE_ENV ? new ws_server.Server({ server:my_server },() => console.log('websocket alive!')) : new ws_server.Server({ /*server:my_server,*/port:4000 },() => console.log('websocket alive!'));
+    var ws = process.env.NODE_ENV == "production" ? new ws_server.Server({ server:my_server },() => console.log('websocket server is alive!')) : new ws_server.Server({ /*server:my_server,*/port:4000 },() => console.log('websocket server alive on port:', 4000));
     var ONLINE_USERS = new Map();
     var ONLINE_ROOMS = new Map();
 

@@ -15,6 +15,20 @@ const client = sanityClient({
 
 */
 
+async function deleteQuery(query){
+  try {
+    var data = await client.delete({ query });
+  } catch (err) {
+    return {
+      status: "failed",
+      error: err
+    }
+  } finally {
+    return { status: "success", data };
+  }
+  
+}
+
 
 var { basename } = require('path');
 var { createReadStream } = require('fs');
@@ -80,5 +94,5 @@ async function uploadImage(filePath){
 }
 
 module.exports = {
-  updateData,getData,addData,uploadProfile,uploadCover,uploadImage
+  updateData,getData,addData,uploadProfile,uploadCover,uploadImage,deleteQuery
 };
