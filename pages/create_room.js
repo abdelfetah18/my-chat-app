@@ -8,19 +8,21 @@ import { motion, useAnimation } from "framer-motion";
 export async function getServerSideProps({ req }) {
     var user_info = req.decoded_jwt;
     var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
-
+    var rooms_you_may_like = await getData('*[_type=="rooms" && !(_id in *[_type=="room_members" && member._ref == $user_id].room._ref)]{_id,name,bio,"profile_image": profile_image.asset->url}',{ user_id:user_info.user_id });
+   
     return {
         props: {
-            user
+            user, rooms_you_may_like
         }
     }
 }
 
-export default function CreateRoom({ user }){
+export default function CreateRoom({ user, rooms_you_may_like }){
     var [User,setUser] = useState(user);
     var [room_name,setRoomName] = useState('');
     var [room_bio,setRoomBio] = useState('');
     var [alertMessage,setAlertMessage] = useState('');
+    var [RoomsYouMayLike,setRoomsYouMayLike] = useState(rooms_you_may_like);
     var alertMsg = useAnimation();
     
 
@@ -76,7 +78,7 @@ export default function CreateRoom({ user }){
         });
     }
 
-    return(
+    return (
         <div className='flex flex-row background h-screen w-screen'>
             <Navigation page={'/create_room'} />
             <div className='lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4'>
@@ -110,7 +112,34 @@ export default function CreateRoom({ user }){
                     <div className="w-1/2 flex flex-col">
                         <div className="w-11/12 flex flex-col">
                             <div className="font-mono text-lg font-semibold">Rooms you may like to join:</div>
-                            
+                            <div className="w-full flex flex-col">
+                                <div className="flex flex-row w-full p-2 flex-wrap">
+                                    {
+                                        RoomsYouMayLike.map((r,i) => {
+                                                function join(){
+                                                    axios.post('/api/v1/room/join',{
+                                                        room_id:r._id
+                                                    },{
+                                                        headers:{ authorization:User.access_token }
+                                                    }).then((response) => updateContent());
+                                                }
+
+                                                return (
+                                                    <div key={i} className="flex flex-col items-center w-1/3 my-2">
+                                                        <div className="flex flex-col w-11/12 shadow-lg items-center rounded">
+                                                            <div className="w-11/12 ">
+                                                                <img className="object-cover w-full rounded" src={r.profile_image != null ? r.profile_image : "/profile.jpeg"} />
+                                                            </div>
+                                                            <div className="font-mono font-semibold text-base sm:text-base my-1">{r.name}</div>
+                                                            <div onClick={join} className="w-11/12 my-2 font-mono font-bold text-sm bg-blue-200 rounded text-center text-blue-500 cursor-pointer">Join</div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                        })
+
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

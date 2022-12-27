@@ -13,7 +13,6 @@ export async function getServerSideProps({ req,params }) {
     var room = await getData('*[_type=="rooms" && _id==$room_id]{_id,name,bio,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url, "is_admin": admin._ref == $user_id,"messages":*[_type=="room_messages" && @.room._ref == ^._id] | order(@._createdAt asc)}[0]',{ room_id, user_id: user_info.user_id });
     var room_requests = await getData('*[_type=="room_members" && member._ref==$user_id && room._ref==$room_id && role=="admin"][0]{"member_requests":*[_type=="room_members" && ^.room._ref==@.room._ref && @.state=="request"]{ _id,"user":*[_type=="users" && @._id==^.member._ref]{_id,username,bio,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url}[0],state}}',{ room_id,user_id:user_info.user_id });
 
-    console.log(room);
     
     return {
         props: {
