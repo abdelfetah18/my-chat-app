@@ -234,12 +234,7 @@ app.prepare().then(() => {
         return handle(req, res);
     });
 
-    var my_server = server.listen(port, (err) => {
-        if (err) throw err;
-        console.log(`> Ready on http://127.0.0.1:${port}`);
-    });
-
-    var ws = process.env.NODE_ENV == "production" ? new ws_server.Server({ server:my_server },() => console.log('websocket server is alive!')) : new ws_server.Server({ /*server:my_server,*/port:4000 },() => console.log('websocket server alive on port:', 4000));
+    var ws = process.env.NODE_ENV == "production" ? new ws_server.Server({ server }, () => console.log('websocket server is alive!')) : new ws_server.Server({ /*server*/port:4000 },() => console.log('websocket server alive on port:', 4000));
     var ONLINE_USERS = new Map();
     var ONLINE_ROOMS = new Map();
 
@@ -249,7 +244,7 @@ app.prepare().then(() => {
         var token = decodeURI(url.searchParams.get('access_token'));
         jwt.verify(token,privateKEY,{ algorithms:'RS256' },(err,data) => {
             if(err){
-                console.log('error:',err);
+                console.log('a error:',err);
                 socket.close();
             }else{
                 socket.user_info = data;
@@ -365,6 +360,11 @@ app.prepare().then(() => {
                 console.log("getData err:",err);
             });
         });
+    });
+
+    server.listen(port, (err) => {
+        if (err) throw err;
+        console.log(`> Ready on http://127.0.0.1:${port}`);
     });
 
 }).catch((err) => console.log('error:',err));

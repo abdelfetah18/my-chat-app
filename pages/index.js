@@ -248,13 +248,13 @@ export default function Home({ user,people_may_know,friends_requests,rooms_you_m
                                                     }
 
                                                     return (
-                                                        <div key={j} className="flex flex-col w-40 shadow-lg items-center rounded mx-2">
-                                                            <div className="w-40 h-40">
-                                                                <img className="w-full h-full object-cover rounded" src={chat.inviter.profile_image != null ? chat.inviter.profile_image : "/profile.jpeg"} />
+                                                        <div key={j} className="w-full flex flex-row items-center rounded py-2 px-4 my-1">
+                                                            <div className="w-16 h-16">
+                                                                <img className="w-full h-full rounded-full" src={chat.inviter.profile_image != null ? chat.inviter.profile_image : "/profile.jpeg"} />
                                                             </div>
-                                                            <div className="font-mono font-semibold text-xl my-1">{chat.inviter.username}</div>
-                                                            <div onClick={accept} className="w-11/12 mt-2 mb-1 font-mono font-bold text-base bg-blue-500 rounded text-center text-white cursor-pointer">accept</div>
-                                                            <div onClick={reject} className="w-11/12 mb-2 font-mono font-bold text-base border-2 border-blue-500 rounded text-center text-blue-500 cursor-pointer">reject</div>
+                                                            <div className="font-mono font-semibold text-xl px-4 flex-grow">{chat.inviter.username}</div>
+                                                            <div onClick={accept} className="font-mono font-bold text-sm bg-blue-500 border-2 border-blue-500 rounded text-center text-white cursor-pointer px-4 py-1 mx-1">accept</div>
+                                                            <div onClick={reject} className="font-mono font-bold text-sm border-2 border-blue-500 rounded text-center text-blue-500 cursor-pointer px-4 py-1 mx-1">reject</div>
                                                         </div>
 
                                                     );
