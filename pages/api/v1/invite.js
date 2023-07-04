@@ -1,13 +1,13 @@
 import { addData } from "../../../database/client";
 
 export default function handler(req, res) {
-    var { type } = req.query;
+    let { type } = req.query;
     switch (type){
         case "room":
-            var { room_id,user_id } = req.body;
+            let { room_id,user_id } = req.body;
             break;
         case "friend":
-            var { user_id } = req.body;
+            let { user_id } = req.body;
             addData({
                 _type:'chats',
                 inviter:{ _ref:req.decoded_jwt.user_id },

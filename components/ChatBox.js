@@ -4,19 +4,14 @@ import EmojiPicker from 'emoji-picker-react';
 import { motion, useAnimation } from 'framer-motion';
 import axios from 'axios';
 
-export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
-  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var [message,setMessage] = useState('');
-  var [isValidChat,setValidChat] = useState(chat ? true : false);
-  var [images,setImages] = useState([]);
-  var messages_box = useRef();
-  var upload_image = useRef();
-  var emojiPickerAnim = useAnimation();
-  var [emojiPickerOpen,setEmojiPickerOpen] = useState(false);
-
-  if(!chat){
-      chat = { inviter:User,user:User };
-  }
+export default function ChatBox({ User, chat, setMyChats, messages, setMessages }){
+  let [message_content,setMessageContent] = useState('');
+  let [isValidChat,setValidChat] = useState(chat.chat_id ? true : false);
+  let [images,setImages] = useState([]);
+  let messages_box = useRef();
+  let upload_image = useRef();
+  let emojiPickerAnim = useAnimation();
+  let [emojiPickerOpen,setEmojiPickerOpen] = useState(false);
 
   useEffect(() => {
       messages_box.current.scrollTo({
@@ -39,29 +34,30 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
   }
 
   function sendMsg(e){
-    for(var i=0;i<images.length;i++){
-      var image_payload = { chat_id:chat._id,message:images[i].url,type:'image' };
-      setMessages(cur => [...cur,{ chat:{ _ref:chat._id },user:{ _ref:User.user_id },message:images[i].url,type:'image',created_at:(new Date()).toGMTString()}]);
+    for(let i=0;i<images.length;i++){
+      let image_payload = { chat_id: chat.chat_id, message_content:images[i].url, message_type:'image' };
+      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id },user: User,message_content:images[i].url,message_type:'image',_createdAt:(new Date()).toGMTString()}]);
       User.ws.emit('msg',image_payload);
     }
     setImages([]);
-    if(message.length > 0){
-      var payload = { chat_id:chat._id,message,type:'text' };
+    if(message_content.length > 0){
+      let payload = { chat_id: chat.chat_id, message_content, message_type:'text' };
       User.ws.emit('msg',payload);
-      setMessages(cur => [...cur,{ chat:{ _ref:chat._id },user:{ _ref:User.user_id },message,type:'text',created_at:(new Date()).toGMTString()}]);
-      setMessage('');
+      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id }, user: User, message_content, message_type:'text',_createdAt:(new Date()).toGMTString()}]);
+      setMessageContent('');
     }
     
   }
 
   function uploadImage(evt){
-    var form = new FormData();
+    let form = new FormData();
     form.append('upload_image',evt.target.files[0]);
     form.append('user_id',User.user_id);
     axios.post('/api/v1/upload_image',form,{
         // TODO: implement a bar progress ui for sending images in the chat
         onUploadProgress: (progressEvent) => console.log((progressEvent.loaded/progressEvent.total)*100,'%')
     }).then((response) => {
+      console.log({ res: response.data });
       if(response.data.status === "success"){
         setImages(state => [...state,response.data.image]);
       }
@@ -96,48 +92,48 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
     <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center h-full'>
         <div className='w-11/12 py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>
             <div className='md:w-2/12 lg:w-1/12'>
-                <img className='object-cover w-14 h-14 rounded-full' src={ (chat.inviter.username == User.username ? (chat.user.profile_image != null ? chat.user.profile_image : '/profile.jpeg') : (chat.inviter.profile_image != null ? chat.inviter.profile_image : '/profile.jpeg'))} />
+                <img className='object-cover w-14 h-14 rounded-full' src={chat.profile_image ? chat.profile_image : "/profile.jpeg"} />
             </div>
             <div className='flex flex-col w-11/12 px-2'>
-            <div className='font-mono font-semibold text-lg text-[#000049]'>{ (chat.inviter.username === User.username ? chat.user.username : chat.inviter.username)}</div>
-            <div className='font-mono text-sm text-[#acb2c8]'>{ (chat.inviter.username === User.username ? (chat.user.bio != null ? chat.user.bio : 'Hacker!') : (chat.inviter.bio != null ? chat.inviter.bio : 'Hacker!')) }</div>
+            <div className='font-mono font-semibold text-lg text-[#000049]'>{chat.username || chat.name || User.username}</div>
+            <div className='font-mono text-sm text-[#acb2c8]'>{(chat.bio || User.bio || 'Hacker!')}</div>
             </div>
         </div>
         <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4 overflow-auto h-full'>
             <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2 flex-grow'}>
             {
-                messages.map((msg,i) => {
-                if(msg.user._ref === User.user_id){
-                    if(msg.type === "text"){
+                messages.map((msg, i) => {
+                if(msg.user._id === User._id){
+                    if(msg.message_type === "text"){
                     return (
                         <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                        <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message}</div>
-                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+                        <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message_content}</div>
+                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
                         </div>
                     )
                     }
-                    if(msg.type === "image"){
+                    if(msg.message_type === "image"){
                     return (
                         <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                        <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message}/>
-                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+                        <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
+                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
                         </div>
                     )
                     }
                 }else{
-                    if(msg.type === "text"){
+                    if(msg.message_type === "text"){
                     return (
                         <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                        <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message}</div>
-                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+                        <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message_content}</div>
+                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
                         </div>
                     )
                     }
-                    if(msg.type === "image"){
+                    if(msg.message_type === "image"){
                     return (
                         <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                        <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message}/>
-                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg.created_at || msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+                        <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
+                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
                         </div>
                     )
                     }
@@ -168,11 +164,11 @@ export default function ChatBox({ User,chat,setMyChats,messages,setMessages }){
             }
             <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center'>
                 <input onChange={isValidChat ? uploadImage : ""} ref={upload_image} type={"file"} hidden={true} />
-                <input onKeyUp={(evt) => { if(evt.code === 'Enter'){ if(isValidChat) { sendMsg() } }}} value={message} onChange={(e) => setMessage(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
+                <input onKeyUp={(evt) => { if(evt.code === 'Enter'){ if(isValidChat) { sendMsg() } }}} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
                 <div className='w-1/12 relative'>
                   <FaSmile onClick={toggleEmojiPicker} className='cursor-pointer text-base font-mono text-[#a9bae8]' />
                   <motion.div animate={emojiPickerAnim} className='absolute hidden opacity-0 bottom-full right-full'>
-                    <EmojiPicker onEmojiClick={(emoji,event) => setMessage(state => state+=emoji.emoji)} />
+                    <EmojiPicker onEmojiClick={(emoji,event) => setMessageContent(state => state+=emoji.emoji)} />
                   </motion.div>
                 </div>
                 <FaPaperclip onClick={() => { if(isValidChat){ upload_image.current.click() }} } className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { FaHome,FaCommentAlt,FaCog,FaBell,FaSearch,FaPaperPlane,FaPaperclip,FaSmile,FaTimes } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
-export default function RecentChats({ User,my_chats,setMyChats }){
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var [search_q,setSearchQ] = useState("");
+export default function RecentChats({ User, my_chats, setMyChats }){
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    let [search_q,setSearchQ] = useState("");
 
     useEffect(() => {
       if(search_q.length > 0){
@@ -50,23 +50,29 @@ export default function RecentChats({ User,my_chats,setMyChats }){
                     function calcTime(timestamp,diveder){
                       return[Math.floor(timestamp/diveder),timestamp % diveder];
                     }
-                    var time_ago = (c.message != null) ? Date.now() - (new Date(c.message.created_at || c.message._createdAt)) : 0;
-                    var [days,r_days] = calcTime(time_ago,1000*60*60*24);
-                    var [hours,r_hours] = calcTime(r_days,1000*60*60);
-                    var [minutes,r_minutes] = calcTime(r_hours,1000*60);
-                    var [seconds,mileseconds] = calcTime(r_minutes,1000);
+                    let time_ago = (c.message != null) ? Date.now() - (new Date(c.message.created_at || c.message._createdAt)) : 0;
+                    let [days,r_days] = calcTime(time_ago,1000*60*60*24);
+                    let [hours,r_hours] = calcTime(r_days,1000*60*60);
+                    let [minutes,r_minutes] = calcTime(r_hours,1000*60);
+                    let [seconds,mileseconds] = calcTime(r_minutes,1000);
+
+                    function getLastMessage(){
+                      if(!c.message)
+                        return "";
+                      return c.message.user._id == User._id ? 'you: '+(c.message.message_type === "text" ? c.message.message_content : 'send a '+c.message.message_type) : c.message.user.username+": "+(c.message.message_type === "text" ? c.message.message_content : 'send a '+c.message.message_type);
+                    }
 
                     return(
-                      <div key={i} onClick={() => window.location.href = '/chat/'+c._id } className='md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
-                        <div className='lg:w-1/6 md:w-full'>
-                          <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={(User.username != c.user.username) ? (c.user.profile_image != null ? c.user.profile_image : '/profile.jpeg') : (c.inviter.profile_image != null ? c.inviter.profile_image : '/profile.jpeg')} />
+                      <div key={i} onClick={() => window.location.href = '/chat/'+c.chat_id } className='md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+                        <div className='w-14'>
+                          <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={c.profile_image != null ? c.profile_image : '/profile.jpeg'} />
                         </div>
-                        <div className='lg:flex flex-col lg:w-5/6 md:hidden'>
-                          <div className='w-full text-end font-mono text-xs font-semibold text-[#a2aac1]'>{(c.message != null) ? ((days > 1) ? ((new Date(c.message.created_at || c.message._createdAt)).getDate().toString()+' '+months[(new Date(c.message.created_at || c.message._createdAt)).getMonth()]) : (hours != 0 ? hours.toString()+' hours' : minutes.toString()+' minutes' )) : ''}</div>
+                        <div className='lg:flex flex-col flex-grow md:hidden'>
+                          <div className='w-full text-end font-mono text-xs font-semibold text-[#a2aac1]'>{(c.message != null) ? ((days > 1) ? ((new Date(c.message._createdAt)).getDate().toString()+' '+months[(new Date(c.message.created_at || c.message._createdAt)).getMonth()]) : (hours != 0 ? hours.toString()+' hours' : minutes.toString()+' minutes' )) : ''}</div>
                           <div className='flex flex-row w-full'>
                             <div className='flex flex-col w-11/12 px-2'>
-                              <div className='font-mono text-base font-bold text-[#020762]'>{(User.username != c.user.username) ? (c.user.username) : (c.inviter.username)}</div>
-                              <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{ c.message != null ? (c.message.user._ref === User.user_id ? 'you: '+(c.message.type === "text" ? c.message.message : 'send a '+c.message.type) : (c.message.type === "text" ? c.message.message : 'send a '+c.message.type)) : '' }</div>
+                              <div className='font-mono text-base font-bold text-[#020762]'>{c.username || c.name}</div>
+                              <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{getLastMessage()}</div>
                             </div>
                             {/* TODO: unread messages counter, not available because unread state is not implemented! */}
                             <div className='hidden items-center justify-center w-1/12'>

@@ -10,15 +10,13 @@ export default function SignIn(){
     const [password,setPassword] = useState('');
     const [is_loading,setIsLoading] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies();
-    var alertBoxAnimation = useAnimation();
-    var alertBox = useRef();
+    let alertBoxAnimation = useAnimation();
+    let alertBox = useRef();
 
     function sign_in(evt){
         if(!is_loading){
             setIsLoading(true);
-            axios.post('/api/v1/sign_in',{
-                username,password
-            }).then((response) => {
+            axios.post('/api/v1/sign_in',{ username, password }).then((response) => {
                 setIsLoading(false);
                 if(response.data.status === 'success'){
                     localStorage.setItem('access_token',response.data.token);
@@ -26,7 +24,7 @@ export default function SignIn(){
                     alertBox.current.innerText = response.data.message;
                     alertBoxAnimation.start({
                         opacity:1,
-                        backgroundColor:'#7ded4e'
+                        backgroundColor:'#5cb437'
                     },{
                         duration:0.5
                     });
@@ -35,7 +33,7 @@ export default function SignIn(){
                     alertBox.current.innerText = response.data.message;
                     alertBoxAnimation.start({
                         opacity:1,
-                        backgroundColor:'#ff4343'
+                        backgroundColor:'#d65252'
                     },{
                         duration:0.5
                     })
@@ -53,18 +51,18 @@ export default function SignIn(){
             <_Navigation page={'/sign_in'} />
             <div className='w-full md:w-full lg:w-11/12 bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4 items-center'>
                 <div className='opacity-0 w-full flex flex-row justify-end items-center px-4 py-2'>
-                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>state:Sale</div>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
+                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
                 <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Sign In</div>
                 <div className='flex flex-col w-full sm:w-1/2 items-center justify-center'>
                     <div className="flex flex-col w-full py-2 px-4">
-                        <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-semibold rounded opacity-0 bg-[#ff4343]"></motion.div>
-                        <input className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setUsername(evt.target.value)} value={username} placeholder="username" />
-                        <input onKeyUp={(e) => { if(e.code == 'Enter'){ sign_in() }}} type={"password"} className="my-1 font-mono px-4 py-2 rounded" onChange={(evt) => setPassword(evt.target.value)} value={password} placeholder="password" />
+                        <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-medium rounded opacity-0 bg-[#5cb437]"></motion.div>
+                        <input className="my-1 font-mono px-4 py-2 rounded-lg" onChange={(evt) => setUsername(evt.target.value)} value={username} placeholder="Username" />
+                        <input onKeyUp={(e) => { if(e.code == 'Enter'){ sign_in() }}} type={"password"} className="my-1 font-mono px-4 py-2 rounded-lg" onChange={(evt) => setPassword(evt.target.value)} value={password} placeholder="Password" />
                     </div>
                     <div className="flex flex-col w-11/12 py-2 px-4 items-center">
-                        <div className="font-mono font-bold text-base bg-blue-600 rounded px-4 py-2 text-white cursor-pointer" onClick={sign_in}>Sign in</div>
+                        <div className="font-mono font-semibold bg-blue-500 rounded-lg px-8 py-1 text-gray-50 cursor-pointer hover:bg-blue-600" onClick={sign_in}>SIGN IN</div>
                     </div>
                 </div>
             </div>

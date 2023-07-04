@@ -1,7 +1,7 @@
 import { updateData } from "../../../database/client";
 
 export default function handler(req, res) {
-    var { type } = req.query;
+    let { type } = req.query;
     switch (type){
         case "room":
             updateData(request_id,{
@@ -12,7 +12,7 @@ export default function handler(req, res) {
             });
             break;
         case "friend":
-            var { chat_id } = req.body;
+            let { chat_id } = req.body;
             updateData(chat_id,{
                 _type:"chats",
                 state:'reject'

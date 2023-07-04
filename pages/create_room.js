@@ -1,14 +1,16 @@
 import Navigation from "../components/Navigation";
 import { FaBell } from 'react-icons/fa';
 import { useEffect, useState } from "react";
-import { getData } from '../database/client';
+import { getExploreRooms, getUser } from '../database/client';
 import axios from "axios";
 import { motion, useAnimation } from "framer-motion";
+import ExploreRooms from "../components/ExploreRooms";
+import SubmitButton from "../components/SubmitButton";
 
 export async function getServerSideProps({ req }) {
-    var user_info = req.decoded_jwt;
-    var user = await getData('*[_type=="users" && _id==$user_id][0]{ "user_id":_id,username,"profile_image":profile_image.asset->url,"cover_image":cover_image.asset->url,bio }',{ user_id:user_info.user_id });
-    var rooms_you_may_like = await getData('*[_type=="rooms" && !(_id in *[_type=="room_members" && member._ref == $user_id].room._ref)]{_id,name,bio,"profile_image": profile_image.asset->url}',{ user_id:user_info.user_id });
+    let user_info = req.decoded_jwt;
+    let user = await getUser(user_info.user_id);
+    let rooms_you_may_like = await getExploreRooms(user_info.user_id);
    
     return {
         props: {
@@ -18,64 +20,31 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function CreateRoom({ user, rooms_you_may_like }){
-    var [User,setUser] = useState(user);
-    var [room_name,setRoomName] = useState('');
-    var [room_bio,setRoomBio] = useState('');
-    var [alertMessage,setAlertMessage] = useState('');
-    var [RoomsYouMayLike,setRoomsYouMayLike] = useState(rooms_you_may_like);
-    var alertMsg = useAnimation();
+    let [User,setUser] = useState(user);
+    let [room_name,setRoomName] = useState('');
+    let [room_bio,setRoomBio] = useState('');
+    let [alertMessage,setAlertMessage] = useState('');
+    let [RoomsYouMayLike,setRoomsYouMayLike] = useState(rooms_you_may_like);
+    let alertMsg = useAnimation();
     
 
     useEffect(() => {
-        var access_token = localStorage.getItem('access_token');
+        let access_token = localStorage.getItem('access_token');
         setUser(state => { return { ...state,access_token } })
     },[]);
 
-    function create_room(e){
-        axios.post('/api/v1/create',{ room_name,room_bio },{
-            headers:{
-                authorization:User.access_token
-            }
-        }).then((response) => {
-            setAlertMessage(response.data.message);
-            if(response.data.status == 'success'){
-                alertMsg.start({
-                    height:'32px',
-                    transform:"initial",
-                    scaleY:1,
-                    backgroundColor:'#2bff2b'
-                },{
-                    duration:0.5
-                }).finally(() => {
-                    alertMsg.start({
-                        height:'0px',
-                        transform:"initial",
-                        scaleY:0,
-                    },{
-                        duration:0.5,
-                        delay:2
-                    })
-                })
-            }else{
-                alertMsg.start({
-                    height:'32px',
-                    transform:"initial",
-                    scaleY:1,
-                    backgroundColor:'#ff2b2b'
-                },{
-                    duration:0.5
-                }).finally(() => {
-                    alertMsg.start({
-                        height:'0px',
-                        transform:"initial",
-                        scaleY:0,
-                    },{
-                        duration:0.5,
-                        delay:2
-                    })
-                })
-            }
+    function updateContent(){
+        axios.get('/api/v1/user/you_may',{ headers:{ authorization:User.access_token } }).then((response) => {
+            let data = response.data.data;
+            setRoomsYouMayLike(data.rooms_you_may_like);
         });
+    }
+
+    async function create_room(ev){
+        let response = await axios.post('/api/v1/room/create',{ room_name, room_bio },{ headers: { authorization:User.access_token } });
+        let payload = response.data;
+        payload.redirect = "/rooms/"+payload.data.room._id;
+        return payload;
     }
 
     return (
@@ -83,64 +52,29 @@ export default function CreateRoom({ user, rooms_you_may_like }){
             <Navigation page={'/create_room'} />
             <div className='lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4'>
                 <div className='w-full flex flex-row justify-end items-center px-4 py-2'>
-                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>state:Sale</div>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
+                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
-                <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Create a room</div>
+                <div className='w-full text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>Create a room</div>
                 <div className='flex flex-row w-full'>
                     <div className="w-1/2 flex flex-col">
                         <div className="w-11/12 flex flex-col">
                             <div className="font-mono text-lg font-semibold">Room info:</div>
                             <div className="w-full flex flex-col items-center">
                                 <div className="flex flex-col w-11/12 my-1">
-                                    <div className="font-mono text-base font-medium">room name:</div>
-                                    <input onChange={(e) => setRoomName(e.target.value)} value={room_name} className="font-mono text-base font-medium rounded p-2" placeholder="room name" />
+                                    <div className="font-mono text-base font-medium">Room name:</div>
+                                    <input onChange={(e) => setRoomName(e.target.value)} value={room_name} className="font-mono text-base font-medium rounded p-2" placeholder="Room name" />
                                 </div>
                                 <div className="flex flex-col w-11/12 my-1">
-                                    <div className="font-mono text-base font-medium">room bio:</div>
-                                    <input onChange={(e) => setRoomBio(e.target.value)} value={room_bio} className="font-mono text-base font-medium rounded p-2" placeholder="room bio" />
+                                    <div className="font-mono text-base font-medium">Room bio:</div>
+                                    <input onChange={(e) => setRoomBio(e.target.value)} value={room_bio} className="font-mono text-base font-medium rounded p-2" placeholder="Room bio" />
                                 </div>
-                                <motion.div animate={alertMsg} className="flex flex-col w-11/12 h-0 bg-green-500 rounded items-start justify-center">
-                                    <motion.div animate={alertMsg} className="scale-y-0 ease-linear text-base font-mono font-medium text-white mx-4 h-full" >{alertMessage}</motion.div>
-                                </motion.div>
-                                <div onClick={create_room} className="flex flex-col w-11/12 my-2 items-center">
-                                    <div className="cursor-pointer px-4 py-2 bg-blue-500 rounded text-white font-mono text-base font-semibold">create</div>
-                                </div>
+                                <SubmitButton onClick={create_room} text={"Create"} className={"bg-blue-500 text-gray-50"} wrapperClassName={"mt-8"} />
                             </div> 
                         </div>
                     </div>
                     <div className="w-1/2 flex flex-col">
-                        <div className="w-11/12 flex flex-col">
-                            <div className="font-mono text-lg font-semibold">Rooms you may like to join:</div>
-                            <div className="w-full flex flex-col">
-                                <div className="flex flex-row w-full p-2 flex-wrap">
-                                    {
-                                        RoomsYouMayLike.map((r,i) => {
-                                                function join(){
-                                                    axios.post('/api/v1/room/join',{
-                                                        room_id:r._id
-                                                    },{
-                                                        headers:{ authorization:User.access_token }
-                                                    }).then((response) => updateContent());
-                                                }
-
-                                                return (
-                                                    <div key={i} className="flex flex-col items-center w-1/3 my-2">
-                                                        <div className="flex flex-col w-11/12 shadow-lg items-center rounded">
-                                                            <div className="w-11/12 ">
-                                                                <img className="object-cover w-full rounded" src={r.profile_image != null ? r.profile_image : "/profile.jpeg"} />
-                                                            </div>
-                                                            <div className="font-mono font-semibold text-base sm:text-base my-1">{r.name}</div>
-                                                            <div onClick={join} className="w-11/12 my-2 font-mono font-bold text-sm bg-blue-200 rounded text-center text-blue-500 cursor-pointer">Join</div>
-                                                        </div>
-                                                    </div>
-                                                );
-                                        })
-
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                        <ExploreRooms RoomsYouMayLike={RoomsYouMayLike} User={User} updateContent={updateContent} />
                     </div>
                 </div>
             </div>

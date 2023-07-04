@@ -10,21 +10,22 @@ import { motion, useAnimation } from "framer-motion"
 export default function SignUp(){
     const [birthdate, setBirthdate] = useState(new Date());
     const [username,setUsername] = useState('');
+    const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    var alertBoxAnimation = useAnimation();
-    var alertBox = useRef();
+    let alertBoxAnimation = useAnimation();
+    let alertBox = useRef();
 
     function sign_up(evt){
-        axios.post('/api/v1/sign_up',{ username,password,birthdate }).then((response) => {
+        axios.post('/api/v1/sign_up',{ username, password, birthdate, email }).then((response) => {
             if(response.data.status === 'success'){
                 alertBox.current.innerText = response.data.message;
                 alertBoxAnimation.start({
-                    opacity:1,
+                    opacity: 1,
                     backgroundColor:'#7ded4e'
                 },{
                     duration:0.5
                 })
-                location.href = '/sign_in'
+                // location.href = '/sign_in'
             }else{
                 alertBox.current.innerText = response.data.message;
                 alertBoxAnimation.start({
@@ -45,15 +46,16 @@ export default function SignUp(){
             <_Navigation page={'/sign_up'} />
             <div className='w-11/12 bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4 items-center'>
                 <div className='opacity-0 w-full flex flex-row justify-end items-center px-4 py-2'>
-                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>state:Sale</div>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
+                    <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
                 <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Sign Up</div>
                 <div className='flex flex-col w-1/2 items-center justify-center'>
                     <div className="flex flex-col w-11/12 py-2 px-4 items-center">
                         <motion.div ref={alertBox} animate={alertBoxAnimation} className="my-2 px-4 py-2 w-full font-mono text-base text-white font-semibold rounded opacity-0 bg-[#ff4343]"></motion.div>
-                        <input className="my-1 font-mono px-4 py-2 rounded w-full" onChange={(evt) => setUsername(evt.target.value) } value={username} placeholder="username" />
-                        <input className="my-1 font-mono px-4 py-2 rounded w-full" type={"password"} onChange={(evt) => setPassword(evt.target.value) } value={password} placeholder="password" />
+                        <input className="my-1 font-mono px-4 py-2 rounded w-full" onChange={(evt) => setUsername(evt.target.value) } value={username} placeholder="Username" />
+                        <input className="my-1 font-mono px-4 py-2 rounded w-full" onChange={(evt) => setEmail(evt.target.value) } value={email} placeholder="Email" />
+                        <input className="my-1 font-mono px-4 py-2 rounded w-full" type={"password"} onChange={(evt) => setPassword(evt.target.value) } value={password} placeholder="Password" />
                         <div className="flex flex-row w-fit my-2 justify-between">
                             <DatePicker className="w-fit px-4 py-2" selected={birthdate} onChange={(date) => setBirthdate(date)} />
                         </div>

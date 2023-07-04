@@ -3,8 +3,8 @@ import { FaHome,FaPlus,FaCommentAlt,FaComments,FaCog, FaAngleDown, FaAngleUp } f
 import { motion, useAnimation } from 'framer-motion';
 
 export default function Navigation({ page }){
-    var [menuOpen,setMenuOpen] = useState(false);
-    var menuAnimation = useAnimation();
+    let [menuOpen,setMenuOpen] = useState(false);
+    let menuAnimation = useAnimation();
 
     function toggleMenu(){
         if(menuOpen){

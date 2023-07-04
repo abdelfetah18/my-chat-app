@@ -38,3 +38,5 @@ yarn-error.log*
 
 #uploads
 /uploads
+
+system_design.txt
