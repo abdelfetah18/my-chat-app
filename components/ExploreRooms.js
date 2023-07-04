@@ -29,8 +29,8 @@ const Room = ({ room, User, updateContent}) => {
     }
 
     return (
-        <div className="flex flex-col items-center w-1/2 my-2">
-            <div className="flex flex-col w-full shadow-lg items-center rounded-lg">
+        <div className="flex flex-col items-center w-1/2">
+            <div className="flex flex-col w-11/12 shadow-lg items-center rounded-lg">
                 <div className="w-full">
                     <img className="object-cover w-full rounded-t-lg" src={room.profile_image != null ? room.profile_image : "/profile.jpeg"} />
                 </div>
