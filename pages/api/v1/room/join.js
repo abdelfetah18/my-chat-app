@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         res.status(200).json({ status:'error', message:'Room not found' });
         return;
     }
-    console.log({ room });
+
     let chat_member = await addChatMember(room.chat._id, user_info.user_id);
     let member = await addMember(room_id, user_info.user_id);
 
