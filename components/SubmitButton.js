@@ -21,7 +21,7 @@ export default function SubmitButton({ text, Icon=null, onClick, className, wrap
     }
     
     return (
-        <div className={"w-full flex flex-col items-center "+wrapperClassName}>
+        <div className={"flex flex-col items-center "+wrapperClassName}>
             <div ref={alert_message} className="hidden font-mono font-semibold text-sm text-green-600 px-4">{"SUCCESS"}</div>
             <div ref={loading} className="hidden" role="status">
                 <svg aria-hidden="true" className="mr-4 w-6 h-6 text-gray-200 animate-spin dark:text-gray-500 fill-violet-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
