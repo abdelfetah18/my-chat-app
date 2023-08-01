@@ -2,18 +2,6 @@ This is a chat app using `NextJS`,`TailWindCSS` and `Sanity.io`.
 
 preview: [https://my-chat-app.onrender.com/](https://my-chat-app.onrender.com/)
 
-## Getting Started
-
-First, build the files:
-
-```bash
-npm run build
-```
-and then run the server:
-```bash
-npm run start
-```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Features
 1. Profile (every user has a username , bio, profile picture and cover picture).
