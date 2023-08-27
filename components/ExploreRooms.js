@@ -10,7 +10,7 @@ export default function ExploreRooms({ RoomsYouMayLike, User, updateContent }){
         <div className="w-full sm:w-11/12 flex flex-col my-2 sm:my-0">
             <div className="font-mono text-sm sm:text-lg font-semibold">Rooms you may like to join:</div>
             <div className="w-full flex flex-col">
-                <div className="flex flex-row w-full p-2 flex-wrap">
+                <div className="flex flex-row w-full flex-wrap my-4">
                     {
                         RoomsYouMayLike.map((r, i) => <Room key={i} room={r} User={User} updateContent={updateContent} />)
                     }
@@ -29,13 +29,16 @@ const Room = ({ room, User, updateContent}) => {
     }
 
     return (
-        <div className="flex flex-col items-center w-1/2">
+        <div className="flex flex-col items-center w-1/6 mb-2">
             <div className="flex flex-col w-11/12 shadow-lg items-center rounded-lg">
                 <div className="w-full">
                     <img className="object-cover w-full rounded-t-lg" src={room.profile_image != null ? room.profile_image : "/profile.jpeg"} />
                 </div>
-                <div className="font-mono font-semibold text-base sm:text-base my-1">{room.name}</div>
-                <SubmitButton onClick={join} text={"Join"} className="bg-blue-200 text-blue-500 w-11/12 justify-center" wrapperClassName="my-4" />
+                <div className="font-mono font-semibold text-base mt-2 w-full px-2">{room.name}</div>
+                <div className="font-mono text-gray-400 text-xs mb-2 w-full px-2">{room.total_members} Members</div>
+                <div className="w-full px-2 my-2">
+                    <SubmitButton onClick={join} text={"JOIN"} className="bg-blue-600 text-blue-50 text-sm w-full justify-center py-0" />
+                </div>
             </div>
         </div>
     );

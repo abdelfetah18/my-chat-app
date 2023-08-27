@@ -4,7 +4,7 @@ const basePath = process.env.INIT_CWD;
 let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
 
 module.exports = ( req, res, next) => {
-    let protected_paths = ['/','/home','/create_room','/chat','/rooms','/settings'];
+    let protected_paths = ['/','/home','/explore','/create_room','/chat','/rooms','/friends','/settings'];
     if(!protected_paths.includes(req.path)){
         next();
         return;

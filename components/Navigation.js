@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaHome,FaPlus,FaCommentAlt,FaComments,FaCog, FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { FaHome,FaPlus,FaCommentAlt,FaComments,FaCog, FaAngleDown, FaAngleUp, FaCompass, FaUsers } from 'react-icons/fa';
 import { motion, useAnimation } from 'framer-motion';
 
 export default function Navigation({ page }){
@@ -49,9 +49,11 @@ export default function Navigation({ page }){
             </div>
             <motion.div animate={menuAnimation} className='sm:flex flex-col w-full items-center h-0 opacity-0 sm:h-full sm:opacity-100 hidden'>
                 <Button Icon={FaHome} text='Home' page={page} destination='/' />
+                <Button Icon={FaCompass} text='Explore' page={page} destination='/explore' />
                 <Button Icon={FaPlus} text='Create room' page={page} destination='/create_room' />
                 <Button Icon={FaCommentAlt} text='Chat' page={page} destination='/chat' />
                 <Button Icon={FaComments} text='Rooms' page={page} destination='/rooms' />
+                <Button Icon={FaUsers} text='Friends' page={page} destination='/friends' />
                 <Button Icon={FaCog} text='Settings' page={page} destination='/settings' />
             </motion.div>
             <div onClick={toggleMenu} className='flex flex-col items-center py-2 bg-[#d1a2fe55] sm:hidden'>

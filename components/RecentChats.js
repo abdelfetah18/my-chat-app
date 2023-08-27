@@ -63,7 +63,7 @@ export default function RecentChats({ User, my_chats, setMyChats }){
                     }
 
                     return(
-                      <div key={i} onClick={() => window.location.href = '/chat/'+c.chat_id } className='md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+                      <div key={i} onClick={() => window.location.href = '/chat/'+c.chat_id } className='md:w-fit hover:shadow-xl cursor-pointer mt-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
                         <div className='w-14'>
                           <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={c.profile_image != null ? c.profile_image : '/profile.jpeg'} />
                         </div>
