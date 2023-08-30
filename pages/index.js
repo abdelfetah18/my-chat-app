@@ -78,10 +78,10 @@ export default function Home({ user }){
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
                     <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
-                <div className='w-full text-start font-mono font-bold text-2xl px-4 py-2 text-[#02166c]'>Home</div>
+                <div className='w-full text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>Home</div>
                 <div className='flex flex-col sm:flex-row w-full h-full overflow-auto'>
                     <div className="w-11/12 sm:w-2/3 flex flex-col items-center flex-grow overflow-auto">
-                        <div className="bg-gray-50 rounded-lg w-11/12 flex flex-col items-center">
+                        <div className="bg-gray-50 rounded-lg w-full flex flex-col items-center">
                             <div className="relative w-full h-40 rounded-lg bg-gray-200 shadow-lg">
                                 <img className="w-full h-full object-cover rounded-lg" src={User.cover_image || "/cover.png"} />
                                 { 
