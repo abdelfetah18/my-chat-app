@@ -38,7 +38,7 @@ const FriendRequest = function ({ friend_request, User, updateContent }) {
         <div className="w-1/6 flex flex-col items-center my-1">
             <div className="w-full flex flex-col items-center my-1 bg-gray-50 shadow-lg rounded-lg">
                 <div className="w-full bg-gray-100 rounded-t-lg shadow">
-                    <img className="w-full h-full rounded-t-lg" src={friend_request.inviter.profile_image != null ? friend_request.inviter.profile_image : "/profile.jpeg"} />
+                    <img className="w-full h-full rounded-t-lg" src={friend_request.inviter.profile_image != null ? friend_request.inviter.profile_image+"?h=400&w=400&fit=crop&crop=center" : "/profile.jpeg"} />
                 </div>
                 <div className="font-mono font-semibold text-sm flex-grow w-full px-4 my-4">{friend_request.inviter.username}</div>
                 <div className="w-full px-2 mb-2">
