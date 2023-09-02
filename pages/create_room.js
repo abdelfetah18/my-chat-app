@@ -1,50 +1,63 @@
 import Navigation from "../components/Navigation";
-import { FaBell } from 'react-icons/fa';
-import { useEffect, useState } from "react";
-import { getExploreRooms, getUser } from '../database/client';
+import { FaBell, FaCamera } from 'react-icons/fa';
+import { useEffect, useRef, useState } from "react";
+import { getUser } from '../database/client';
 import axios from "axios";
-import { motion, useAnimation } from "framer-motion";
-import ExploreRooms from "../components/ExploreRooms";
 import SubmitButton from "../components/SubmitButton";
 
 export async function getServerSideProps({ req }) {
     let user_info = req.decoded_jwt;
     let user = await getUser(user_info.user_id);
-    let rooms_you_may_like = await getExploreRooms(user_info.user_id);
    
     return {
-        props: {
-            user, rooms_you_may_like
-        }
+        props: { user }
     }
 }
 
-export default function CreateRoom({ user, rooms_you_may_like }){
+export default function CreateRoom({ user }){
     let [User,setUser] = useState(user);
     let [room_name,setRoomName] = useState('');
     let [room_bio,setRoomBio] = useState('');
-    let [alertMessage,setAlertMessage] = useState('');
-    let [RoomsYouMayLike,setRoomsYouMayLike] = useState(rooms_you_may_like);
-    let alertMsg = useAnimation();
-    
+
+    const profileImageInput = useRef();
+    const [profileImage, setProfileImage] = useState("");
 
     useEffect(() => {
         let access_token = localStorage.getItem('access_token');
-        setUser(state => { return { ...state,access_token } })
+        setUser(state => { return { ...state,access_token } });
     },[]);
 
-    function updateContent(){
-        axios.get('/api/v1/user/you_may',{ headers:{ authorization:User.access_token } }).then((response) => {
-            let data = response.data.data;
-            setRoomsYouMayLike(data.rooms_you_may_like);
-        });
-    }
-
     async function create_room(ev){
+        // Create room.
         let response = await axios.post('/api/v1/room/create',{ room_name, room_bio },{ headers: { authorization:User.access_token } });
         let payload = response.data;
         payload.redirect = "/rooms/"+payload.data.room._id;
+        
+        // Upload room image if exist.
+        if(profileImageInput.current.value){
+            let form = new FormData();
+            form.append('profile_image', profileImageInput.current.files[0]);
+            form.append('room_id', payload.data.room._id);
+            let response = await axios.post('/api/v1/room/upload_profile_image', form);
+        }
+        
         return payload;
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+    
+            reader.onload = function (e) {
+                setProfileImage(e.target.result);
+            }
+    
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function onChoseImage(ev){
+        readURL(ev.target);
     }
 
     return (
@@ -56,25 +69,27 @@ export default function CreateRoom({ user, rooms_you_may_like }){
                     <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
                 <div className='w-full text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>Create a room</div>
-                <div className='flex flex-row w-full'>
+                <div className="w-11/12 flex flex-col items-center">
                     <div className="w-1/2 flex flex-col">
-                        <div className="w-11/12 flex flex-col">
-                            <div className="font-mono text-lg font-semibold">Room info:</div>
-                            <div className="w-full flex flex-col items-center">
-                                <div className="flex flex-col w-11/12 my-1">
-                                    <div className="font-mono text-base font-medium">Room name:</div>
-                                    <input onChange={(e) => setRoomName(e.target.value)} value={room_name} className="font-mono text-base font-medium rounded p-2" placeholder="Room name" />
+                        <div className="font-mono text-lg font-semibold">Room info:</div>
+                        <div className="w-full flex flex-col items-center">
+                            <div className="w-20 h-20 bg-red-500 rounded-full relative my-8">
+                                <input ref={profileImageInput} type="file" accept="image/*" hidden onChange={onChoseImage} />
+                                <img className="h-full w-full rounded-full" src={profileImage ? profileImage : "/profile.jpeg"} />
+                                <div onClick={() => profileImageInput.current.click()} className="absolute p-2 rounded-full bg-blue-700 hover:bg-blue-600 cursor-pointer bottom-0 right-0">
+                                    <FaCamera className="text-gray-50 text-xs" />
                                 </div>
-                                <div className="flex flex-col w-11/12 my-1">
-                                    <div className="font-mono text-base font-medium">Room bio:</div>
-                                    <input onChange={(e) => setRoomBio(e.target.value)} value={room_bio} className="font-mono text-base font-medium rounded p-2" placeholder="Room bio" />
-                                </div>
-                                <SubmitButton onClick={create_room} text={"Create"} className={"bg-blue-500 text-gray-50"} wrapperClassName={"mt-8"} />
-                            </div> 
-                        </div>
-                    </div>
-                    <div className="w-1/2 flex flex-col">
-                        <ExploreRooms RoomsYouMayLike={RoomsYouMayLike} User={User} updateContent={updateContent} />
+                            </div>
+                            <div className="flex flex-col w-11/12 my-1">
+                                <div className="font-mono text-base font-medium">Room name:</div>
+                                <input onChange={(e) => setRoomName(e.target.value)} value={room_name} className="font-mono text-base font-medium rounded p-2" placeholder="Room name" />
+                            </div>
+                            <div className="flex flex-col w-11/12 my-1">
+                                <div className="font-mono text-base font-medium">Room bio:</div>
+                                <input onChange={(e) => setRoomBio(e.target.value)} value={room_bio} className="font-mono text-base font-medium rounded p-2" placeholder="Room bio" />
+                            </div>
+                            <SubmitButton onClick={create_room} text={"Create"} className={"bg-blue-500 text-gray-50"} wrapperClassName={"mt-8"} />
+                        </div> 
                     </div>
                 </div>
             </div>
