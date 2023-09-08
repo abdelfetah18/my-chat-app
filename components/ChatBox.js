@@ -101,48 +101,9 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
         </div>
         <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4 overflow-auto h-full'>
             <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2 flex-grow'}>
-            {
-                messages.map((msg, i) => {
-                if(msg.user._id === User._id){
-                    if(msg.message_type === "text"){
-                    return (
-                        <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                        <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message_content}</div>
-                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                        </div>
-                    )
-                    }
-                    if(msg.message_type === "image"){
-                    return (
-                        <div key={i} className='flex flex-col max-w-5/6 self-end'>
-                        <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
-                        <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                        </div>
-                    )
-                    }
-                }else{
-                    if(msg.message_type === "text"){
-                    return (
-                        <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                        <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message_content}</div>
-                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                        </div>
-                    )
-                    }
-                    if(msg.message_type === "image"){
-                    return (
-                        <div key={i} className='flex flex-col max-w-5/6 self-start'>
-                        <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
-                        <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
-                        </div>
-                    )
-                    }
-                }
-                })
-            }
-            
-
-            
+              {
+                  messages.map((msg, i) => <Message key={i} msg={msg} User={User} />)
+              }
             </div>
             {
             (images.length > 0) ? (
@@ -177,4 +138,70 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
         </div>
     </div>
   )
+}
+
+const Message = ({ msg, User }) => {
+  const usernameRef = useRef();
+
+  function onHoverStart(){
+    usernameRef.current.style.display = "block";
+  }
+  
+  function onHoverEnd(){
+    usernameRef.current.style.display = "none";
+  }
+
+  if(msg.user._id === User._id){
+    if(msg.message_type === "text"){
+      return (
+        <div className='flex flex-col max-w-5/6 self-end'>
+          <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message_content}</div>
+          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+        </div>
+      )
+    }
+  
+    if(msg.message_type === "image"){
+      return (
+        <div className='flex flex-col max-w-5/6 self-end'>
+          <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
+          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+        </div>
+      )
+    }
+  }else{
+    if(msg.message_type === "text"){
+      return (
+        <div className='flex flex-col max-w-5/6 self-start'>
+          <div className='w-full flex flex-row'>
+            <div className='relative'>
+              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.jpeg"} />
+              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
+            </div>
+            <div className='ml-2 flex flex-col'>
+              <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message_content}</div>
+              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if(msg.message_type === "image"){
+      return (
+        <div className='flex flex-col max-w-5/6 self-start'>
+          <div className='w-full flex flex-row'>
+            <div className='relative'>
+              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.jpeg"} />
+              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
+            </div>
+            <div className='ml-2 flex flex-col'>
+              <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
+              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+            </div>
+          </div>
+        </div>
+      )
+    } 
+  }
 }
