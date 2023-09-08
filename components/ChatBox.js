@@ -195,8 +195,8 @@ const Message = ({ msg, User }) => {
               <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.jpeg"} />
               <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
             </div>
-            <div className='ml-2 flex flex-col'>
-              <img className='flex self-start shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
+            <div className='ml-2 flex flex-col w-1/3'>
+              <img className='flex self-start shadow-xl rounded-lg border-2 w-full' src={msg.message_content}/>
               <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
             </div>
           </div>
