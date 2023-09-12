@@ -62,6 +62,14 @@ export default function RecentChats({ User, my_chats, setMyChats }){
                       return c.message.user._id == User._id ? 'you: '+(c.message.message_type === "text" ? c.message.message_content : 'send a '+c.message.message_type) : c.message.user.username+": "+(c.message.message_type === "text" ? c.message.message_content : 'send a '+c.message.message_type);
                     }
 
+                    function textOverflow(text){
+                      const TEXT_MAX_LEN = 24;
+                      if(text.length > TEXT_MAX_LEN){
+                        return text.slice(0, TEXT_MAX_LEN)+"...";
+                      }
+                      return text;
+                    }
+
                     return(
                       <div key={i} onClick={() => window.location.href = '/chat/'+c.chat_id } className='md:w-fit hover:shadow-xl cursor-pointer mt-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
                         <div className='w-14'>
@@ -72,7 +80,7 @@ export default function RecentChats({ User, my_chats, setMyChats }){
                           <div className='flex flex-row w-full'>
                             <div className='flex flex-col w-11/12 px-2'>
                               <div className='font-mono text-base font-bold text-[#020762]'>{c.username || c.name}</div>
-                              <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{getLastMessage()}</div>
+                              <div className='font-mono text-xs font-medium text-[#b7bfcc] w-full whitespace-nowrap overflow-hidden'>{textOverflow(getLastMessage())}</div>
                             </div>
                             {/* TODO: unread messages counter, not available because unread state is not implemented! */}
                             <div className='hidden items-center justify-center w-1/12'>

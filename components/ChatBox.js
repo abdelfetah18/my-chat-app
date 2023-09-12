@@ -155,7 +155,7 @@ const Message = ({ msg, User }) => {
     if(msg.message_type === "text"){
       return (
         <div className='flex flex-col max-w-5/6 self-end'>
-          <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit px-4 py-2 rounded-t-xl rounded-l-xl'>{msg.message_content}</div>
+          <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit max-w-xl px-4 py-2 rounded-t-xl rounded-l-xl break-all'>{msg.message_content}</div>
           <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
         </div>
       )
@@ -179,7 +179,7 @@ const Message = ({ msg, User }) => {
               <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
             </div>
             <div className='ml-2 flex flex-col'>
-              <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl'>{msg.message_content}</div>
+              <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl max-w-xl break-all'>{msg.message_content}</div>
               <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
             </div>
           </div>
