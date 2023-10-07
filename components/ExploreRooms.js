@@ -32,7 +32,7 @@ const Room = ({ room, User, updateContent}) => {
         <div className="flex flex-col items-center w-1/6 mb-2">
             <div className="flex flex-col w-11/12 shadow-lg items-center rounded-lg">
                 <div className="w-full">
-                    <img className="object-cover w-full rounded-t-lg" src={room.profile_image != null ? room.profile_image+"?h=400&w=400&fit=crop&crop=center" : "/profile.jpeg"} />
+                    <img className="object-cover w-full rounded-t-lg" src={room.profile_image != null ? room.profile_image+"?h=400&w=400&fit=crop&crop=center" : "/profile.png"} />
                 </div>
                 <div className="font-mono font-semibold text-base mt-2 w-full px-2">{room.name}</div>
                 <div className="font-mono text-gray-400 text-xs mb-2 w-full px-2">{room.total_members} Members</div>

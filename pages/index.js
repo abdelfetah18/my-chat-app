@@ -95,7 +95,7 @@ export default function Home({ user }){
                             </div>
                             <div className="-mt-28 z-1 w-full flex flex-col items-center">
                                 <div className="relative h-40 w-40 rounded-full bg-gray-100 shadow-lg border-gray-50 border-4">
-                                    <img className="object-cover w-full h-full rounded-full" alt='profile_image' src={User.profile_image != null ? User.profile_image : '/profile.jpeg'} />
+                                    <img className="object-cover w-full h-full rounded-full" alt='profile_image' src={User.profile_image != null ? User.profile_image : '/profile.png'} />
                                     { 
                                         is_edit_state && (
                                             <>

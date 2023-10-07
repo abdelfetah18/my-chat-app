@@ -23,7 +23,7 @@ const Room = ({ room }) => {
     return (
         <div onClick={() => window.location.href = '/rooms/'+room._id } className='md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
             <div className='w-14'>
-                <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={(room.profile_image != null ? room.profile_image : '/profile.jpeg')} />
+                <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={(room.profile_image != null ? room.profile_image : '/profile.png')} />
             </div>
             <div className='lg:flex flex-col lg:flex-grow md:hidden'>
                 {

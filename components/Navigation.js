@@ -44,7 +44,7 @@ export default function Navigation({ page }){
     return(
         <div className='flex flex-col md:w-1/12 lg:w-1/6 w-full sm:flex-grow'>
             <div className='hidden sm:flex md:opacity-0 w-full lg:flex flex-col items-center p-10'>
-                <img className='w-16 h-16 rounded-full border-white border-[3px] shadow-black shadow-2xl' src='/profile.jpeg' />
+                <img className='w-16 h-16 rounded-full border-white border-[3px] shadow-black shadow-2xl' src='/profile.png' />
                 <div className='font-mono font-medium text-white text-lg py-2 px-4'>Abdelfetah</div>
             </div>
             <motion.div animate={menuAnimation} className='sm:flex flex-col w-full items-center h-0 opacity-0 sm:h-full sm:opacity-100 hidden'>

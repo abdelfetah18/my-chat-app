@@ -92,7 +92,7 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
     <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center h-full'>
         <div className='w-11/12 py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>
             <div className='md:w-2/12 lg:w-1/12'>
-                <img className='object-cover w-14 h-14 rounded-full' src={chat.profile_image ? chat.profile_image : "/profile.jpeg"} />
+                <img className='object-cover w-14 h-14 rounded-full' src={chat.profile_image ? chat.profile_image : "/profile.png"} />
             </div>
             <div className='flex flex-col w-11/12 px-2'>
             <div className='font-mono font-semibold text-lg text-[#000049]'>{chat.username || chat.name || User.username}</div>
@@ -175,7 +175,7 @@ const Message = ({ msg, User }) => {
         <div className='flex flex-col max-w-5/6 self-start'>
           <div className='w-full flex flex-row'>
             <div className='relative'>
-              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.jpeg"} />
+              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.png"} />
               <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
             </div>
             <div className='ml-2 flex flex-col'>
@@ -192,7 +192,7 @@ const Message = ({ msg, User }) => {
         <div className='flex flex-col max-w-5/6 self-start'>
           <div className='w-full flex flex-row'>
             <div className='relative'>
-              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.jpeg"} />
+              <img onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image || "/profile.png"} />
               <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
             </div>
             <div className='ml-2 flex flex-col w-1/3'>

@@ -86,7 +86,7 @@ export default function RoomChatBox({ room: _room, User }){
                 </div>
                 <div className='-mt-28 z-1 w-full flex flex-col items-center'>
                     <div className='relative h-40 w-40 rounded-full bg-gray-400 border-white border-4 shadow-xl'>
-                        <img src={room.profile_image || "/profile.jpeg"} className='h-full w-full object-cover rounded-full shadow-xl' />
+                        <img src={room.profile_image || "/profile.png"} className='h-full w-full object-cover rounded-full shadow-xl' />
                         { 
                             is_admin() &&  is_edit_state && (
                                 <>

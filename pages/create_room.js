@@ -75,7 +75,7 @@ export default function CreateRoom({ user }){
                         <div className="w-full flex flex-col items-center">
                             <div className="w-20 h-20 bg-red-500 rounded-full relative my-8">
                                 <input ref={profileImageInput} type="file" accept="image/*" hidden onChange={onChoseImage} />
-                                <img className="h-full w-full rounded-full" src={profileImage ? profileImage : "/profile.jpeg"} />
+                                <img className="h-full w-full rounded-full" src={profileImage ? profileImage : "/profile.png"} />
                                 <div onClick={() => profileImageInput.current.click()} className="absolute p-2 rounded-full bg-blue-700 hover:bg-blue-600 cursor-pointer bottom-0 right-0">
                                     <FaCamera className="text-gray-50 text-xs" />
                                 </div>

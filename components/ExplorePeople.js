@@ -31,7 +31,7 @@ const People = ({ user, User, updateContent }) => {
         <div className="flex flex-col items-center w-1/6 rounded-lg my-1">
             <div className="flex flex-col items-center w-11/12 rounded-lg my-1 bg-gray-50 shadow-lg">
                 <div className="w-full rounded-t-md">
-                    <img className="w-full h-full rounded-t-md" src={user.profile_image != null ? user.profile_image+"?h=400&w=400&fit=crop&crop=center" : "/profile.jpeg"} />
+                    <img className="w-full h-full rounded-t-md" src={user.profile_image != null ? user.profile_image+"?h=400&w=400&fit=crop&crop=center" : "/profile.png"} />
                 </div>
                 <div className="font-mono font-semibold text-base flex-grow pl-2 w-full my-2">{user.username}</div>
                 <div className="w-full px-1 my-2">
