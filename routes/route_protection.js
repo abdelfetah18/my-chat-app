@@ -22,7 +22,7 @@ module.exports = ( req, res, next) => {
 
     jwt.verify(access_token, PRIVATE_KEY, { algorithms:'RS256' }, (error, data) => {
         if(error){
-            res.status(200).json({ status:'error', error });
+            res.redirect("/sign_in");
             return;
         }
        
