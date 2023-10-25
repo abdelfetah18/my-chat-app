@@ -156,7 +156,7 @@ const Message = ({ msg, User }) => {
       return (
         <div className='flex flex-col max-w-5/6 self-end'>
           <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit max-w-xl px-4 py-2 rounded-t-xl rounded-l-xl break-all'>{msg.message_content}</div>
-          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
         </div>
       )
     }
@@ -165,7 +165,7 @@ const Message = ({ msg, User }) => {
       return (
         <div className='flex flex-col max-w-5/6 self-end'>
           <img className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message_content}/>
-          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
         </div>
       )
     }
@@ -180,7 +180,7 @@ const Message = ({ msg, User }) => {
             </div>
             <div className='ml-2 flex flex-col'>
               <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl max-w-xl break-all'>{msg.message_content}</div>
-              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ const Message = ({ msg, User }) => {
             </div>
             <div className='ml-2 flex flex-col w-1/3'>
               <img className='flex self-start shadow-xl rounded-lg border-2 w-full' src={msg.message_content}/>
-              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1'>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
+              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US',{ hour12:true,hour:'2-digit',minute:'2-digit'})}</div>
             </div>
           </div>
         </div>
