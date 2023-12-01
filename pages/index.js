@@ -73,13 +73,13 @@ export default function Home({ user }){
     return(
         <div className='flex flex-col sm:flex-row background h-screen w-screen'>
             <Navigation page={'/'} />
-            <div className='h-full lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col px-10 py-4'>
-                <div className='w-full flex flex-row justify-end items-center px-4 py-2'>
+            <div className='h-full lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col items-center py-4'>
+                <div className='w-11/12 flex flex-row justify-end items-center py-2'>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
                     <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
                 </div>
-                <div className='w-full text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>Home</div>
-                <div className='flex flex-col sm:flex-row w-full h-full overflow-auto'>
+                <div className='w-11/12 text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>Home</div>
+                <div className='flex flex-col items-center sm:items-start sm:flex-row w-11/12 h-full overflow-auto'>
                     <div className="w-11/12 sm:w-2/3 flex flex-col items-center flex-grow overflow-auto">
                         <div className="bg-gray-50 rounded-lg w-full flex flex-col items-center">
                             <div className="relative w-full h-40 rounded-lg bg-gray-200 shadow-lg">

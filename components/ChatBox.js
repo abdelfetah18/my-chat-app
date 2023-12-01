@@ -89,7 +89,7 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
   }
 
   return(
-    <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center h-full'>
+    <div className='md:w-5/6 w-full flex flex-col lg:w-4/6 items-center flex-grow'>
         <div className='w-11/12 py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>
             <div className='md:w-2/12 lg:w-1/12'>
                 <img className='object-cover w-14 h-14 rounded-full' src={chat.profile_image ? chat.profile_image : "/profile.png"} />
@@ -99,7 +99,7 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
             <div className='font-mono text-sm text-[#acb2c8]'>{(chat.bio || User.bio || 'Hacker!')}</div>
             </div>
         </div>
-        <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4 overflow-auto h-full'>
+        <div className='w-11/12 py-4 px-4 flex flex-col bg-[#fafbff] rounded-xl my-4 overflow-auto flex-grow'>
             <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-2 flex-grow'}>
               {
                   messages.map((msg, i) => <Message key={i} msg={msg} User={User} />)

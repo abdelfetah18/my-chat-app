@@ -44,7 +44,7 @@ export default function SignUp(){
     return(
         <div className='flex flex-row background h-screen w-screen'>
             <_Navigation page={'/sign_up'} />
-            <div className='w-11/12 bg-[#f1f5fe] rounded-l-3xl flex flex-col px-10 py-4 items-center'>
+            <div className='w-11/12 bg-[#f1f5fe] md:rounded-l-3xl flex flex-col px-10 py-4 items-center'>
                 <div className='opacity-0 w-full flex flex-row justify-end items-center px-4 py-2'>
                     <FaBell className='font-mono text-[#ccd8e8] mx-1 text-base' />
                     <div className='font-mono text-[#9199a8] mx-1 text-sm'>Notifications</div>
