@@ -1,6 +1,6 @@
-import { FaHome,FaCommentAlt,FaCog,FaBell,FaSearch,FaPaperPlane,FaPaperclip,FaSmile,FaTimes } from 'react-icons/fa';
+import { FaPaperPlane,FaPaperclip,FaSmile,FaTimes } from 'react-icons/fa';
 import { useEffect, useRef, useState } from "react";
-import EmojiPicker from 'emoji-picker-react';
+// import EmojiPicker from 'emoji-picker-react';
 import { motion, useAnimation } from 'framer-motion';
 import axios from 'axios';
 
@@ -123,17 +123,19 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
                 </div>
             ) : ('')
             }
-            <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center'>
+            <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center justify-between'>
                 <input onChange={isValidChat ? uploadImage : ""} ref={upload_image} type={"file"} hidden={true} />
                 <input onKeyUp={(evt) => { if(evt.code === 'Enter'){ if(isValidChat) { sendMsg() } }}} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
-                <div className='w-1/12 relative'>
+                {/* <div className='w-1/12 relative'>
                   <FaSmile onClick={toggleEmojiPicker} className='cursor-pointer text-base font-mono text-[#a9bae8]' />
                   <motion.div animate={emojiPickerAnim} className='absolute hidden opacity-0 bottom-full right-full'>
                     <EmojiPicker onEmojiClick={(emoji,event) => setMessageContent(state => state+=emoji.emoji)} />
                   </motion.div>
+                </div> */}
+                <div className='w-2/12 flex flex-row items-center'>
+                  <FaPaperclip onClick={() => { if(isValidChat){ upload_image.current.click() }} } className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
+                  <FaPaperPlane onClick={isValidChat ? sendMsg : ""} className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
                 </div>
-                <FaPaperclip onClick={() => { if(isValidChat){ upload_image.current.click() }} } className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />
-                <FaPaperPlane onClick={isValidChat ? sendMsg : ""} className='cursor-pointer w-1/12 text-base font-mono text-[#a9bae8]' />
             </div>
         </div>
     </div>
