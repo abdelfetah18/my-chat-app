@@ -7,7 +7,7 @@ import ExploreFriendRequests from "../../components/ExploreFriendRequests";
 
 
 export async function getServerSideProps({ req }) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let user = await getUser(user_info.user_id);
     let people_may_know = await getExplorePeople(user_info.user_id);
     let friends_requests = await getFriendRequests(user_info.user_id);

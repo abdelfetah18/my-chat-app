@@ -1,6 +1,7 @@
-const { uploadProfile } = require("../../../database/client");
+import { Request, Response } from "express";
+import { uploadProfile } from '../../../database/client';
 
-module.exports = async ( req, res) => {
+export default async (req: Request,res: Response) => {
     let { user_id } = req.body;
     try{
         let file_path = './'+req.file.path;

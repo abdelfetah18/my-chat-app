@@ -2,7 +2,7 @@ import { addChatMember, addData, addMember, deleteChat, deleteChatMembers, delet
 
 // FIXME: Only admin can delete a room.
 export default async function handler(req, res) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let { room_id } = req.body;
     
     let room = await getRoom(room_id);

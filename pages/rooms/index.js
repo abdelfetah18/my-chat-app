@@ -8,7 +8,7 @@ import RoomChatBox from '../../components/RoomChatBox';
 
 
 export async function getServerSideProps({ req,params }) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let user = await getUser(user_info.user_id);
     let rooms = await getRooms(user_info.user_id);
 

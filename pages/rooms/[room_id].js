@@ -7,7 +7,7 @@ import RecentRooms from '../../components/RecentRooms';
 
 export async function getServerSideProps({ req,params }) {
     let { room_id } = params;
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let user = await getUser(user_info.user_id);
     let rooms = await getRooms(user_info.user_id);
     let room = await getRoom(room_id);

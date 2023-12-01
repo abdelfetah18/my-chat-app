@@ -1,10 +1,11 @@
-const route_protection = require("./route_protection");
-const sign_in = require("./sign_in");
-const user = require("./user/index");
-const room = require("./room/index");
+import route_protection from './route_protection';
+import sign_in from './sign_in';
+import user from './user/index';
+import room from './room/index';
+import upload_image from './upload_image';
+import { Router } from 'express';
 
-const upload_image = require("./upload_image");
-const app = require("express").Router();
+const app = Router();
 
 let multer = require('multer');
 let image = multer({ dest:'./uploads/upload_images' });
@@ -17,4 +18,4 @@ app.use('/', route_protection);
 
 app.post("/upload_image", image.single('upload_image'), upload_image);
 
-module.exports = app;
+export default app;

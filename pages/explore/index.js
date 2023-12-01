@@ -6,7 +6,7 @@ import ExploreRooms from "../../components/ExploreRooms";
 
 
 export async function getServerSideProps({ req }) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let user = await getUser(user_info.user_id);
     let rooms_you_may_like = await getExploreRooms(user_info.user_id);
 

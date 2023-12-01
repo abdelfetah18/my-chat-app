@@ -1,6 +1,7 @@
-const { uploadCover } = require("../../../database/client");
+import { Request, Response } from "express";
+import { uploadCover } from '../../../database/client';
 
-module.exports = async ( req, res) => {
+export default async (req: Request,res: Response) => {
     let { user_id } = req.body;
     try{
         let file_path = './'+req.file.path;

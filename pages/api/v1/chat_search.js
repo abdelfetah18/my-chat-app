@@ -1,7 +1,7 @@
 import { getChatsByName } from "../../../database/client";
 
 export default async function handler(req, res) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let { username } = req.query;
     let chats = await getChatsByName(username, user_info.user_id);
     chats = chats.filter(c => (c.name || c.username));

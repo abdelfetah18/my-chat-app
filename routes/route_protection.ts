@@ -1,9 +1,11 @@
-let jwt = require('jsonwebtoken');
-let fs = require("fs");
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import { NextFunction, Request, Response } from 'express';
+
 const basePath = process.env.INIT_CWD;
 let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
 
-module.exports = ( req, res, next) => {
+export default function(req: Request, res: Response, next: NextFunction){
     let protected_paths = ['/','/home','/explore','/create_room','/chat','/rooms','/friends','/settings'];
     if(!protected_paths.includes(req.path)){
         next();
@@ -20,13 +22,13 @@ module.exports = ( req, res, next) => {
         return;
     }
 
-    jwt.verify(access_token, PRIVATE_KEY, { algorithms:'RS256' }, (error, data) => {
+    jwt.verify(access_token, PRIVATE_KEY, { algorithms: ['RS256'] }, (error, data) => {
         if(error){
             res.redirect("/sign_in");
             return;
         }
        
-        req.decoded_jwt = data;
+        req.userSession = data as UserSession;
         next();
     });
 }

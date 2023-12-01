@@ -6,7 +6,7 @@ import axios from "axios";
 import SubmitButton from "../components/SubmitButton";
 
 export async function getServerSideProps({ req }) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let user = await getUser(user_info.user_id);
    
     return {

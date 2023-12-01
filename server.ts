@@ -1,14 +1,17 @@
-require('dotenv').config();
-const express = require('express');
-const next = require('next');
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import next from 'next';
+
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-let cookieParser = require('cookie-parser');
-let routes = require('./routes/index');
-let ws = require("./websocket/index");
+import cookieParser from 'cookie-parser';
+import routes from './routes/index';
+import ws from './websocket/index';
 
 app.prepare().then(() => {
     const server = express();
@@ -20,13 +23,11 @@ app.prepare().then(() => {
     server.get('*/*', (req, res) => handle(req, res));
 
     if(dev){
-        server.listen(port, (err) => {
-            if (err) throw err;
+        server.listen(port, () => {
             console.log(`> Ready on http://127.0.0.1:${port}`);
         });
     }else{
-        server.listen(port, (err) => {
-            if (err) throw err;
+        server.listen(port, () => {
             console.log(`> Ready on http://127.0.0.1:${port}`);
         }).on("upgrade",( request, socket, head) => {
             ws.handleUpgrade( request, socket, head, socket => {

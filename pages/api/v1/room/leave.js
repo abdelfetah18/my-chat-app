@@ -1,7 +1,7 @@
 import { addChatMember, addData, addMember, getData, getRoom, removeChatMember, removeMember } from "../../../../database/client";
 
 export default async function handler(req, res) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let { room_id } = req.body;
     
     let room = await getRoom(room_id)

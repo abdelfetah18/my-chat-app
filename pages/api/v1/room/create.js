@@ -1,7 +1,7 @@
 import { addChatMember, addMember, createChat, createRoom, updateRoom } from '../../../../database/client';
 
 export default async function handler(req, res) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let { room_name, room_bio } = req.body;
     
     let room_doc = { name: room_name, bio: room_bio, is_public: true, admin: { _type: "reference", _ref: user_info.user_id } };

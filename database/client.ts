@@ -343,41 +343,49 @@ async function deleteRoom(room_id){
   return room;
 }
 
-module.exports = {
-  getExplorePeople,
+export {
+  
   getExploreRooms,
-  getFriendRequests,
-  getUser,
   getRoom,
   getRooms,
+  createRoom,
+  updateRoom,
+  deleteRoom,
+
+  deleteRoomMembers,
+  addMember,
+  removeMember,
+  
+  createUser,
+  getUser,
+  getExplorePeople,
   getUserWithPassword,
+  updateUser,
+  
   getRecentChats,
   getChatsByName,
   getChat,
-  createUser,
-  createRoom,
-  createMessage,
   createChat,
-  addFriend,
-  addMember,
+  deleteChat,
+  
   addChatMember,
+  removeChatMember,
+  deleteChatMembers,
+  
+  deleteChatMessages,
+  createMessage,
+  
+  getFriendRequests,
+  addFriend,
   acceptFriend,
   rejectFriend,
-  updateRoom,
-  updateUser,
-  removeChatMember,
-  removeMember,
-  deleteChat,
-  deleteChatMembers,
-  deleteChatMessages,
-  deleteRoom,
-  deleteRoomMembers,
-
+  
   updateData,
   getData,
   addData,
+  deleteQuery,
+  
   uploadProfile,
   uploadCover,
   uploadImage,
-  deleteQuery
 };

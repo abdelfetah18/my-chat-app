@@ -1,6 +1,8 @@
-const { uploadProfile, getRoom } = require("../../../database/client");
+import { Request, Response } from "express";
 
-module.exports = async ( req, res) => {
+import { uploadProfile, getRoom } from '../../../database/client';
+
+export default async (req: Request,res: Response) => {
     let { room_id } = req.body;
 
     try{

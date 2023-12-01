@@ -1,11 +1,14 @@
-let jwt = require('jsonwebtoken');
-let fs = require("fs");
-let Chat = require("./chat");
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import Chat from './chat';
 
 const basePath = process.env.INIT_CWD;
 let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
 
-const ws_server = require('ws');
+import ws_server from 'ws';
+import WebSocketClient from '../libs/WebSocketClient';
+import { Client } from '../domain/Client';
+import { IncomingMessage } from 'http';
 const { createMessage } = require('../database/client');
 
 function createWebScoketServer(){
@@ -19,20 +22,20 @@ let ws = createWebScoketServer();
 let ONLINE_USERS = new Map();
 let ONLINE_CHATS = new Map();
 
-ws.on('connection', (socket, request) => {
+ws.on('connection', (socket : WebSocketClient, request : IncomingMessage) => {
     let url = new URL("ws://"+request.headers.host+request.url);
     let token = decodeURI(url.searchParams.get('access_token'));
-    
-    socket._url = url;
-    
-    jwt.verify(token, PRIVATE_KEY,{ algorithms:'RS256' },(error, data) => {
+  
+    let client : Client = { socket, url, user: null };
+
+    jwt.verify(token, PRIVATE_KEY,{ algorithms:['RS256'] },(error, data) => {
         if(error){
             // console.log('JWT verify error:', error);
             socket.close();
             return;
         }
         
-        socket.user_info = data;
+        client.user = data;
         let chat_id = url.searchParams.get('chat_id');
         let chat = ONLINE_CHATS.get(chat_id);
         if(chat == undefined)
@@ -40,12 +43,8 @@ ws.on('connection', (socket, request) => {
         chat = ONLINE_CHATS.get(chat_id);
     });
 
-    socket.broadcast = (eventName, payload) => {
-        socket.send(JSON.stringify({ eventName, payload }));
-    }
-
     socket.on('close',(code, reason) => {
-        let chat = ONLINE_CHATS.get(socket._url.searchParams.get('chat_id'));
+        let chat = ONLINE_CHATS.get(client.url.searchParams.get('chat_id'));
         chat.close_connection(socket);
     });
 
@@ -56,7 +55,7 @@ ws.on('connection', (socket, request) => {
 
     socket.on('msg',async (payload) => {
         let { chat_id, message_content, message_type } = payload;
-        let message_doc = { chat: { _type: "reference", _ref: chat_id }, message_content, message_type, user: { _type: "reference", _ref: socket.user_info.user_id }};
+        let message_doc = { chat: { _type: "reference", _ref: chat_id }, message_content, message_type, user: { _type: "reference", _ref: client.user.user_id }};
         try {
             let message = await createMessage(message_doc);
             let chat = ONLINE_CHATS.get(chat_id);
@@ -68,9 +67,9 @@ ws.on('connection', (socket, request) => {
     });
 
     // New user.
-    let chat_id = url.searchParams.get('chat_id');
-    let chat = ONLINE_CHATS.get(chat_id);
-    chat.new_connection(socket);
+    let chat_id : string = url.searchParams.get('chat_id');
+    let chat : Chat = ONLINE_CHATS.get(chat_id);
+    chat.new_connection(client);
 });
     
-module.exports = ws;
+export default ws;

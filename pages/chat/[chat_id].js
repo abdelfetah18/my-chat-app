@@ -8,7 +8,7 @@ import RecentChats from '../../components/RecentChats';
 
 export async function getServerSideProps({ req,params }) {
   let { chat_id } = params;
-  let user_info = req.decoded_jwt;
+  let user_info = req.userSession;
   let user = await getUser(user_info.user_id);
   let chats = await getRecentChats(user_info.user_id);
   let chat = await getChat(user_info.user_id, chat_id);

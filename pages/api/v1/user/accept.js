@@ -1,7 +1,7 @@
 import { acceptFriend, addChatMember, createChat } from "../../../../database/client";
 
 export default async function handler(req, res) {
-    let user_info = req.decoded_jwt;
+    let user_info = req.userSession;
     let { friend_id } = req.body;
     let friend_request = await acceptFriend(friend_id);
     let chat = await createChat();
