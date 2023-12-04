@@ -50,7 +50,7 @@ export default function RecentChats({ User, my_chats, setMyChats }){
                     function calcTime(timestamp,diveder){
                       return[Math.floor(timestamp/diveder),timestamp % diveder];
                     }
-                    let time_ago = (c.message != null) ? Date.now() - (new Date(c.message.created_at || c.message._createdAt)) : 0;
+                    let time_ago = (c.message != null) ? Date.now() - (new Date(c.message.created_at || c.message._createdAt)).getMilliseconds() : 0;
                     let [days,r_days] = calcTime(time_ago,1000*60*60*24);
                     let [hours,r_hours] = calcTime(r_days,1000*60*60);
                     let [minutes,r_minutes] = calcTime(r_hours,1000*60);

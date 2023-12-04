@@ -48,7 +48,7 @@ export default function UserProfile({ user }){
                             <div className='w-full flex flex-row items-center my-8'>
                                 <CardBox Icon={FaUsers} title={"Rooms"} value={User.rooms} color={"text-blue-500"} />
                                 <CardBox Icon={FaUserFriends} title={"Friends"} value={User.friends} color={"text-blue-500"} />
-                                <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(User._createdAt)).toLocaleDateString()} color={"text-sky-400"} />
+                                <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(User._createdAt)).toLocaleDateString('en-us')} color={"text-sky-400"} />
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import { FaBell } from 'react-icons/fa';
 import { getExplorePeople, getFriendRequests, getUser } from "../../database/client";
 import { useState } from "react";
 import ExploreFriendRequests from "../../components/ExploreFriendRequests";
+import axios from "axios";
 
 
 export async function getServerSideProps({ req }) {
@@ -31,7 +32,6 @@ export default function Friends({ user, people_may_know, friends_requests }){
             let data = response.data.data;
             setFriendRequests(data.friends_requests);
             setPeopleMayKnow(data.people_may_know);
-            setRoomsYouMayLike(data.rooms_you_may_like);
         });
         // TODO: Get User info too.
     }

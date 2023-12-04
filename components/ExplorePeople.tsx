@@ -35,7 +35,7 @@ const People = ({ user, User, updateContent }) => {
                 </div>
                 <div className="font-mono font-semibold text-base flex-grow pl-2 w-full my-2">{user.username}</div>
                 <div className="w-full px-1 my-2">
-                    <SubmitButton onClick={invite} text={"Add Friend"} className="bg-blue-200 text-blue-500 py-2 text-xs w-full justify-center" />
+                    <SubmitButton wrapperClassName={''} onClick={invite} text={"Add Friend"} className="bg-blue-200 text-blue-500 py-2 text-xs w-full justify-center" />
                 </div>
             </div>
         </div>

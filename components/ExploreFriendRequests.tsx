@@ -42,8 +42,8 @@ const FriendRequest = function ({ friend_request, User, updateContent }) {
                 </div>
                 <div className="font-mono font-semibold text-sm flex-grow w-full px-4 my-4">{friend_request.inviter.username}</div>
                 <div className="w-full px-2 mb-2">
-                    <SubmitButton onClick={accept} text={"ACCEPT"} className="w-full justify-center font-mono font-semibold text-sm bg-blue-500 border-2 border-blue-500 text-white py-px" />
-                    <SubmitButton onClick={reject} text={"REJECT"} className="w-full justify-center font-mono font-semibold text-sm border-2 border-blue-500 text-blue-500 py-px mt-1"/>
+                    <SubmitButton wrapperClassName={''} onClick={accept} text={"ACCEPT"} className="w-full justify-center font-mono font-semibold text-sm bg-blue-500 border-2 border-blue-500 text-white py-px" />
+                    <SubmitButton wrapperClassName={''} onClick={reject} text={"REJECT"} className="w-full justify-center font-mono font-semibold text-sm border-2 border-blue-500 text-blue-500 py-px mt-1"/>
                 </div>
             </div>
         </div>

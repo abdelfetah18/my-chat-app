@@ -8,8 +8,8 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
   let [message_content,setMessageContent] = useState('');
   let [isValidChat,setValidChat] = useState(chat.chat_id ? true : false);
   let [images,setImages] = useState([]);
-  let messages_box = useRef();
-  let upload_image = useRef();
+  let messages_box = useRef<HTMLDivElement>(null);
+  let upload_image = useRef<HTMLInputElement>(null);
   let emojiPickerAnim = useAnimation();
   let [emojiPickerOpen,setEmojiPickerOpen] = useState(false);
 
@@ -33,17 +33,17 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
     });
   }
 
-  function sendMsg(e){
+  function sendMsg(){
     for(let i=0;i<images.length;i++){
       let image_payload = { chat_id: chat.chat_id, message_content:images[i].url, message_type:'image' };
-      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id },user: User,message_content:images[i].url,message_type:'image',_createdAt:(new Date()).toGMTString()}]);
+      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id },user: User,message_content:images[i].url,message_type:'image',_createdAt:(new Date()).toDateString()}]);
       User.ws.emit('msg',image_payload);
     }
     setImages([]);
     if(message_content.length > 0){
       let payload = { chat_id: chat.chat_id, message_content, message_type:'text' };
       User.ws.emit('msg',payload);
-      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id }, user: User, message_content, message_type:'text',_createdAt:(new Date()).toGMTString()}]);
+      setMessages(cur => [...cur,{ chat:{ _id: chat.chat_id }, user: User, message_content, message_type:'text',_createdAt:(new Date()).toDateString()}]);
       setMessageContent('');
     }
     
@@ -124,7 +124,7 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
             ) : ('')
             }
             <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center justify-between'>
-                <input onChange={isValidChat ? uploadImage : ""} ref={upload_image} type={"file"} hidden={true} />
+                <input onChange={isValidChat ? uploadImage : null} ref={upload_image} type={"file"} hidden={true} />
                 <input onKeyUp={(evt) => { if(evt.code === 'Enter'){ if(isValidChat) { sendMsg() } }}} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
                 {/* <div className='w-1/12 relative'>
                   <FaSmile onClick={toggleEmojiPicker} className='cursor-pointer text-base font-mono text-[#a9bae8]' />
@@ -133,8 +133,8 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
                   </motion.div>
                 </div> */}
                 <div className='w-2/12 flex flex-row items-center'>
-                  <FaPaperclip onClick={() => { if(isValidChat){ upload_image.current.click() }} } className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
-                  <FaPaperPlane onClick={isValidChat ? sendMsg : ""} className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
+                  <FaPaperclip onClick={() => { if(isValidChat){ if(upload_image.current){ upload_image.current.click(); }}} } className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
+                  <FaPaperPlane onClick={isValidChat ? sendMsg : null} className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
                 </div>
             </div>
         </div>
@@ -143,14 +143,18 @@ export default function ChatBox({ User, chat, setMyChats, messages, setMessages 
 }
 
 const Message = ({ msg, User }) => {
-  const usernameRef = useRef();
+  const usernameRef = useRef<HTMLDivElement>(null);
 
   function onHoverStart(){
-    usernameRef.current.style.display = "block";
+    if(usernameRef.current){
+      usernameRef.current.style.display = "block";
+    }
   }
   
   function onHoverEnd(){
-    usernameRef.current.style.display = "none";
+    if(usernameRef.current){
+      usernameRef.current.style.display = "none";
+    }
   }
 
   if(msg.user._id === User._id){

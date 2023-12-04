@@ -19,7 +19,7 @@ export default function CreateRoom({ user }){
     let [room_name,setRoomName] = useState('');
     let [room_bio,setRoomBio] = useState('');
 
-    const profileImageInput = useRef();
+    const profileImageInput = useRef<HTMLInputElement>(null);
     const [profileImage, setProfileImage] = useState("");
 
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function CreateRoom({ user }){
             var reader = new FileReader();
     
             reader.onload = function (e) {
-                setProfileImage(e.target.result);
+                setProfileImage(e.target.result.toString());
             }
     
             reader.readAsDataURL(input.files[0]);

@@ -13,7 +13,7 @@ export default function SignUp(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     let alertBoxAnimation = useAnimation();
-    let alertBox = useRef();
+    let alertBox = useRef<HTMLDivElement>(null);
 
     function sign_up(evt){
         axios.post('/api/v1/sign_up',{ username, password, birthdate, email }).then((response) => {

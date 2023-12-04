@@ -10,8 +10,8 @@ export default function RoomChatBox({ room: _room, User }){
     let [name,setName] = useState(room.name);
     let [bio,setBio] = useState(room.bio || "");
 
-    let profile_image = useRef();
-    let cover_image = useRef();
+    let profile_image = useRef<HTMLInputElement>(null);
+    let cover_image = useRef<HTMLInputElement>(null);
 
     async function leave(){
         let response = await axios.post('/api/v1/room/leave',{ room_id:room._id },{ headers:{ authorization:User.access_token } })
@@ -114,7 +114,7 @@ export default function RoomChatBox({ room: _room, User }){
                     <div className='w-full flex flex-row items-center mt-8'>
                         <CardBox Icon={room.is_public ? FaGlobeAfrica : FaLock} title={"Privacy"} value={room.is_public ? "Public" : "Private"} color={room.is_public ? "text-green-500" : "text-red-500"} />
                         <CardBox Icon={FaUsers} title={"Total member"} value={room.total_members} color={"text-blue-500"} />
-                        <CardBox Icon={FaCalendar} title={"Created at"} value={(new Date(room._createdAt)).toLocaleDateString()} color={"text-gray-500"} />
+                        <CardBox Icon={FaCalendar} title={"Created at"} value={(new Date(room._createdAt)).toLocaleDateString('en-us')} color={"text-gray-500"} />
                     </div>
                     
                     {   room.username == undefined &&

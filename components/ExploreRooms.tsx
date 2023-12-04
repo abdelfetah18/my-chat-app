@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useRef } from "react";
 import SubmitButton from "../components/SubmitButton";
 
 export default function ExploreRooms({ RoomsYouMayLike, User, updateContent }){
@@ -37,7 +36,7 @@ const Room = ({ room, User, updateContent}) => {
                 <div className="font-mono font-semibold text-base mt-2 w-full px-2">{room.name}</div>
                 <div className="font-mono text-gray-400 text-xs mb-2 w-full px-2">{room.total_members} Members</div>
                 <div className="w-full px-2 my-2">
-                    <SubmitButton onClick={join} text={"JOIN"} className="bg-blue-600 text-blue-50 text-sm w-full justify-center py-2" />
+                    <SubmitButton wrapperClassName={''} onClick={join} text={"JOIN"} className="bg-blue-600 text-blue-50 text-sm w-full justify-center py-2" />
                 </div>
             </div>
         </div>

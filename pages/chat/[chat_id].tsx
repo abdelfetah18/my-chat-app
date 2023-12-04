@@ -26,7 +26,7 @@ export default function Chat({ chats, user, chat }) {
 
   useEffect(() => {
       let access_token = localStorage.getItem('access_token');
-      let ws = new WebSocket((process.env.NODE_ENV != 'development' ? 'wss://my-chat-app.onrender.com' : 'ws://'+location.host.replace('3000','4000'))+'/?chat_id='+chat.chat_id+'&access_token='+access_token);
+      let ws : any = new WebSocket((process.env.NODE_ENV != 'development' ? 'wss://my-chat-app.onrender.com' : 'ws://'+location.host.replace('3000','4000'))+'/?chat_id='+chat.chat_id+'&access_token='+access_token);
 
       ws.emit = (eventName,payload) => {
         let data = JSON.stringify({ eventName,payload });

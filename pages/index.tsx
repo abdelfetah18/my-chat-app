@@ -22,8 +22,8 @@ export default function Home({ user }){
     let [username,setUsername] = useState(User.username);
     let [bio,setBio] = useState(User.bio || "");
     let [is_edit_state,setIsEditState] = useState(false);
-    let profile_image = useRef();
-    let cover_image = useRef();
+    let profile_image = useRef<HTMLInputElement>(null);
+    let cover_image = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         let access_token = localStorage.getItem('access_token');
@@ -45,11 +45,15 @@ export default function Home({ user }){
     }
 
     function updateProfileImage(){
-        profile_image.current.click();
+        if(profile_image.current){
+            profile_image.current.click();
+        }
     }
 
     function updateCoverImage(){
-        cover_image.current.click();
+        if(profile_image.current){
+            cover_image.current.click();
+        }
     }
 
     async function onProfileImageChange(evt){
@@ -137,7 +141,7 @@ export default function Home({ user }){
                             <div className='w-full flex flex-row items-center my-8'>
                                 <CardBox Icon={FaUsers} title={"Rooms"} value={User.rooms} color={"text-blue-500"} />
                                 <CardBox Icon={FaUserFriends} title={"Friends"} value={User.friends} color={"text-blue-500"} />
-                                <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(User._createdAt)).toLocaleDateString()} color={"text-sky-400"} />
+                                <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(User._createdAt)).toLocaleDateString('en-us')} color={"text-sky-400"} />
                             </div>
                         </div>
                     </div>

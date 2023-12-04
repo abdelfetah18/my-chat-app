@@ -11,9 +11,9 @@ export default function SignIn(){
     const [is_loading,setIsLoading] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies();
     let alertBoxAnimation = useAnimation();
-    let alertBox = useRef();
+    let alertBox = useRef<HTMLDivElement>(null);
 
-    function sign_in(evt){
+    function sign_in(){
         if(!is_loading){
             setIsLoading(true);
             axios.post('/api/v1/sign_in',{ username, password }).then((response) => {

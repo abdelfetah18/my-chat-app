@@ -3,6 +3,7 @@ import { FaBell } from 'react-icons/fa';
 import { getExploreRooms, getUser } from "../../database/client";
 import { useState } from "react";
 import ExploreRooms from "../../components/ExploreRooms";
+import axios from "axios";
 
 
 export async function getServerSideProps({ req }) {
@@ -22,8 +23,6 @@ export default function Explore({ user, rooms_you_may_like }){
     function updateContent(){
         axios.get('/api/v1/user/you_may',{ headers:{ authorization:User.access_token } }).then((response) => {
             let data = response.data.data;
-            setFriendRequests(data.friends_requests);
-            setPeopleMayKnow(data.people_may_know);
             setRoomsYouMayLike(data.rooms_you_may_like);
         });
         // TODO: Get User info too.

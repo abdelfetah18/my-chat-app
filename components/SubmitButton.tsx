@@ -1,8 +1,8 @@
 import { useRef } from "react";
 
 export default function SubmitButton({ text, Icon=null, onClick, className, wrapperClassName }){
-    const loading = useRef();
-    const alert_message = useRef();
+    const loading = useRef<HTMLDivElement>(null);
+    const alert_message = useRef<HTMLDivElement>(null);
 
     async function click(ev){
         loading.current.classList.toggle("hidden");
