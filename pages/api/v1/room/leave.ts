@@ -1,17 +1,18 @@
-import { addChatMember, addData, addMember, getData, getRoom, removeChatMember, removeMember } from "../../../../database/client";
+import { Chat } from "../../../../domain/Chats";
+import { chatMembersRepository, roomMembersRepository, roomsRepository } from "../../../../repository";
 
 export default async function handler(req, res) {
-    let user_info = req.userSession;
+    let userSession = req.userSession;
     let { room_id } = req.body;
     
-    let room = await getRoom(room_id)
+    let room = await roomsRepository.getRoom(room_id)
     if(room == null){
         res.status(200).json({ status:'error', message:'Room not found' });
         return;
     }
     
-    let chat_member = await removeChatMember(room.chat._id, user_info.user_id);
-    let member = await removeMember(room_id, user_info.user_id);
+    let chat_member = await chatMembersRepository.removeChatMember((room.chat as Chat)._id, userSession.user_id);
+    let member = await roomMembersRepository.removeMember(room_id, userSession.user_id);
 
     res.status(200).json({ status:'success', message:'Leave success', data: { room, member, chat_member }});
 }

@@ -1,19 +1,16 @@
-import { addChatMember, addMember, createChat, createRoom, updateRoom } from '../../../../database/client';
+import { UserSession } from '../../../../domain/UsersSessions';
+import { chatMembersRepository, chatsRepository, roomMembersRepository, roomsRepository } from '../../../../repository';
 
 export default async function handler(req, res) {
-    let user_info = req.userSession;
-    let { room_name, room_bio } = req.body;
+    let userSession : UserSession = req.userSession;
+    let { room } = req.body;
     
-    let room_doc = { name: room_name, bio: room_bio, is_public: true, admin: { _type: "reference", _ref: user_info.user_id } };
-    let room = await createRoom(room_doc);
-    if(room == null){
-        res.status(200).json({ status:'fail', message:'name already used!' });
-        return;
-    }
+    let roomDoc = await roomsRepository.createRoom(room, userSession.user_id);
+    let chat = await chatsRepository.createChat();
     
-    let chat = await createChat();
-    let updated_room = await updateRoom(room._id,{ chat: { _type: "reference", _ref: chat._id } });
-    let member = await addMember(room._id, user_info.user_id);
-    let chat_member = await addChatMember(chat._id, user_info.user_id);
-    res.status(200).json({ status:'success', message:'room created successfuly!', data: { room: updated_room, member, chat_member }});
+    room = await roomsRepository.updateRoom(roomDoc._id,{ chat: { _type: "reference", _ref: chat._id } , name: roomDoc.name, bio: roomDoc.bio, is_public: roomDoc.is_public });
+    await roomMembersRepository.addMember(roomDoc._id, userSession.user_id);
+    await chatMembersRepository.addChatMember(chat._id, userSession.user_id);
+    
+    res.status(200).json({ status:'success', message:'room created successfuly!', data: room });
 }

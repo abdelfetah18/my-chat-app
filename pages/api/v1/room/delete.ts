@@ -1,30 +1,39 @@
-import { addChatMember, addData, addMember, deleteChat, deleteChatMembers, deleteChatMessages, deleteRoom, deleteRoomMembers, getData, getRoom } from "../../../../database/client";
+import { Chat } from "../../../../domain/Chats";
+import { User } from "../../../../domain/Users";
+import { UserSession } from "../../../../domain/UsersSessions";
+import { chatMembersRepository, chatsRepository, roomMembersRepository, roomsRepository } from "../../../../repository";
 
-// FIXME: Only admin can delete a room.
 export default async function handler(req, res) {
-    let user_info = req.userSession;
+    let userSession : UserSession = req.userSession;
     let { room_id } = req.body;
     
-    let room = await getRoom(room_id);
+    let room = await roomsRepository.getRoom(room_id);
     if(room == null){
         res.status(200).json({ status:'error', message:'Room not found' });
         return;
     }
 
+    if((room.admin as User)._id != userSession.user_id){
+        res.status(200).json({ status:'error', message:'You are not the admin' });
+        return;
+    }
+
+    let chat : Chat = room.chat as Chat;
+
     // Delete room members
-    await deleteRoomMembers(room_id);
+    await roomMembersRepository.deleteRoomMembers(room_id);
 
     // Delete chat messages
-    await deleteChatMessages(room.chat._id);
+    await chatsRepository.deleteMessages(chat._id);
     
     // Delete chat members
-    await deleteChatMembers(room.chat._id);
-    
-    // Delete chat
-    await deleteChat(room.chat._id);
+    await chatMembersRepository.deleteMembers(chat._id);
     
     // Delete room
-    await deleteRoom(room_id);
+    await roomsRepository.deleteRoom(room_id);
+    
+    // Delete chat
+    await chatsRepository.deleteChat(chat._id);
 
     res.status(200).json({ status:'success', message:'Room deleted successfuly' });
 }

@@ -1,3 +1,4 @@
+import { UserSession } from "./domain/UsersSessions";
 
 declare namespace Express {
     export interface Request {

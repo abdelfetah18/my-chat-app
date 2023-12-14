@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { UserSessionRequest } from "../../domain/UserSessionRequest";
 
-export default (req: Request,res: Response,next: NextFunction) => {
+export default (req: UserSessionRequest,res: Response,next: NextFunction) => {
     if(req.method == "POST")
         next();
     else

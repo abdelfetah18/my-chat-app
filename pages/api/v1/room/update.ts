@@ -1,9 +1,11 @@
-import { updateRoom } from "../../../../database/client";
+import { Room } from "../../../../domain/Rooms";
+import { roomsRepository } from "../../../../repository";
 
 
 export default async function handler(req, res) {
-    let { room_id, name, bio } = req.body;
+    let _room : Room = req.body;
 
-    let room = await updateRoom(room_id, { name, bio });
+    let room = await roomsRepository.updateRoom(_room._id, { name: _room.name, bio: _room.bio, is_public: _room.is_public });
+
     res.status(200).json({ status:'success', message:'user info updated successfuly!', data: room });
 }

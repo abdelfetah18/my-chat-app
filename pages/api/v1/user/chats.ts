@@ -1,12 +1,12 @@
-import { getData, getRecentChats } from "../../../../database/client";
+import { UserSession } from "../../../../domain/UsersSessions";
+import { chatsRepository } from "../../../../repository";
 
 export default async function handler(req, res) {
-    let user_info = req.userSession;
-    let chats = await getRecentChats(user_info.user_id);
+    let userSession : UserSession = req.userSession;
+    let chats = await chatsRepository.getRecentChats(userSession.user_id);
     
     res.status(200).json({
         status:'success',
-        message:'your chat list!',
         data: chats
     });
 }

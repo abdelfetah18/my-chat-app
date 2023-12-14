@@ -19,7 +19,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "noEmit": false
+    "noEmit": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "lib": [
     "es2015"

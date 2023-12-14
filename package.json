@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "tsc && node dist/server.js",
-    "build": "tsc && next build",
+    "build": "tsc -b && next build",
     "start": "set NODE_ENV=production&& node dist/server.js",
     "lint": "next lint"
   },
@@ -51,5 +51,9 @@
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.4",
     "typescript": "^5.3.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.14",
+    "@types/react-dom": "17.0.14"
   }
 }

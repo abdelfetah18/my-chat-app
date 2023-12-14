@@ -1,22 +1,29 @@
-import { useRef } from "react";
+import { MouseEvent, useRef } from "react";
+import { IconType } from "react-icons/lib";
 
-export default function SubmitButton({ text, Icon=null, onClick, className, wrapperClassName }){
+export interface SubmitButtonResult {
+    status: "success" | "error";
+};
+
+interface SubmitButtonProps {
+    text: string;
+    Icon?: IconType;
+    onClick: () => Promise<SubmitButtonResult>;
+    className: string;
+    wrapperClassName: string;
+};
+
+export default function SubmitButton({ text, Icon=null, onClick, className, wrapperClassName } : SubmitButtonProps){
     const loading = useRef<HTMLDivElement>(null);
     const alert_message = useRef<HTMLDivElement>(null);
 
-    async function click(ev){
+    async function click(ev: MouseEvent<HTMLDivElement>){
         loading.current.classList.toggle("hidden");
-        ev.target.classList.toggle("hidden");
+        (ev.target as HTMLDivElement).classList.toggle("hidden");
         let result = await onClick();
         if(result.status == "success"){
             loading.current.classList.toggle("hidden");
             alert_message.current.classList.toggle("hidden");
-            
-            if(result.callback)
-                result.callback();
-            
-            if(result.redirect)
-                window.location.href = result.redirect;
         }
     }
     

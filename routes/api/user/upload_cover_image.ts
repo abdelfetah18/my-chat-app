@@ -1,11 +1,14 @@
-import { Request, Response } from "express";
-import { uploadCover } from '../../../database/client';
+import { Response } from "express";
+import { usersRepository } from "../../../repository";
+import { UserSessionRequest } from "../../../domain/UserSessionRequest";
 
-export default async (req: Request,res: Response) => {
-    let { user_id } = req.body;
+export default async (req: UserSessionRequest,res: Response) => {
     try{
         let file_path = './'+req.file.path;
-        let asset = await uploadCover(file_path, user_id);
+        let user_info = req.userSession;
+    
+        let asset = await usersRepository.uploadCoverImage(user_info.user_id, file_path);
+
         res.setHeader('Access-Control-Allow-Origin','*');
         res.status(200).json({ status:'success', message:'Uploaded successfuly!', data: asset });
     }catch(error){

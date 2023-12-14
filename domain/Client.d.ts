@@ -1,7 +1,7 @@
-import { WebSocketClient } from "./WebSocketClient";
+import { WebSocketServer } from "./WebSocketServer";
 
 interface Client {
-    socket : WebSocketClient;
+    socket : WebSocketServer;
     user : any;
     url : URL;
 }

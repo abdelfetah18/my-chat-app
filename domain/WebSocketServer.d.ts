@@ -6,6 +6,6 @@ export interface Payload {
     message_type : string;
 }
 
-export class WebSocketClient extends WS {
+export class WebSocketServer extends WS {
     broadcast(eventName : string, payload : Payload) : void;
 }

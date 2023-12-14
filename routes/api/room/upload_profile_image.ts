@@ -1,16 +1,17 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { roomsRepository } from "../../../repository";
+import { UserSessionRequest } from "../../../domain/UserSessionRequest";
 
-import { uploadProfile, getRoom } from '../../../database/client';
-
-export default async (req: Request,res: Response) => {
+export default async (req: UserSessionRequest,res: Response) => {
     let { room_id } = req.body;
 
     try{
         let file_path = './'+req.file.path;
-        let asset = await uploadProfile(file_path, room_id);
+
+        let asset = await roomsRepository.uploadProfileImage(room_id, file_path);
+
         res.setHeader('Access-Control-Allow-Origin','*');
-        let room = await getRoom(room_id);
-        res.status(200).json({ status:'success', message:'Uploaded successfuly!', data: room });
+        res.status(200).json({ status:'success', message:'Uploaded successfuly!', data: asset });
     }catch(error){
         console.log({error})
         res.status(200).json({ status: "error", error, message: "Something went wrong!" });

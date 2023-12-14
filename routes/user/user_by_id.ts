@@ -1,11 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import { UserSession } from "../../domain/UsersSessions";
+import { UserSessionRequest } from "../../domain/UserSessionRequest";
 
 const basePath = process.env.INIT_CWD;
 let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
 
-export default (req: Request,res: Response,next: NextFunction) => {
+export default (req: UserSessionRequest,res: Response,next: NextFunction) => {
     let access_token = req.cookies.access_token || undefined; 
     if(access_token == undefined){
         res.status(200).json({ status: 'error', message: "access_token is missing." });

@@ -4,7 +4,7 @@ export default function _Navigation({ page }){
     return(
         <div className='lg:flex md:flex flex-col md:w-1/12 lg:w-1/6 hidden'>
             <div className='md:opacity-0 w-full lg:flex flex-col items-center p-10'>
-                <img className='w-16 h-16 rounded-full border-white border-[3px] shadow-black shadow-2xl' src='/profile.png' />
+                <img alt="profile_image" className='w-16 h-16 rounded-full border-white border-[3px] shadow-black shadow-2xl' src='/profile.png' />
                 <div className='font-mono font-medium text-white text-lg py-2 px-4'>Abdelfetah</div>
             </div>
             <div className='flex flex-col w-full items-center'>

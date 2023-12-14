@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import useRooms from '../libs/hooks/useRooms';
+import { useRouter } from 'next/router';
 
-export default function RecentRooms({ User,my_rooms,room_requests,setMyRooms }){
+export default function RecentRooms(){
+    const { rooms } = useRooms();
     let [search_q,setSearchQ] = useState("");
 
     return(
@@ -10,20 +13,22 @@ export default function RecentRooms({ User,my_rooms,room_requests,setMyRooms }){
                 <input className='w-11/12 font-mono text-xl bg-transparent px-4' value={search_q} onChange={(evt) => setSearchQ(evt.target.value)} placeholder='Search' />
                 <FaSearch className='w-1/12 text-[#c8cee5]' />
             </div>
-
-            {
-                my_rooms.map((room, index) => <Room key={index} room={room} />)
-            }
+            <div className='w-5/6 flex flex-col overflow-auto'>
+                {
+                    rooms.map((room, index) => <Room key={index} room={room} />)
+                }
+            </div>
         </div>
     )
 }
 
 const Room = ({ room }) => {
+    const router = useRouter();
 
     return (
-        <div onClick={() => window.location.href = '/rooms/'+room._id } className='md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+        <a href={`/rooms/${room._id}`} className={'md:w-fit hover:shadow-xl cursor-pointer my-2 flex flex-row lg:w-full bg-[#fafbff] items-center px-4 py-2 rounded-xl'+(router.query.room_id == room._id ? " bg-gray-300/30" : "")}>
             <div className='w-14'>
-                <img className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={(room.profile_image != null ? room.profile_image : '/profile.png')} />
+                <img alt="profile_image" className='object-cover w-14 h-14 rounded-full border-white border-[3px]' src={(room.profile_image?.url || '/profile.png')} />
             </div>
             <div className='lg:flex flex-col lg:flex-grow md:hidden'>
                 {
@@ -40,6 +45,6 @@ const Room = ({ room }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     )
 }

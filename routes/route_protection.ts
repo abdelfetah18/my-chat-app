@@ -1,11 +1,13 @@
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
+import { UserSession } from '../domain/UsersSessions';
+import { UserSessionRequest } from '../domain/UserSessionRequest';
 
 const basePath = process.env.INIT_CWD;
 let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
 
-export default function(req: Request, res: Response, next: NextFunction){
+export default function(req: UserSessionRequest, res: Response, next: NextFunction){
     let protected_paths = ['/','/home','/explore','/create_room','/chat','/rooms','/friends','/settings'];
     if(!protected_paths.includes(req.path)){
         next();
