@@ -4,15 +4,16 @@ interface CardBoxProps {
     title: string;
     value: string;
     Icon?: IconType;
-    color: string;
+    textColor: string;
+    iconColor: string;
 }
 
-export default function CardBox({ title, value, Icon=null, color } : CardBoxProps){
+export default function CardBox({ title, value, Icon=null, textColor, iconColor } : CardBoxProps){
     return (
-        <div className='flex-1 flex flex-col items-center hover:bg-gray-100 rounded-lg cursor-pointer'>
-            {Icon && <Icon className="text-gray-400" />}
-            <div className='text-xs text-gray-400 mb-2'>{title}</div>
-            <div className={'text-lg font-medium'} style={{ color }}>{value}</div>
+        <div className='flex-1 flex flex-col items-center'>
+            {Icon && <Icon style={{ color: iconColor }} />}
+            <div className='text-xs text-gray-400 mb-2' style={{ color: iconColor }}>{title}</div>
+            <div className={'text-lg font-medium'} style={{ color: textColor }}>{value}</div>
         </div>
     )
 }

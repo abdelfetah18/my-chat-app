@@ -22,7 +22,7 @@ export default function Navigation({ page }){
 
 const Button = ({ Icon,text,page,destination }) => {
     const styles = {
-        container: "hover:bg-[#d1a2fe55] cursor-pointer sm:w-full sm:flex-0 flex-1 flex flex-row items-center justify-center text-purple-50 px-4 py-4",
+        container: "hover:bg-[#d1a2fe55] cursor-pointer sm:w-full sm:flex-0 flex-1 flex flex-row items-center justify-center text-purple-50 sm:px-4 sm:py-2 py-4",
         icon: 'lg:w-1/6 md:w-full text-xl sm:text-base',
         text: 'hidden lg:block lg:w-5/6 font-mono px-2 sm:px-0 text-sm sm:text-base'
     };

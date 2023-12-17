@@ -20,9 +20,9 @@ export default function UserProfile() {
                         <div className="font-mono text-xs text-gray-300">{user.bio}</div>
                     </div>
                     <div className='w-full flex flex-row items-center my-8'>
-                        <CardBox Icon={FaUsers} title={"Rooms"} value={user.rooms.toString()} color={"#3b82f6"} />
-                        <CardBox Icon={FaUserFriends} title={"Friends"} value={user.friends.toString()} color={"#3b82f6"} />
-                        <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(user._createdAt)).toLocaleDateString('en-us')} color={"#38bdf8"} />
+                        <CardBox Icon={FaUsers} title={"Rooms"} value={user.rooms.toString()} textColor='#c084fc' iconColor='#c4b5fd' />
+                        <CardBox Icon={FaUserFriends} title={"Friends"} value={user.friends.toString()} textColor='#c084fc' iconColor='#c4b5fd' />
+                        <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(user._createdAt)).toLocaleDateString('en-us')} textColor='#c084fc' iconColor='#c4b5fd' />
                     </div>
                 </div>
             </div>

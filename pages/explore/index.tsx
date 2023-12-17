@@ -11,7 +11,7 @@ export default function Explore(){
     return(
         <div className='flex flex-col w-11/12 overflow-auto'>
             <div className="w-full sm:w-11/12 flex flex-col my-2 sm:my-0">
-                <div className="font-mono text-sm sm:text-lg font-semibold">Rooms you may like to join:</div>
+                <div className="font-mono text-sm sm:text-lg font-semibold text-purple-900 uppercase">Rooms you may like to join:</div>
                 <div className="w-full flex flex-col">
                     <div className="flex flex-row w-full flex-wrap my-4">
                         {

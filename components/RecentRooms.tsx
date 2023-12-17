@@ -8,12 +8,12 @@ export default function RecentRooms(){
     let [search_q,setSearchQ] = useState("");
 
     return(
-        <div className='md:w-1/6 lg:flex md:flex hidden flex-col lg:w-2/6 items-center'>
-            <div className='md:hidden my-2 lg:flex flex-row w-5/6 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+        <div className='md:w-1/6 lg:flex md:flex hidden flex-col lg:w-2/6'>
+            <div className='md:hidden my-2 lg:flex flex-row w-11/12 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
                 <input className='w-11/12 font-mono text-xl bg-transparent px-4' value={search_q} onChange={(evt) => setSearchQ(evt.target.value)} placeholder='Search' />
                 <FaSearch className='w-1/12 text-[#c8cee5]' />
             </div>
-            <div className='w-5/6 flex flex-col overflow-auto'>
+            <div className='w-11/12 flex flex-col overflow-auto'>
                 {
                     rooms.map((room, index) => <Room key={index} room={room} />)
                 }

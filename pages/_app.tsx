@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }) {
               <Navigation page={router.pathname} />
               <div className='h-full lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col items-center sm:py-4'>
                 <Header />
-                <div className='w-11/12 text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>{getPageTitle()}</div>
+                <div className='w-11/12 text-start font-mono font-bold text-2xl py-2 text-purple-900 uppercase'>{getPageTitle()}</div>
                 <Component {...pageProps} />
               </div>
             </div>
