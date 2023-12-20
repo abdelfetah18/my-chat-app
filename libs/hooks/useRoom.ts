@@ -6,7 +6,7 @@ import UserSessionContext from "../contexts/UserSessionContext";
 
 export default function useRoom(room_id?: string | undefined) {
     const userSession = useContext(UserSessionContext);
-    const [room, setRoom] = useState<Room>({ name: 'name', bio: 'bio', is_public: true, admin: { _id: '', username: '', bio: '' }, total_members: 0, _createdAt: new Date() });
+    const [room, setRoom] = useState<Room>({ name: '', bio: '', is_public: true, admin: { _id: '', username: '', bio: '' }, total_members: 0, _createdAt: new Date() });
     const roomsRest = new RoomsRest(new ProtectedAxiosInstance(userSession.access_token));
 
     useEffect(() => {

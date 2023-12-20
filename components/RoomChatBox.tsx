@@ -61,7 +61,7 @@ export default function RoomChatBox() {
     }
 
     return (
-        <div className='md:w-5/6 w-full flex flex-col items-center h-full font-mono'>
+        <div className={`md:w-5/6 w-full flex flex-col items-center h-full font-mono ${room._id ? "flex" : "hidden"}`}>
             <div className='w-full pb-10 bg-gray-50 rounded-lg flex flex-col items-center'>
                 <div className='w-full h-40 bg-gray-200 rounded-lg relative'>
                     <img alt="cover_image" src={room.cover_image?.url || "/cover.png"} className='h-full w-full object-cover shadow-xl rounded-lg' />
@@ -116,9 +116,9 @@ export default function RoomChatBox() {
                                         <div onClick={update} className='px-8 py-2 rounded-lg cursor-pointer hover:bg-purple-700 hover:border-purple-700 hover:text-purple-50 bg-purple-500 border-2 border-purple-500 text-purple-50 flex items-center ml-2'>Save</div>
                                     </div>
                                 ) : (
-                                    <div className='w-full flex flex-row items-center justify-center mt-10'>
-                                        <div onClick={() => setIsEditState(true)} className='px-8 py-2 rounded-lg cursor-pointer hover:bg-purple-700 bg-purple-500 text-purple-50 flex items-center'><FaEdit className='mr-2' />Edit room</div>
-                                        <SubmitButton key={crypto.randomUUID()} onClick={delete_room} text={"Delete"} Icon={FaTimes} className='bg-purple-500 text-purple-50 py-2' wrapperClassName="w-fit ml-2" />
+                                    <div className='w-full flex flex-col sm:flex-row items-center justify-center mt-10'>
+                                        <div onClick={() => setIsEditState(true)} className='sm:mb-0 mb-2 sm:w-fit w-11/12 justify-center px-8 py-1 rounded-lg cursor-pointer hover:bg-purple-700 bg-purple-400 text-purple-50 flex items-center'><FaEdit className='mr-2' />Edit room</div>
+                                        <SubmitButton key={crypto.randomUUID()} onClick={delete_room} text={"Delete"} Icon={FaTimes} className='bg-purple-400 text-purple-50 py-2 w-11/12 justify-center sm:w-fit' wrapperClassName="w-full sm:w-fit sm:ml-2" />
                                     </div>
                                 )
                             ) : (

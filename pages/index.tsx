@@ -47,7 +47,7 @@ export default function Home() {
 
     return (
         <div className='flex flex-col items-center sm:items-start sm:flex-row w-11/12 h-full overflow-auto'>
-            <div className="w-11/12 sm:w-2/3 flex flex-col items-center flex-grow overflow-auto">
+            <div className="w-full sm:w-2/3 flex flex-col items-center flex-grow overflow-auto">
                 <div className="bg-gray-50 rounded-lg w-full flex flex-col items-center">
                     <div className="relative w-full h-40 rounded-lg bg-gray-200 shadow-lg">
                         <img alt="cover_image" className="w-full h-full object-cover rounded-lg" src={user.cover_image?.url || "/cover.png"} />
@@ -95,9 +95,9 @@ export default function Home() {
                                 <div onClick={save} className="flex items-center px-8 py-2 rounded-lg text-xs font-medium bg-purple-500 border-2 border-purple-500 text-purple-50 hover:bg-purple-500 hover:text-purple-50 cursor-pointer duration-300 ml-2">Save</div>
                             </div>
                         ) : (
-                            <div className="w-full flex flex-row items-center justify-center my-4">
-                                <a href={"/user/" + user._id} className="flex items-center px-8 py-2 rounded-lg text-xs font-medium bg-purple-200 text-purple-600 hover:bg-purple-500 hover:text-purple-50 cursor-pointer duration-300"><FaEye className="mr-2" />View Profile</a>
-                                <div onClick={() => setIsEditState(true)} className="flex items-center px-8 py-2 rounded-lg text-xs font-medium bg-purple-200 text-purple-600 hover:bg-purple-500 hover:text-purple-50 cursor-pointer duration-300 ml-2"><FaEdit className="mr-2" /> Edit Profile</div>
+                            <div className="w-full flex flex-col sm:flex-row items-center justify-center my-4">
+                                <a href={"/user/" + user._id} className="mb-2 sm:mb-0 w-11/12 sm:w-fit justify-center flex items-center px-8 py-2 rounded-lg text-xs font-medium bg-purple-200 text-purple-400 hover:bg-purple-500 hover:text-purple-50 cursor-pointer duration-300"><FaEye className="mr-2" />View Profile</a>
+                                <div onClick={() => setIsEditState(true)} className="w-11/12 sm:w-fit justify-center flex items-center px-8 py-2 rounded-lg text-xs font-medium bg-purple-200 text-purple-400 hover:bg-purple-500 hover:text-purple-50 cursor-pointer duration-300 sm:ml-2"><FaEdit className="mr-2" /> Edit Profile</div>
                             </div>
                         )
                     }

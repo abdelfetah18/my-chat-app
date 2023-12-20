@@ -1,19 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import useRooms from '../libs/hooks/useRooms';
 import { useRouter } from 'next/router';
 
 export default function RecentRooms(){
     const { rooms } = useRooms();
-    let [search_q,setSearchQ] = useState("");
+    const [show, setShow] = useState(true);
+    let [query, setQuery] = useState("");
+    const router = useRouter();
+  
+    useEffect(() => {
+      if (router.query.room_id) {
+        setShow(false);
+      }
+    }, [router.query.room_id]);
 
     return(
-        <div className='md:w-1/6 lg:flex md:flex hidden flex-col lg:w-2/6'>
-            <div className='md:hidden my-2 lg:flex flex-row w-11/12 bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
-                <input className='w-11/12 font-mono text-xl bg-transparent px-4' value={search_q} onChange={(evt) => setSearchQ(evt.target.value)} placeholder='Search' />
+        <div className={`md:w-1/6 lg:flex md:flex flex-col lg:w-2/6 ${show ? "flex" : "hidden"}`}>
+            <div className='md:hidden lg:flex my-2 flex flex-row sm:w-11/12 w-full bg-[#fafbff] items-center px-4 py-2 rounded-xl'>
+                <input className='w-11/12 font-mono text-xl bg-transparent px-4' value={query} onChange={(evt) => setQuery(evt.target.value)} placeholder='Search' />
                 <FaSearch className='w-1/12 text-[#c8cee5]' />
             </div>
-            <div className='w-11/12 flex flex-col overflow-auto'>
+            <div className='w-full sm:w-11/12 flex flex-col overflow-auto'>
                 {
                     rooms.map((room, index) => <Room key={index} room={room} />)
                 }
@@ -35,7 +43,7 @@ const Room = ({ room }) => {
                     // <div className='w-full text-end font-mono text-xs font-semibold text-[#a2aac1]'>{room.bio}</div>
                 }
                 <div className='flex flex-row w-full'>
-                    <div className='flex flex-col w-11/12 px-2'>
+                    <div className='flex flex-col w-11/12 px-2 '>
                         <div className='font-mono text-base font-bold text-[#020762]'>{room.name}</div>
                         <div className='font-mono text-xs font-medium text-[#b7bfcc] text-ellipsis w-full'>{room.bio}</div>
                     </div>
