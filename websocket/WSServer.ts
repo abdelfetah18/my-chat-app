@@ -2,7 +2,6 @@ import { IncomingMessage } from "http";
 import { Server } from "ws";
 import WebSocketClient from "../libs/utils/WebSocketClient";
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
 import { UserSession } from "../domain/UsersSessions";
 import WSChat from "./WSChat";
 import { WSClient, WSPayload } from "./WSClient";
@@ -10,8 +9,7 @@ import { Message } from "../domain/Messages";
 import { messagesRepository } from "../repository";
 import { Chat } from "../domain/Chats";
 
-const basePath = process.env.INIT_CWD;
-let PRIVATE_KEY = fs.readFileSync(basePath + '/secret/private.key', 'utf8');
+let JWT_KEY = process.env.JWT_KEY;
 
 type ChatId = string;
 
@@ -23,7 +21,7 @@ export class WSServer extends Server {
 
         let access_token = decodeURI(url.searchParams.get('access_token'));
 
-        jwt.verify(access_token, PRIVATE_KEY, { algorithms: ['RS256'] }, (error, userSession: UserSession) => {
+        jwt.verify(access_token, JWT_KEY, { algorithms: ['HS256'] }, (error, userSession: UserSession) => {
             if (error) {
                 console.log('JWT verify error:', error);
                 socket.close();

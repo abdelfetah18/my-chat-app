@@ -1,11 +1,9 @@
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
 import { NextFunction, Response } from 'express';
 import { UserSession } from '../domain/UsersSessions';
 import { UserSessionRequest } from '../domain/UserSessionRequest';
 
-const basePath = process.env.INIT_CWD;
-let PRIVATE_KEY  = fs.readFileSync(basePath+'/secret/private.key', 'utf8');
+let JWT_KEY  = process.env.JWT_KEY;
 
 export default function(req: UserSessionRequest, res: Response, next: NextFunction){
     let protected_paths = ['/','/home','/explore','/create_room','/chat','/rooms','/friends','/settings'];
@@ -24,7 +22,7 @@ export default function(req: UserSessionRequest, res: Response, next: NextFuncti
         return;
     }
 
-    jwt.verify(access_token, PRIVATE_KEY, { algorithms: ['RS256'] }, (error, data) => {
+    jwt.verify(access_token, JWT_KEY, { algorithms: ['HS256'] }, (error, data) => {
         if(error){
             res.redirect("/sign_in");
             return;

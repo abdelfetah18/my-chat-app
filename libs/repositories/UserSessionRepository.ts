@@ -3,7 +3,6 @@ import { User } from "../../domain/Users";
 import UsersSessions, { UserCredentials, UserSession } from "../../domain/UsersSessions";
 import JWT from "jsonwebtoken"
 import bcrypt from "bcrypt";
-import { privateKEY } from '../../secret';
 import { USER_PROPS } from "../database/props";
 
 export default class UsersSessionsRepository implements UsersSessions {
@@ -24,7 +23,7 @@ export default class UsersSessionsRepository implements UsersSessions {
         }
 
         let user = await this.client.get<{ username: string }, User>(`*[_type=="user" && username==$username]${USER_PROPS}[0]`,{ username: userCredentials.username });
-        let access_token = JWT.sign({ user_id: user._id, username: user.username }, privateKEY, { algorithm:"RS256", expiresIn: 1000*60*60*24 });
+        let access_token = JWT.sign({ user_id: user._id, username: user.username }, process.env.JWT_KEY, { algorithm:"HS256", expiresIn: 1000*60*60*24 });
         
         return { access_token, user_id: user._id };
     }
