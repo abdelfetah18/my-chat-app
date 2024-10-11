@@ -12,18 +12,19 @@ export interface Room {
     bio: string;
     is_public: boolean;
     admin?: User | RefDocument;
+    password?: string;
     _createdAt?: string | Date;
     total_members?: number;
 }
 
 export default class Rooms {
-    client : DatabaseClient;
-    getExploreRooms(user_id : string) : Promise<Room[]>;
-    getRoom(room_id : string) : Promise<Room>;
-    getRooms(user_id : string) : Promise<Room[]>;
-    createRoom(room : Room,user_id: string) : Promise<Room>;
-    updateRoom(room_id : string,room : Room) : Promise<Room>;
-    deleteRoom(room_id : string) : Promise<void>;
-    uploadProfileImage(room_id: string,file_Path: string) : Promise<Asset>;
-    uploadCoverImage(room_id: string,file_Path: string) : Promise<Asset>;
+    client: DatabaseClient;
+    getExploreRooms(user_id: string): Promise<Room[]>;
+    getRoom(room_id: string): Promise<Room>;
+    getRooms(user_id: string): Promise<Room[]>;
+    createRoom(room: Room, user_id: string): Promise<Room>;
+    updateRoom(room_id: string, room: Room): Promise<Room>;
+    deleteRoom(room_id: string): Promise<void>;
+    uploadProfileImage(room_id: string, file_Path: string): Promise<Asset>;
+    uploadCoverImage(room_id: string, file_Path: string): Promise<Asset>;
 }

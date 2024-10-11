@@ -3,7 +3,7 @@ import RecentRooms from '../../components/RecentRooms';
 
 export default function Room() {
   return (
-    <div className='flex flex-row w-11/12 h-full overflow-hidden'>
+    <div className='flex flex-row w-full h-full overflow-hidden'>
       <RecentRooms />
       <RoomChatBox />
     </div>

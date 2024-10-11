@@ -4,7 +4,7 @@ import RecentChats from '../../components/RecentChats';
 export default function Chat() {
 
   return (
-    <div className='flex sm:flex-row flex-col w-full flex-grow overflow-auto'>
+    <div className='flex flex-row w-full flex-grow overflow-auto'>
       <RecentChats />
       <ChatBox />
     </div>

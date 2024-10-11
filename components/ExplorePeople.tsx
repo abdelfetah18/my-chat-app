@@ -9,15 +9,10 @@ export default function ExplorePeople() {
         return <></>
 
     return (
-        <div className="w-full flex flex-col my-2 sm:my-0">
-            <div className="font-mono text-base sm:text-lg font-semibold text-purple-800 uppercase">People you may know:</div>
-            <div className="w-full flex flex-col">
-                <div className="flex flex-row w-full flex-wrap">
-                    {
-                        peopleMayKnow.map((user: User, index: number) => <People key={index} user={user} inviteFriend={inviteFriend} />)
-                    }
-                </div>
-            </div>
+        <div className="w-full grid grid-cols-5 gap-6">
+            {
+                peopleMayKnow.map((user: User, index: number) => <People key={index} user={user} inviteFriend={inviteFriend} />)
+            }
         </div>
     )
 }
@@ -29,14 +24,14 @@ const People = ({ user, inviteFriend }) => {
     }
 
     return (
-        <div className="flex flex-col items-center lg:w-1/6 md:w-1/4 w-full rounded-lg my-1">
-            <div className="flex flex-col items-center w-11/12 rounded-lg my-1 bg-purple-50 shadow-lg">
-                <div className="w-full rounded-t-md">
-                    <img alt="profile_image" className="w-full h-full rounded-t-md" src={user.profile_image != null ? user.profile_image.url + "?h=400&w=400&fit=crop&crop=center" : "/profile.png"} />
+        <div className="flex flex-col items-center w-full rounded-lg">
+            <div className="flex flex-col items-center w-full rounded-lg bg-gray-100">
+                <div className="w-full aspect-square rounded-t-md">
+                    <img alt="profile_image" className="w-full h-full aspect-square rounded-t-md" src={user.profile_image != null ? user.profile_image.url + "?h=400&w=400&fit=crop&crop=center" : "/profile.png"} />
                 </div>
-                <div className="font-mono font-semibold text-base flex-grow pl-2 w-full my-2 text-purple-800">{user.username}</div>
+                <div className="px-2 text-base flex-grow w-full text-black">{user.username}</div>
                 <div className="w-full px-1 my-2">
-                    <SubmitButton key={crypto.randomUUID()} wrapperClassName={''} onClick={invite} text={"Add Friend"} className="bg-purple-200 text-purple-500 py-2 text-xs w-full justify-center" />
+                    <SubmitButton key={crypto.randomUUID()} onClick={invite} text={"Add Friend"} className="flex items-center rounded-full bg-primaryColor text-white py-1 text-sm w-full justify-center cursor-pointer select-none active:scale-105 duration-300 hover:bg-secondaryColor" />
                 </div>
             </div>
         </div>

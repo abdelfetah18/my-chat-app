@@ -85,27 +85,32 @@ export default function ChatBox() {
   }
 
   return (
-    <div className={`md:w-5/6 w-full sm:flex flex-col lg:w-4/6 items-center sm:h-auto overflow-auto sm:static flex-grow ${chat._id ? "flex fixed h-full top-0 left-0 z-20" : "hidden"}`}>
+    <div className={"w-2/3 bg-white m-2 rounded-3xl shadow-xl flex flex-col items-center"}>
       {isLoading && <Loading />}
-      <div className='sm:w-11/12 w-full py-2 px-4 flex flex-row bg-[#fafbff] rounded-xl'>
-        <div className='md:w-2/12 lg:w-1/12'>
-          <img alt="profile_image" className='object-cover w-14 h-14 rounded-full' src={chat.target.profile_image ? chat.target.profile_image.url : "/profile.png"} />
+      <div className='w-full py-4 px-6 flex flex-row items-center gap-2'>
+        <div className='w-10'>
+          <img alt="profile_image" className='object-cover w-10 h-10 rounded-full' src={chat.target.profile_image ? chat.target.profile_image.url : "/profile.png"} />
         </div>
-        <div className='flex flex-col w-11/12 px-2'>
-          <div className='font-mono font-semibold text-lg text-[#000049]'>{chat.target?.username || chat.target?.name}</div>
-          <div className='font-mono text-sm text-[#acb2c8]'>{(chat.bio || 'Welcome to chat')}</div>
+        <div className='flex flex-col flex-grow'>
+          <div className='text-base text-black font-medium'>{chat.target?.username || chat.target?.name}</div>
+          <div className='text-xs text-gray-400'>{(chat.bio || 'Welcome to chat')}</div>
         </div>
       </div>
-      <div className='sm:w-11/12 bg-gray-50 w-full sm:py-4 sm:px-4 flex flex-col rounded-xl sm:my-4 overflow-auto flex-grow'>
-        <div ref={messages_box} className={'flex flex-col w-full overflow-auto sm:px-2 px-4 flex-grow'}>
+      <div className='bg-gray-50 w-full py-4 flex flex-col rounded-xl my-4 overflow-auto flex-grow'>
+        <div ref={messages_box} className={'flex flex-col w-full overflow-auto px-8 flex-grow'}>
           {
             chat.messages?.map((msg, i) => <Message key={i} msg={msg} />)
           }
         </div>
         {
           (images.length > 0) ? (
-            <div className='flex flex-col w-full bg-[#7f82de] rounded-lg'>
-              <div className='w-full flex items-end justify-end p-1 text-white'><FaTimes /></div>
+            <div className='flex flex-col w-full border rounded-xl'>
+              <div className='w-full flex items-end justify-end py-2 px-4'>
+                <div className='flex items-center justify-center text-sm active:scale-105 duration-300 select-none cursor-pointer'>
+                  <FaTimes />
+                  <span>Cancel</span>
+                </div>
+              </div>
               <div className='w-full flex flex-row overflow-auto rounded-lg p-2'>
                 {
                   images.map((img, index) => {
@@ -120,18 +125,16 @@ export default function ChatBox() {
             </div>
           ) : ('')
         }
-        <div className='w-full bg-[#ffffff] rounded-xl px-4 py-2 flex flex-row shadow-xl items-center justify-between sm:my-0 my-2'>
+        <div className='w-full px-6 flex flex-row items-center justify-between gap-4 mt-2'>
           <input onChange={isValidChat ? uploadImage : null} ref={upload_image} type={"file"} hidden={true} />
-          <input onKeyUp={(evt) => { if (evt.code === 'Enter') { if (isValidChat) { sendMsg() } } }} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='w-9/12 text-base font-mono px-4 py-2 bg-transparent' placeholder='type a message' />
-          {/* <div className='w-1/12 relative'>
-                  <FaSmile onClick={toggleEmojiPicker} className='cursor-pointer text-base font-mono text-[#a9bae8]' />
-                  <motion.div animate={emojiPickerAnim} className='absolute hidden opacity-0 bottom-full right-full'>
-                    <EmojiPicker onEmojiClick={(emoji,event) => setMessageContent(state => state+=emoji.emoji)} />
-                  </motion.div>
-                </div> */}
-          <div className='w-2/12 flex flex-row items-center'>
-            <FaPaperclip onClick={() => { if (isValidChat) { if (upload_image.current) { upload_image.current.click(); } } }} className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
-            <FaPaperPlane onClick={isValidChat ? sendMsg : null} className='cursor-pointer w-1/2 text-base font-mono text-[#a9bae8]' />
+          <div className='bg-gray-100 rounded-full flex items-center flex-grow'>
+            <input onKeyUp={(evt) => { if (evt.code === 'Enter') { if (isValidChat) { sendMsg() } } }} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='flex-grow text-base bg-transparent px-6 py-2' placeholder='Type a message' />
+            <div className='px-4'>
+              <FaPaperclip onClick={() => { if (isValidChat) { if (upload_image.current) { upload_image.current.click(); } } }} className='cursor-pointer text-base  text-primaryColor' />
+            </div>
+          </div>
+          <div>
+            <FaPaperPlane onClick={isValidChat ? sendMsg : null} className='cursor-pointer text-xl text-primaryColor' />
           </div>
         </div>
       </div>
@@ -159,8 +162,8 @@ const Message = ({ msg }) => {
     if (msg.message_type === "text") {
       return (
         <div className='flex flex-col max-w-5/6 self-end'>
-          <div className='font-mono text-white text-sm bg-[#6b1aff] w-fit max-w-xl px-4 py-2 rounded-t-xl rounded-l-xl break-all'>{msg.message_content}</div>
-          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
+          <div className=' text-white text-sm bg-[#6b1aff] w-fit max-w-xl px-4 py-2 rounded-t-xl rounded-l-xl break-all'>{msg.message_content}</div>
+          <div className='text-xs text-end text-[#c3c9d7]  my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
         </div>
       )
     }
@@ -169,7 +172,7 @@ const Message = ({ msg }) => {
       return (
         <div className='flex flex-col max-w-5/6 self-end'>
           <img alt="image" className='flex self-end shadow-xl rounded-lg border-2 w-1/3' src={msg.message_image.url} />
-          <div className='text-xs text-end text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
+          <div className='text-xs text-end text-[#c3c9d7]  my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
         </div>
       )
     }
@@ -180,11 +183,11 @@ const Message = ({ msg }) => {
           <div className='w-full flex flex-row'>
             <div className='relative'>
               <img alt="image" onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image?.url || "/profile.png"} />
-              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
+              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs  font-medium text-gray-400' >{msg.user.username}</div>
             </div>
             <div className='ml-2 flex flex-col'>
-              <div className='font-mono text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl max-w-xl break-all'>{msg.message_content}</div>
-              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
+              <div className=' text-[#8f96a9] text-sm bg-[#eef2fd] w-fit px-4 py-2 rounded-t-xl rounded-r-xl max-w-xl break-all'>{msg.message_content}</div>
+              <div className='text-xs text-start text-[#c3c9d7]  my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
             </div>
           </div>
         </div>
@@ -197,11 +200,11 @@ const Message = ({ msg }) => {
           <div className='w-full flex flex-row'>
             <div className='relative'>
               <img alt="image" onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd} className='h-10 w-10 rounded-full cursor-pointer' src={msg.user.profile_image?.url || "/profile.png"} />
-              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs font-mono font-medium text-gray-400' >{msg.user.username}</div>
+              <div ref={usernameRef} className='absolute top-11 bg-gray-300 rounded-lg px-2 hidden text-xs  font-medium text-gray-400' >{msg.user.username}</div>
             </div>
             <div className='ml-2 flex flex-col w-1/3'>
               <img alt="image" className='flex self-start shadow-xl rounded-lg border-2 w-full' src={msg.message_image.url} />
-              <div className='text-xs text-start text-[#c3c9d7] font-mono my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
+              <div className='text-xs text-start text-[#c3c9d7]  my-1' title={(new Date(msg._createdAt)).toLocaleString()}>{(new Date(msg._createdAt)).toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' })}</div>
             </div>
           </div>
         </div>

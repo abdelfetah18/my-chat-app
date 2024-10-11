@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Header from '../components/Header';
 import Navigation from '../components/Navigation';
 import _Navigation from "../components/_Navigation";
 import '../styles/globals.css'
@@ -49,10 +48,10 @@ function MyApp({ Component, pageProps }) {
   if (WHITE_LIST_PATHS.includes(router.pathname)) {
     return (
       <ToastContext.Provider value={toastManager}>
-        <div className='flex flex-col sm:flex-row background h-screen w-screen'>
+        <div className='flex flex-row background h-screen w-screen'>
           <_Navigation page={router.pathname} />
-          <div className='h-full lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col items-center py-4'>
-            <div className='w-11/12 text-start font-mono font-bold text-2xl py-2 text-[#02166c]'>{getPageTitle()}</div>
+          <div className='h-full w-5/6 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center justify-center'>
+            <div className='w-11/12 text-center font-semibold text-3xl py-2 text-black'>{getPageTitle()}</div>
             <Component {...pageProps} />
           </div>
         </div>
@@ -67,11 +66,9 @@ function MyApp({ Component, pageProps }) {
       <ToastContext.Provider value={toastManager}>
         <UserSessionContext.Provider value={userSession} >
           <UserContext.Provider value={user}>
-            <div className='flex flex-col sm:flex-row background h-screen w-full'>
+            <div className='flex flex-row background h-screen w-full'>
               <Navigation page={router.pathname} />
-              <div className='h-full lg:w-5/6 md:w-11/12 w-full bg-[#f1f5fe] sm:rounded-l-3xl flex flex-col items-center sm:py-4'>
-                <Header />
-                <div className='w-11/12 text-start font-mono font-bold text-2xl py-2 text-purple-900 uppercase'>{getPageTitle()}</div>
+              <div className='h-full w-5/6 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center'>
                 <Component {...pageProps} />
               </div>
             </div>
@@ -85,4 +82,4 @@ function MyApp({ Component, pageProps }) {
   return <div className='w-full h-screen bg-gray-100 text-gray-900 flex items-center justify-center'>Loading...</div>
 }
 
-export default MyApp
+export default MyApp;

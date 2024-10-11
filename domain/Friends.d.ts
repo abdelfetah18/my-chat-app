@@ -7,6 +7,7 @@ export interface Friend {
     inviter?: User | RefDocument;
     user?: User | RefDocument;
     state?: "accept" | "request" | "reject";
+    chat?: Chat;
     _createdAt?: string;
 }
 

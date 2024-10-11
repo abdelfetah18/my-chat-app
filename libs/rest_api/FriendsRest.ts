@@ -32,4 +32,8 @@ export class FriendsRest {
     async invite(user_id: string): Promise<FriendsRestResponse<Friend>> {
         return await this.axios.post<FriendsRestResponse<Friend>,{ friend_id: string }>('/api/v1/user/invite', { friend_id: user_id }).then(response => response.data);
     }
+
+    async getAllFriends():Promise<FriendsRestResponse<Friend[]>> {
+        return await this.axios.get<FriendsRestResponse<Friend[]>>('/api/v1/user/friends').then(response => response.data);
+    }
 };

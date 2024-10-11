@@ -1,3 +1,4 @@
+import { RoomMember } from "../../domain/RoomMembers";
 import { Room } from "../../domain/Rooms";
 import { ProtectedAxiosInstance } from "../utils/ProtectedAxiosInstance";
 
@@ -59,5 +60,9 @@ export class RoomsRest {
             return await this.axios.post<RoomsRestResponse<Room[]>, { room_id: string }>("/api/v1/rooms", { room_id }).then(response => response.data);
         }
         return await this.axios.get<RoomsRestResponse<Room[]>>("/api/v1/rooms").then(response => response.data);
+    }
+
+    async getRoomMembers(room_id: string): Promise<RoomsRestResponse<RoomMember[]>> {
+        return await this.axios.get<RoomsRestResponse<RoomMember[]>>(`/api/v1/room/${room_id}/members`).then(response => response.data);
     }
 };

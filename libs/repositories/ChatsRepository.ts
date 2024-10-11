@@ -17,13 +17,14 @@ export default class ChatsRepository implements Chats {
     }
 
     async getRecentChats(user_id: string): Promise<Chat[]> {
-        let query = `*[_type=="chat" && _id in *[_type=="chat_member" && user._ref==$user_id].chat._ref && count(*[_type=="message" && chat._ref==^._id]) > 0]{
+        let query = `*[_type=="chat" && _id in *[_type=="chat_member" && user._ref==$user_id].chat._ref]{
             _id,
             "last_message": *[_type=="message" && chat._ref==^._id] | order(_createdAt desc)[0]${MESSAGE_PROPS},
             "target": select(
                 count(*[_type=="room" && chat._ref==^._id]) > 0 => *[_type=="room" && chat._ref==^._id][0]${ROOM_PROPS},
                 count(*[_type=="chat_member" && chat._ref==^._id]) == 2 => *[_type=="chat_member" && chat._ref==^._id && user._ref!=$user_id][0].user->${USER_PROPS}
-            )
+            ),
+            _createdAt
         }`;
 
         return await this.client.get<{ user_id: string }, Chat[]>(query,{ user_id });

@@ -3,16 +3,24 @@ import { Room } from "../../domain/Rooms";
 import { RoomsRest } from "../rest_api/RoomsRest";
 import { ProtectedAxiosInstance } from "../utils/ProtectedAxiosInstance";
 import UserSessionContext from "../contexts/UserSessionContext";
+import { RoomMember } from "../../domain/RoomMembers";
 
 export default function useRoom(room_id?: string | undefined) {
     const userSession = useContext(UserSessionContext);
     const [room, setRoom] = useState<Room>({ name: '', bio: '', is_public: true, admin: { _id: '', username: '', bio: '' }, total_members: 0, _createdAt: new Date() });
     const roomsRest = new RoomsRest(new ProtectedAxiosInstance(userSession.access_token));
+    const [members, setMembers] = useState<RoomMember[]>([]);
 
     useEffect(() => {
         if (!room_id) {
             return;
         }
+
+        roomsRest.getRoomMembers(room_id).then(response => {
+            if (response.status == "success") {
+                setMembers(response.data);
+            }
+        });
 
         roomsRest.getById(room_id).then(response => {
             if (response.status == "success") {
@@ -29,7 +37,7 @@ export default function useRoom(room_id?: string | undefined) {
     }
 
     const createRoom = async (): Promise<Room> => {
-        let response = await roomsRest.create(room);
+        let response = await roomsRest.create({ ...room, profile_image: undefined, cover_image: undefined });
         if (response.status == "success") {
             return response.data;
         }
@@ -51,15 +59,17 @@ export default function useRoom(room_id?: string | undefined) {
         await roomsRest.delete(room._id);
     }
 
-    const updateRoom = async (): Promise<Room> => {
+    const updateRoom = async (): Promise<Room | null> => {
         let response = await roomsRest.update(room);
         if (response.status == "success") {
             return response.data;
         }
+        return null;
     }
 
     return {
         room,
+        members,
         resetRoom,
         setRoom,
         createRoom,
