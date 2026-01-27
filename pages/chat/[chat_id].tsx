@@ -1,12 +1,17 @@
+import { ReactElement } from 'react';
 import ChatBox from '../../components/ChatBox';
-import RecentChats from '../../components/RecentChats';
+import ChatLayout from '../../components/ChatLayout';
 
 export default function Chat() {
-
   return (
-    <div className='flex flex-row w-full flex-grow overflow-auto'>
-      <RecentChats />
-      <ChatBox />
-    </div>
+    <ChatBox />
+  )
+}
+
+Chat.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <ChatLayout>
+      {page}
+    </ChatLayout>
   )
 }

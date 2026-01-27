@@ -29,6 +29,8 @@ const PATHS = {
 const WHITE_LIST_PATHS = ['/sign_in', '/sign_up'];
 
 function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout ?? ((page) => page)
+
   const toastManager = useToast();
 
   let router = useRouter();
@@ -52,7 +54,7 @@ function MyApp({ Component, pageProps }) {
           <_Navigation page={router.pathname} />
           <div className='h-full w-5/6 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center justify-center'>
             <div className='w-11/12 text-center font-semibold text-3xl py-2 text-black'>{getPageTitle()}</div>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </div>
         </div>
         <Toast />
@@ -69,7 +71,7 @@ function MyApp({ Component, pageProps }) {
             <div className='flex flex-row background h-screen w-full'>
               <Navigation page={router.pathname} />
               <div className='h-full w-5/6 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center'>
-                <Component {...pageProps} />
+                {getLayout(<Component {...pageProps} />)}
               </div>
             </div>
             <Toast />
