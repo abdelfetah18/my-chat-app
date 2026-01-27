@@ -12,10 +12,7 @@ export class ChatsRest {
         this.axios = axios;
     }
 
-    async getRecent(chat_id?: string): Promise<ChatsRestResponse<Chat[]>> {
-        if (chat_id) {
-            return await this.axios.post<ChatsRestResponse<Chat[]>, { chat_id: string }>("/api/v1/chat/recent", { chat_id }).then(response => response.data);
-        }
+    async getRecent(): Promise<ChatsRestResponse<Chat[]>> {
         return await this.axios.get<ChatsRestResponse<Chat[]>>("/api/v1/chat/recent").then(response => response.data);
     }
 
