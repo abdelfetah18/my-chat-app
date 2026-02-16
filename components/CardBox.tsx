@@ -8,12 +8,12 @@ interface CardBoxProps {
     iconColor: string;
 }
 
-export default function CardBox({ title, value, Icon=null, textColor, iconColor } : CardBoxProps){
+export default function CardBox({ title, value, Icon = null, textColor, iconColor }: CardBoxProps) {
     return (
         <div className='flex-1 flex flex-col items-center'>
-            {Icon && <Icon style={{ color: iconColor }} />}
-            <div className='text-xs text-gray-400 mb-2' style={{ color: iconColor }}>{title}</div>
-            <div className={'text-lg font-medium'} style={{ color: textColor }}>{value}</div>
+            {Icon && <Icon style={{ color: iconColor, fontSize: 20 }} />}
+            <div className='text-gray-400' style={{ color: iconColor }}>{title}</div>
+            <div className='text-lg font-medium' style={{ color: textColor }}>{value}</div>
         </div>
     )
 }
