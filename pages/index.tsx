@@ -12,7 +12,13 @@ export default function Home() {
             <div className="w-full flex flex-col items-center flex-grow overflow-auto">
                 <div className="bg-gray-50 rounded-3xl w-full flex flex-col items-center">
                     <div className="relative w-full rounded-t-3xl bg-gray-200">
-                        <img alt="cover_image" className="w-full aspect-[4/1] object-cover rounded-t-3xl" src={user.cover_image?.url || "/cover.png"} />
+                        {
+                            user.cover_image ? (
+                                <img alt="cover_image" className="w-full aspect-[4/1] object-cover rounded-t-3xl" src={user.cover_image?.url || "/cover.png"} />
+                            ) : (
+                                <div className="w-full aspect-[4/1] object-cover rounded-t-3xl from-zinc-900 to-zinc-400 bg-gradient-to-t"></div>
+                            )
+                        }
                     </div>
                     <div className="-mt-28 z-1 w-full flex flex-col items-center">
                         <div className="relative h-40 w-40 rounded-full bg-gray-100 border-gray-50 border-4">
