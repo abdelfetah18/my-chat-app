@@ -23,7 +23,7 @@ export default function RoomSettings({ roomId }: RoomSettingsProps) {
     }
 
     return (
-        <div className="w-full flex flex-row gap-2">
+        <div className="w-full flex flex-row gap-2 overflow-auto">
             <div className="w-96 px-2 flex flex-col border-r border-zinc-200">
                 <div className="bg-zinc-100 hover:bg-zinc-100 cursor-pointer rounded-lg p-2 text-base font-semibold">Room Information</div>
                 <div className="w-full h-px bg-zinc-200 my-2"></div>
@@ -32,7 +32,7 @@ export default function RoomSettings({ roomId }: RoomSettingsProps) {
                     <div>Delete Room</div>
                 </div>
             </div>
-            <div className="flex-grow flex flex-col px-2">
+            <div className="flex-grow flex flex-col px-2 overflow-auto">
                 <EditRoom roomId={roomId} />
             </div>
         </div>

@@ -11,12 +11,10 @@ interface ModalProps {
     description?: string;
 };
 
-type AnimationName = 'CenterScaleFadeIn' | 'EdgeScaleFadeIn'
+type AnimationName = 'CenterScaleFadeIn' | 'EdgeScaleFadeIn' | 'FadeIn'
 
 export default function Modal({ children, useModal, animationName = 'CenterScaleFadeIn', title, description }: ModalProps) {
     const { isOpen, close } = useModal;
-
-    console.log("animations[animationName]:", animations[animationName]);
 
     return (
         <ModalContext.Provider value={useModal}>
@@ -28,25 +26,27 @@ export default function Modal({ children, useModal, animationName = 'CenterScale
                             initial="close"
                             animate="open"
                             exit="close"
-                            className="w-full h-screen bg-white overflow-auto flex flex-col items-center absolute top-0 left-0 z-50"
+                            className="w-full h-screen bg-black/40 backdrop-blur-sm overflow-auto flex flex-col items-center justify-center absolute top-0 left-0 z-50"
                         >
-                            <div className="w-full flex items-center flex-nowrap justify-between p-4">
-                                <div className="flex flex-col">
-                                    {
-                                        title?.length > 0 && (
-                                            <>
-                                                <div className="text-xl font-semibold text-black">{title}</div>
-                                                <div className="text-sm text-zinc-500">{description}</div>
-                                            </>
-                                        )
-                                    }
+                            <div className="w-5/6 h-5/6 flex flex-col bg-white overflow-auto rounded-lg">
+                                <div className="w-full flex items-center flex-nowrap justify-between p-4">
+                                    <div className="flex flex-col">
+                                        {
+                                            title?.length > 0 && (
+                                                <>
+                                                    <div className="text-xl font-semibold text-black">{title}</div>
+                                                    <div className="text-sm text-zinc-500">{description}</div>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                    <div onClick={() => close()} className="text-2xl bg-primaryColor rounded-full p-1 cursor-pointer hover:bg-secondaryColor active:scale-110 duration-300 text-white">
+                                        <FaTimes />
+                                    </div>
                                 </div>
-                                <div onClick={() => close()} className="text-2xl bg-primaryColor rounded-full p-1 cursor-pointer hover:bg-secondaryColor active:scale-110 duration-300 text-white">
-                                    <FaTimes />
+                                <div className="w-full flex-grow flex flex-col items-center py-8 overflow-auto">
+                                    {children}
                                 </div>
-                            </div>
-                            <div className="w-full flex flex-col items-center px-4 py-8">
-                                {children}
                             </div>
                         </motion.div>
                     )
@@ -90,6 +90,16 @@ const animations: AnimationNamesMap = {
             height: "60%",
             left: "20%",
             top: "20%",
+            transition: { duration: 0.3, ease: "easeOut" },
+        }
+    },
+    FadeIn: {
+        open: {
+            opacity: 1,
+            transition: { duration: 0.3, ease: "easeOut" },
+        },
+        close: {
+            opacity: 0,
             transition: { duration: 0.3, ease: "easeOut" },
         }
     }

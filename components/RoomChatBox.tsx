@@ -99,7 +99,7 @@ export default function RoomChatBox() {
                     </div>
                 </div>
             </div>
-            <Modal useModal={useModalValue} title="Room Settings" description="Manage this room's preferences and options.">
+            <Modal animationName='FadeIn' useModal={useModalValue} title="Room Settings" description="Manage this room's preferences and options.">
                 <RoomSettings roomId={room._id} />
             </Modal>
         </div>
