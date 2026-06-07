@@ -70,8 +70,10 @@ function MyApp({ Component, pageProps }) {
           <UserContext.Provider value={user}>
             <div className='flex flex-row background h-screen w-full'>
               <Navigation page={router.pathname} />
-              <div className='h-full w-5/6 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center'>
-                {getLayout(<Component {...pageProps} />)}
+              <div className='h-full flex-1 bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center'>
+                <div className='h-full w-full bg-[#f1f5fe] rounded-l-3xl flex flex-col items-center'>
+                  {getLayout(<Component {...pageProps} />)}
+                </div>
               </div>
             </div>
             <Toast />
