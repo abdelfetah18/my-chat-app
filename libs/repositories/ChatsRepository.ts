@@ -25,7 +25,7 @@ export default class ChatsRepository implements Chats {
                 count(*[_type=="chat_member" && chat._ref==^._id]) == 2 => *[_type=="chat_member" && chat._ref==^._id && user._ref!=$user_id][0].user->${USER_PROPS}
             ),
             _createdAt
-        }`;
+        } | order(coalesce(last_message._createdAt, _createdAt) desc)`;
 
         return await this.client.get<{ user_id: string }, Chat[]>(query,{ user_id });
     }
