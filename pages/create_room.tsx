@@ -59,7 +59,7 @@ export default function CreateRoom() {
 
     return (
         <div className="w-full h-full flex flex-col items-center py-6 overflow-auto">
-            <div className='w-11/12 h-full px-10 py-6 flex flex-col gap-8 bg-white rounded-xl'>
+            <div className='w-11/12 px-10 py-6 flex flex-col gap-8 bg-white rounded-xl'>
                 <div className='text-2xl font-semibold'>Create Room</div>
                 <div className='w-full flex flex-col'>
                     <div className='w-full flex items-center gap-4 py-4'>
