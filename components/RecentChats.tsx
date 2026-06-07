@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
 import useChats from '../libs/hooks/useChats';
 import ChatCard from './ChatCard';
+import { Icon } from '@iconify/react';
 
 export default function RecentChats() {
   const { chats, search } = useChats();
@@ -19,7 +19,7 @@ export default function RecentChats() {
       <div className='text-xl font-semibold mb-2 w-11/12'>Chats</div>
       <div className='my-2 flex flex-row w-11/12 bg-gray-100 items-center px-4 py-2 rounded-full'>
         <input className='w-11/12 text-sm bg-transparent px-4' value={query} onChange={(evt) => setQuery(evt.target.value)} placeholder='Search' />
-        <FaSearch className='w-1/12 text-[#c8cee5]' />
+        <Icon icon={'lucide:search'} className='w-1/12 text-[#c8cee5]' />
       </div>
       <div className='w-full flex flex-col'>
         {

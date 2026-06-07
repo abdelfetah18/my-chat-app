@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
 import useRooms from '../libs/hooks/useRooms';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Icon } from '@iconify/react';
 
 export default function RecentRooms() {
     const { rooms } = useRooms();
@@ -12,7 +12,7 @@ export default function RecentRooms() {
         <div className={`bg-white rounded-3xl flex flex-col w-1/3 m-2 shadow-xl items-center py-6`}>
             <div className='flex mb-4 flex-row w-11/12 bg-gray-100 items-center px-4 py-2 rounded-xl'>
                 <input className='w-11/12 text-base bg-transparent px-4' value={query} onChange={(evt) => setQuery(evt.target.value)} placeholder='Search' />
-                <FaSearch className='w-1/12 text-[#c8cee5]' />
+                <Icon icon={'lucide:search'} className='w-1/12 text-[#c8cee5]' />
             </div>
             <div className='w-11/12 flex flex-col gap-1 overflow-auto'>
                 {

@@ -1,6 +1,6 @@
-import { FaGlobeAfrica, FaLock, FaUserFriends } from "react-icons/fa";
 import { Room as RoomInterface } from "../domain/Rooms";
 import SubmitButton, { SubmitButtonResult } from "./SubmitButton";
+import { Icon } from "@iconify/react";
 
 interface RoomProps {
     room: RoomInterface;
@@ -17,12 +17,12 @@ export default function Room({ room, onClick }: RoomProps) {
                 <div className="font-medium text-black text-base w-full mt-1">{room.name}</div>
                 <div className="text-gray-400 text-xs w-full">{room.bio}</div>
                 <div className="w-full flex items-center justify-between mt-3">
-                    <div className="text-black text-xs flex items-center gap-1">
-                        {room.is_public ? (<FaGlobeAfrica />) : (<FaLock />)}
+                    <div className="text-black text-sm flex items-center gap-1">
+                        {room.is_public ? (<Icon icon={'lucide:globe'} />) : (<Icon icon={'lucide:globe-lock'} />)}
                         {room.is_public ? "Public" : "Private"}
                     </div>
-                    <div className="text-black text-xs flex items-center gap-1">
-                        <FaUserFriends />{room.total_members} Members
+                    <div className="text-black text-sm flex items-center gap-1">
+                        <Icon icon={'lucide:users'} />{room.total_members} Members
                     </div>
                 </div>
                 <div className="flex-grow"></div>

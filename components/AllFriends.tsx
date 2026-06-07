@@ -1,10 +1,10 @@
-import { FaRegComment } from "react-icons/fa";
 import { Friend } from "../domain/Friends";
 import useAllFriends from "../libs/hooks/useAllFriends";
 import Link from "next/link";
 import { User } from "../domain/Users";
 import { useContext } from "react";
 import UserSessionContext from "../libs/contexts/UserSessionContext";
+import { Icon } from "@iconify/react";
 
 export default function AllFriends() {
     const { friends } = useAllFriends();
@@ -40,7 +40,7 @@ const FriendCard = function ({ friend }: { friend: Friend }) {
                 </div>
                 <div className="text-base px-2">{username}</div>
                 <div className="w-full px-1 my-2">
-                    <Link href={`/chat/${friend.chat._id}`} className='w-full justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><FaRegComment className='mr-2' />Open Chat</Link>
+                    <Link href={`/chat/${friend.chat._id}`} className='w-full justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><Icon icon={'lucide:message-circle-more'} className='mr-2' />Open Chat</Link>
                 </div>
             </div>
         </div>

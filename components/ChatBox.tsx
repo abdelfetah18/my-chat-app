@@ -1,10 +1,10 @@
-import { FaPaperPlane, FaPaperclip, FaTimes } from 'react-icons/fa';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router';
 import useChat from '../libs/hooks/useChat';
 import UserSessionContext from '../libs/contexts/UserSessionContext';
 import { UserSession } from '../domain/UsersSessions';
 import Loading from './Loading';
+import { Icon } from '@iconify/react';
 // import EmojiPicker from 'emoji-picker-react';
 
 export default function ChatBox() {
@@ -107,7 +107,7 @@ export default function ChatBox() {
             <div className='flex flex-col w-full border rounded-xl'>
               <div className='w-full flex items-end justify-end py-2 px-4'>
                 <div className='flex items-center justify-center text-sm active:scale-105 duration-300 select-none cursor-pointer'>
-                  <FaTimes />
+                  <Icon icon={'lucide:x'} />
                   <span>Cancel</span>
                 </div>
               </div>
@@ -130,11 +130,11 @@ export default function ChatBox() {
           <div className='bg-gray-100 rounded-full flex items-center flex-grow'>
             <input onKeyUp={(evt) => { if (evt.code === 'Enter') { if (isValidChat) { sendMsg() } } }} value={message_content} onChange={(e) => setMessageContent(e.target.value)} className='flex-grow text-base bg-transparent px-6 py-2' placeholder='Type a message' />
             <div className='px-4'>
-              <FaPaperclip onClick={() => { if (isValidChat) { if (upload_image.current) { upload_image.current.click(); } } }} className='cursor-pointer text-base  text-primaryColor' />
+              <Icon icon={'lucide:paperclip'} onClick={() => { if (isValidChat) { if (upload_image.current) { upload_image.current.click(); } } }} className='cursor-pointer text-base  text-primaryColor' />
             </div>
           </div>
           <div>
-            <FaPaperPlane onClick={isValidChat ? sendMsg : null} className='cursor-pointer text-xl text-primaryColor' />
+            <Icon icon={'lucide:send'} onClick={isValidChat ? sendMsg : null} className='cursor-pointer text-xl text-primaryColor' />
           </div>
         </div>
       </div>

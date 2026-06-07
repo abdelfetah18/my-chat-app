@@ -1,5 +1,4 @@
 import { useContext, useEffect } from 'react';
-import { FaSignOutAlt, FaRegComment, FaCog } from 'react-icons/fa';
 import SubmitButton, { SubmitButtonResult } from "../components/SubmitButton";
 import useRoom from '../libs/hooks/useRoom';
 import { useRouter } from 'next/router';
@@ -10,6 +9,7 @@ import useModal from '../libs/hooks/useModal';
 import Modal from './Modal';
 import UserSessionContext from '../libs/contexts/UserSessionContext';
 import RoomSettings from './RoomSettings';
+import { Icon } from '@iconify/react';
 
 export default function RoomChatBox() {
     const userSession = useContext(UserSessionContext);
@@ -59,11 +59,11 @@ export default function RoomChatBox() {
                         router.query.room_id && (
                             <div className='w-full flex gap-2 flex-row items-center justify-center mt-6'>
                                 {is_admin() ? (
-                                    <div onClick={() => useModalValue.open()} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><FaCog className='mr-2' />Room Settings</div>
+                                    <div onClick={() => useModalValue.open()} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><Icon icon={'lucide:cog'} className='mr-2' />Room Settings</div>
                                 ) : (
-                                    <SubmitButton key={crypto.randomUUID()} onClick={leave} text={"Leave"} Icon={FaSignOutAlt} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-primaryColor bg-gray-200 text-gray-700 flex items-center' />
+                                    <SubmitButton key={crypto.randomUUID()} onClick={leave} text={"Leave"} icon={'lucide:log-out'} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-primaryColor bg-gray-200 text-gray-700 flex items-center' />
                                 )}
-                                <Link href={`/chat/${chat?._id}`} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><FaRegComment className='mr-2' />Open Chat</Link>
+                                <Link href={`/chat/${chat?._id}`} className='w-fit justify-center px-12 py-2 text-sm rounded-full cursor-pointer duration-300 hover:text-white hover:bg-purple-700 bg-gray-200 text-gray-700 flex items-center'><Icon icon={'lucide:message-circle-more'} className='mr-2' />Open Chat</Link>
                             </div>
                         )
                     }

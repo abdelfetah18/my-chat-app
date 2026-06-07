@@ -1,4 +1,3 @@
-import { FaCalendar, FaUserFriends, FaUsers } from "react-icons/fa";
 import useUser from "../../libs/hooks/useUser";
 import CardBox from "../../components/CardBox";
 
@@ -25,9 +24,9 @@ export default function UserProfile() {
                     </div> */}
 
                     <div className='w-full flex flex-row items-center my-8'>
-                        <CardBox Icon={FaUsers} title={"Rooms"} value={user.rooms.toString()} textColor='#999' iconColor='#999' />
-                        <CardBox Icon={FaUserFriends} title={"Friends"} value={user.friends.toString()} textColor='#999' iconColor='#999' />
-                        <CardBox Icon={FaCalendar} title={"Joined at"} value={(new Date(user._createdAt)).toLocaleDateString('en-us')} textColor='#999' iconColor='#999' />
+                        <CardBox icon={'lucide:messages-square'} title={"Rooms"} value={user.rooms.toString()} textColor='#999' iconColor='#999' />
+                        <CardBox icon={'lucide:users'} title={"Friends"} value={user.friends.toString()} textColor='#999' iconColor='#999' />
+                        <CardBox icon={'lucide:calendar'} title={"Joined at"} value={(new Date(user._createdAt)).toLocaleDateString('en-us')} textColor='#999' iconColor='#999' />
                     </div>
                 </div>
             </div>

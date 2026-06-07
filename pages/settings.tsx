@@ -1,9 +1,9 @@
 import { useContext, useRef, useState } from "react";
 import { Cookies } from "react-cookie";
-import { FaCamera, FaEdit, FaSignOutAlt } from "react-icons/fa";
 import useUser from "../libs/hooks/useUser";
 import Loading from "../components/Loading";
 import ToastContext from "../libs/contexts/ToastContext";
+import { Icon } from "@iconify/react";
 
 type Tab = "edit profile";
 const tabs: Tab[] = ["edit profile"];
@@ -32,14 +32,14 @@ export default function Settings() {
 
                             return (
                                 <div key={index} onClick={selectTab} className={`px-4 py-2 flex items-center gap-2 rounded-lg capitalize cursor-pointer duration-300 hover:bg-gray-200 ${selectedTab == tab ? "bg-gray-200" : ""}`}>
-                                    {tab == "edit profile" && <FaEdit />}
+                                    {tab == "edit profile" && <Icon icon={'lucide:user-pen'} />}
                                     <span>{tab}</span>
                                 </div>
                             )
                         })
                     }
                     <div onClick={LogoutHandler} className="px-4 py-2 flex items-center gap-2 rounded-lg cursor-pointer duration-300 hover:bg-gray-200 text-red-600">
-                        <FaSignOutAlt />
+                        <Icon icon={'lucide:log-out'} />
                         <span>Log out</span>
                     </div>
                 </div>
@@ -87,7 +87,7 @@ function EditProfile() {
                 <div className="relative w-20 h-20 rounded-full">
                     <img src={user.profile_image?.url || "/profile.png"} className="w-full h-full rounded-full object-cover" />
                     <div onClick={updateProfileImage} className="absolute bottom-0 right-0 bg-primaryColor p-2 rounded-full text-white cursor-pointer active:scale-105 duration-300 select-none hover:bg-secondaryColor">
-                        <FaCamera />
+                        <Icon icon={'lucide:camera'} />
                     </div>
                     <input onChange={onProfileImageChange} ref={profileImageRef} type='file' hidden />
                 </div>

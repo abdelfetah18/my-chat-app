@@ -1,10 +1,10 @@
-import { FaAddressCard, FaCheck, FaGlobeAfrica, FaImage, FaImages, FaLock } from 'react-icons/fa';
 import { ChangeEvent, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import useRoom from "../libs/hooks/useRoom";
 import ToastContext from '../libs/contexts/ToastContext';
 import { Room } from '../domain/Rooms';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/Loading';
+import { Icon } from '@iconify/react';
 
 export default function CreateRoom() {
     const router = useRouter();
@@ -70,10 +70,10 @@ export default function CreateRoom() {
                                 return (
                                     <div key={index} className='flex items-center gap-2'>
                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base ${selected ? "bg-primaryColor text-white" : "bg-transparent text-gray-300"}`}>
-                                            {step.slug == "Room Details" && <FaAddressCard />}
-                                            {step.slug == "Room Appearance" && <FaImages />}
-                                            {step.slug == "Room Visibility" && <FaGlobeAfrica />}
-                                            {step.slug == "Review and Create" && <FaCheck />}
+                                            {step.slug == "Room Details" && <Icon icon={'lucide:info'} />}
+                                            {step.slug == "Room Appearance" && <Icon icon={'lucide:images'} />}
+                                            {step.slug == "Room Visibility" && <Icon icon={'lucide:globe'} />}
+                                            {step.slug == "Review and Create" && <Icon icon={'lucide:check'} />}
                                         </div>
                                         {
                                             selected && (
@@ -204,7 +204,7 @@ function RoomApearance({ useRoom, profileImageInputRef }: RoomApearanceProps) {
                     <div className='w-full flex flex-row items-center gap-4'>
                         <img src={(room.profile_image ? room.profile_image.url : '/profile.png')} className='w-28 h-28 rounded-full object-cover' />
                         <div onClick={() => profileImageInputRef.current.click()} className='bg-secondaryColor text-white p-2 text-sm rounded-full flex items-center gap-2 cursor-pointer active:scale-105 duration-300 select-none hover:bg-primaryColor'>
-                            <FaImage />
+                            <Icon icon={'lucide:image'} />
                             <div>Upload profile image</div>
                         </div>
                     </div>
@@ -268,7 +268,7 @@ function RoomReview({ room }: RoomReviewProps) {
                 <div className="font-medium text-black text-base mt-1">{room.name}</div>
                 <div className="text-gray-400 text-xs">{room.bio}</div>
                 <div className="text-black text-xs flex items-center gap-1 my-2">
-                    {room.is_public ? (<FaGlobeAfrica />) : (<FaLock />)}
+                    {room.is_public ? (<Icon icon={'lucide:globe'} />) : (<Icon icon={'lucide:globe-lock'} />)}
                     {room.is_public ? "Public" : "Private"}
                 </div>
                 <div className='flex flex-col'>

@@ -3,7 +3,7 @@ import EditRoom from "./EditRoom";
 import UserSessionContext from "../libs/contexts/UserSessionContext";
 import { RoomsRest } from "../libs/rest_api/RoomsRest";
 import { ProtectedAxiosInstance } from "../libs/utils/ProtectedAxiosInstance";
-import { FaTrash } from "react-icons/fa";
+import { Icon } from "@iconify/react";
 
 interface RoomSettingsProps {
     roomId: string;
@@ -28,7 +28,7 @@ export default function RoomSettings({ roomId }: RoomSettingsProps) {
                 <div className="bg-zinc-100 hover:bg-zinc-100 cursor-pointer rounded-lg p-2 text-base font-semibold">Room Information</div>
                 <div className="w-full h-px bg-zinc-200 my-2"></div>
                 <div onClick={deleteRoomHandler} className="hover:bg-zinc-100 cursor-pointer rounded-lg p-2 text-red-500 text-base font-semibold flex flex-row items-center gap-2">
-                    <FaTrash />
+                    <Icon icon={'lucide:trash-2'} />
                     <div>Delete Room</div>
                 </div>
             </div>

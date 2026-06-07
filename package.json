@@ -31,10 +31,10 @@
     "react-cookie": "^4.1.1",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0",
     "ws": "^8.8.0"
   },
   "devDependencies": {
+    "@iconify/react": "^6.0.2",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.6",

@@ -1,8 +1,8 @@
 import ExplorePeople from "../../components/ExplorePeople";
 import ExploreFriendRequests from "../../components/ExploreFriendRequests";
 import { useState } from "react";
-import { FaUserCheck, FaUserFriends, FaUserPlus } from "react-icons/fa";
 import AllFriends from "../../components/AllFriends";
+import { Icon } from "@iconify/react";
 
 
 type Tab = "suggestions" | "friend requests" | "all friends";
@@ -24,9 +24,9 @@ export default function Friends() {
 
                             return (
                                 <div key={index} onClick={selectTab} className={`px-4 py-2 flex items-center gap-2 rounded-lg capitalize cursor-pointer duration-300 hover:bg-gray-200 ${selectedTab == tab ? "bg-gray-200" : ""}`}>
-                                    {tab == "all friends" && <FaUserFriends />}
-                                    {tab == "suggestions" && <FaUserPlus />}
-                                    {tab == "friend requests" && <FaUserCheck />}
+                                    {tab == "all friends" && <Icon icon={'lucide:users'} />}
+                                    {tab == "suggestions" && <Icon icon={'lucide:user-plus'} />}
+                                    {tab == "friend requests" && <Icon icon={'lucide:user-check'} />}
                                     <span>{tab}</span>
                                 </div>
                             )

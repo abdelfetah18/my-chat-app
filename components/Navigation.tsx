@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { useContext, useState } from 'react';
-import { FaPlus, FaCommentAlt, FaComments, FaCog, FaCompass, FaUsers, FaHome } from 'react-icons/fa';
-import { TbLayoutSidebarLeftExpand, TbLayoutSidebarRightExpand } from "react-icons/tb";
+import { Icon } from '@iconify/react';
 import UserContext from '../libs/contexts/UserContext';
+import NavigationItem from './NavigationItem';
 
 export default function Navigation({ page }) {
     const [isExpanded, setIsExpanded] = useState(true);
@@ -12,13 +11,13 @@ export default function Navigation({ page }) {
         <div className={`flex flex-col justify-between ${isExpanded ? "w-1/6" : "w-16"} static bottom-0 z-10 bg-transparent duration-300`}>
             <div></div>
             <div className='flex flex-col justify-center w-full items-center'>
-                <Button Icon={FaHome} text='Home' page={page} destination='/' isExpanded={isExpanded} />
-                <Button Icon={FaCompass} text='Explore' page={page} destination='/explore' isExpanded={isExpanded} />
-                <Button Icon={FaPlus} text='Create room' page={page} destination='/create_room' isExpanded={isExpanded} />
-                <Button Icon={FaCommentAlt} text='Chat' page={page.startsWith("/chat") ? '/chat' : page} destination='/chat' isExpanded={isExpanded} />
-                <Button Icon={FaComments} text='Rooms' page={page.startsWith("/rooms") ? '/rooms' : page} destination='/rooms' isExpanded={isExpanded} />
-                <Button Icon={FaUsers} text='Friends' page={page} destination='/friends' isExpanded={isExpanded} />
-                <Button Icon={FaCog} text='Settings' page={page} destination='/settings' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:home'} text='Home' page={page} destination='/' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:compass'} text='Explore' page={page} destination='/explore' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:plus'} text='Create room' page={page} destination='/create_room' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:message-circle-more'} text='Chat' page={page.startsWith("/chat") ? '/chat' : page} destination='/chat' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:messages-square'} text='Rooms' page={page.startsWith("/rooms") ? '/rooms' : page} destination='/rooms' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:users'} text='Friends' page={page} destination='/friends' isExpanded={isExpanded} />
+                <NavigationItem icon={'lucide:cog'} text='Settings' page={page} destination='/settings' isExpanded={isExpanded} />
             </div>
             <div className={`w-full flex items-center gap-2 justify-between p-2 ${isExpanded ? 'flex-row' : 'flex-col'}`}>
                 <div className='flex-grow flex items-center gap-2'>
@@ -31,30 +30,9 @@ export default function Navigation({ page }) {
                         setIsExpanded(state => !state);
                     }}
                 >
-                    {isExpanded ? <TbLayoutSidebarRightExpand /> : <TbLayoutSidebarLeftExpand />}
+                    {isExpanded ? <Icon icon='lucide:panel-right-open' /> : <Icon icon='lucide:panel-right-close' />}
                 </div>
             </div>
         </div>
-    )
-}
-
-const Button = ({ Icon, text, page, destination, isExpanded }) => {
-    const styles = {
-        container: "hover:bg-[#d1a2fe55] cursor-pointer w-full flex-0 flex flex-row items-center justify-center text-purple-50 px-4 py-2 gap-2",
-        icon: isExpanded ? 'text-base' : 'text-xl',
-        text: 'block flex-grow px-0 text-base'
-    };
-
-    const selected_styles = {
-        container: `${styles.container} border-[#d1a2fe]  border-l-4 bg-[#d1a2fe55]`,
-        icon: `${styles.icon}`,
-        text: `${styles.text}`,
-    }
-
-    return (
-        <Link href={destination} className={page === destination ? selected_styles.container : styles.container}>
-            <Icon className={styles.icon} />
-            {isExpanded && <div className={styles.text}>{text}</div>}
-        </Link>
     )
 }

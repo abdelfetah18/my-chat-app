@@ -1,9 +1,9 @@
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import ToastContext from "../libs/contexts/ToastContext";
 import useRoom from "../libs/hooks/useRoom";
-import { FaImage } from "react-icons/fa";
 import Loading from "./Loading";
 import { ModalContext } from "../libs/contexts/ModalContext";
+import { Icon } from "@iconify/react";
 
 interface EditRoomProps {
     roomId: string;
@@ -87,7 +87,7 @@ export default function EditRoom({ roomId }: EditRoomProps) {
                 <div className='w-full aspect-[4/1] bg-gray-200 rounded-xl relative'>
                     <img src={(room.cover_image ? room.cover_image.url : '/cover.png')} className='absolute top-0 left-0 w-full h-full object-cover rounded-xl' />
                     <div onClick={() => coverImageInputRef.current.click()} className='absolute bottom-2 right-2 bg-secondaryColor text-white px-8 py-1 text-sm rounded-full flex items-center gap-2 cursor-pointer active:scale-105 duration-300 select-none hover:bg-primaryColor'>
-                        <FaImage />
+                        <Icon icon={'lucide:image'} />
                         <span>Cover Image</span>
                     </div>
                 </div>
@@ -95,7 +95,7 @@ export default function EditRoom({ roomId }: EditRoomProps) {
                     <div className='w-full h-full relative'>
                         <img src={(room.profile_image ? room.profile_image.url : '/profile.png')} className='absolute top-0 left-0 w-full h-full rounded-full object-cover' />
                         <div onClick={() => profileImageInputRef.current.click()} className='absolute bottom-1 right-1 bg-secondaryColor text-white p-2 text-sm rounded-full flex items-center gap-2 cursor-pointer active:scale-105 duration-300 select-none hover:bg-primaryColor'>
-                            <FaImage />
+                            <Icon icon={'lucide:image'} />
                         </div>
                     </div>
                 </div>

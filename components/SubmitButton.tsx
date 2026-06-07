@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { MouseEvent, useRef, useState } from "react";
-import { IconType } from "react-icons/lib";
 
 export interface SubmitButtonResult {
     status: "success" | "error";
@@ -7,12 +7,12 @@ export interface SubmitButtonResult {
 
 interface SubmitButtonProps {
     text: string;
-    Icon?: IconType;
+    icon?: string;
     onClick: () => Promise<SubmitButtonResult>;
     className: string;
 };
 
-export default function SubmitButton({ text, Icon = null, onClick, className }: SubmitButtonProps) {
+export default function SubmitButton({ text, icon = null, onClick, className }: SubmitButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const alert_message = useRef<HTMLDivElement>(null);
@@ -40,7 +40,7 @@ export default function SubmitButton({ text, Icon = null, onClick, className }: 
                     </div>
                 ) : (
                     !showSuccessMessage && (
-                        <div onClick={click} className={className}>{Icon && <Icon className="mr-2" />} {text}</div>
+                        <div onClick={click} className={className}>{icon && <Icon icon={icon} className="mr-2" />} {text}</div>
                     )
                 )
             }

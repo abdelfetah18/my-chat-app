@@ -1,7 +1,7 @@
 import { AnimatePresence, Variants, motion } from "framer-motion";
 import { useModalReturn } from "../libs/hooks/useModal";
 import { ModalContext } from "../libs/contexts/ModalContext";
-import { FaTimes } from "react-icons/fa";
+import { Icon } from "@iconify/react";
 
 interface ModalProps {
     children: React.ReactNode;
@@ -41,7 +41,7 @@ export default function Modal({ children, useModal, animationName = 'CenterScale
                                         }
                                     </div>
                                     <div onClick={() => close()} className="text-2xl bg-primaryColor rounded-full p-1 cursor-pointer hover:bg-secondaryColor active:scale-110 duration-300 text-white">
-                                        <FaTimes />
+                                        <Icon icon={'lucide:x'} />
                                     </div>
                                 </div>
                                 <div className="w-full flex-grow flex flex-col items-center py-8 overflow-auto">
